@@ -17,7 +17,7 @@ class PasswordInput extends StatelessWidget{
                     controller: passwordController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.email),
-                      labelText: "Email",
+                      labelText: "Password",
                       enabledBorder: border_input,
                       focusedBorder: border_input,
                       filled: true,
