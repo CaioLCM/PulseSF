@@ -9,6 +9,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final emailController = new TextEditingController();
     final passwordController = new TextEditingController();
+    final border = new OutlineInputBorder(borderRadius: 
+    BorderRadius.circular(10)
+    );
     return(
       MaterialApp(home: 
         Scaffold(
@@ -23,20 +26,28 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.bold
                     ),
                     ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 70),
+                    Text("Email"),
+                    SizedBox(height: 10),
                     TextField(
                       controller: emailController,
                       decoration: InputDecoration(
                         labelText: "Email",
+                        enabledBorder: border
                       ),
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: 40),
+                    Text("Password"),
+                    SizedBox(height: 10),
                     TextField(
                       controller: passwordController,
                       decoration: InputDecoration(
-                        labelText: "Password"
+                        labelText: "Password",
+                        enabledBorder: border
                       ),
-                    )
+                    ),
+                    ElevatedButton(onPressed: null, child: Text("Log in"), style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.blue))),
+                    Text("Don't have an account? Sign up")
                   ],
               ),
             ),
