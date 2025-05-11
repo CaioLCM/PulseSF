@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pulsesf/Widgets/Main/email.dart';
 import 'package:pulsesf/Widgets/Main/logInButton.dart';
 import 'package:pulsesf/Widgets/Main/password.dart';
+import 'package:pulsesf/Widgets/Main/signupButton.dart';
 import 'package:pulsesf/Widgets/Main/title.dart';
 
 main(){
@@ -40,10 +41,7 @@ class MyApp extends StatelessWidget {
                   Loginbutton(),
                   SizedBox(height: 10),
                   Text("Don't have an account?", style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextButton(onPressed: null, child: Text("Sign up"), style: 
-                  ButtonStyle(
-                    textStyle: WidgetStatePropertyAll(TextStyle(color: Colors.blue))
-                  ),)
+                  Signupbutton()
                 ],
             ),
             ),   
