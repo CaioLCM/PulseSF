@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pulsesf/http/communication.dart';
 
 class Signupscreen extends StatelessWidget{
   
@@ -64,7 +65,9 @@ class Signupscreen extends StatelessWidget{
             ),
             ),
             SizedBox(height: 15,),
-            ElevatedButton(onPressed: null, child: Text("Sign Up"), style: ElevatedButton.styleFrom(
+            ElevatedButton(onPressed: () => {
+              CreateAccount(user.text, email.text, password.text, context)
+            }, child: Text("Sign Up"), style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 textStyle: TextStyle(fontSize: 20)
