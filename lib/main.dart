@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
                   SizedBox(height: 10),
                   PasswordInput(passwordController),
                   SizedBox(height: 50),
-                  Loginbutton(),
+                  Loginbutton(email: emailController, password: passwordController),
                   SizedBox(height: 10),
                   Text("Don't have an account?", style: TextStyle(fontWeight: FontWeight.bold)),
                   Signupbutton()
