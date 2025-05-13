@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pulsesf/main.dart';
 
 class Mainpage extends StatelessWidget {
   @override
@@ -8,18 +9,26 @@ class Mainpage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.fromLTRB(130, 70, 130, 10),
             decoration: BoxDecoration(
               color: Colors.white
             ),
             child: Column(
               children: [
-                Text("PulseSF", style: TextStyle(
-                      color: Colors.purple[400],
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold
-                      )
-                        ),
+                Row(
+                  children: [
+                    SizedBox(width: 130,),
+                    Text("PulseSF", style: TextStyle(
+                          color: Colors.purple[400],
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold
+                          )
+                            ),
+                    SizedBox(width: 30,),
+                    IconButton(onPressed: () => {
+                      Navigator.push(context, MaterialPageRoute(builder: (builder) => MyApp()))
+                    }, icon:  Icon(Icons.logout))
+                  ],
+                ),
                         Text("Building your San Francisco experience")
               ],
             ),
