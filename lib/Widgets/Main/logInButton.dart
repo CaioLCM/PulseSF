@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:pulsesf/pages/mainPage.dart';
 
 class Loginbutton extends StatelessWidget{
     
   @override
   Widget build(BuildContext context) {
-      return ElevatedButton(onPressed: null, child: Text("Log in"), 
+      return ElevatedButton(onPressed: () => {
+        Navigator.push(context, MaterialPageRoute(builder: (builder) => Mainpage()))
+      }, child: Text("Log in"), 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),
