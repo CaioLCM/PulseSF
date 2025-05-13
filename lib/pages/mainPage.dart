@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pulsesf/main.dart';
+import 'package:pulsesf/pages/profilePage.dart';
 
 class Mainpage extends StatelessWidget {
   @override
@@ -103,10 +104,12 @@ class Mainpage extends StatelessWidget {
                                     SizedBox(width: 10,),
                                     Icon(Icons.person),
                                     SizedBox(width: 10),
-                                    Text("Profile", style: TextStyle(
+                                    TextButton(onPressed: ()=>{
+                                       Navigator.push(context, MaterialPageRoute(builder: (builder) => Profilepage()))
+                                    }, child: Text("Profile", style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold
-                ),),
+                ),),)
                                   ],
                                 ),
                     ),
