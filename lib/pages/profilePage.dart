@@ -3,22 +3,35 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Profilepage extends StatelessWidget {
-  String nickname = '';
+ 
+class Profilepage extends StatefulWidget {
+  @override
+  State<Profilepage> createState() => _ProfilepageState();
+}
+
+class _ProfilepageState extends State<Profilepage> {
   String email = '';
+  @override
+  void initState(){
+    super.initState();
+    readToken();
+  }
+  
   void readToken() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('jwt_token');
 
       if (token != null){
         var decodedToken = JwtDecoder.decode(token);
-        nickname = decodedToken['user']['name'];
+        setState(() {
         email = decodedToken['user']['email'];
+        });
+
       }
-  }
+  }  
+
   @override
   Widget build(BuildContext context) {
-    readToken();
     return Scaffold(
       body: Column(
         children: [
@@ -32,11 +45,11 @@ class Profilepage extends StatelessWidget {
             ],
           ),
           SizedBox(height: 20,),
-          Text(nickname, style: TextStyle(
+          Text(email, style: TextStyle(
             fontSize: 30
           ),),
           SizedBox(height: 8,),
-          Text(email, style: TextStyle(fontSize: 20),),
+          //Text(email, style: TextStyle(fontSize: 20),),
           SizedBox(height: 20,),
           Container(
              padding: EdgeInsets.all(16),
