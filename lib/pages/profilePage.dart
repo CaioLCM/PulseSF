@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pulsesf/pages/mainPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profilepage extends StatelessWidget {
+  String nickname = '';
+  String email = '';
+  void readToken() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('jwt_token');
+
+      if (token != null){
+        var decodedToken = JwtDecoder.decode(token);
+        nickname = decodedToken['user']['name'];
+        email = decodedToken['user']['email'];
+      }
+  }
   @override
   Widget build(BuildContext context) {
+    readToken();
     return Scaffold(
       body: Column(
         children: [
@@ -17,11 +32,11 @@ class Profilepage extends StatelessWidget {
             ],
           ),
           SizedBox(height: 20,),
-          Text("User name", style: TextStyle(
+          Text(nickname, style: TextStyle(
             fontSize: 30
           ),),
           SizedBox(height: 8,),
-          Text("User email", style: TextStyle(fontSize: 20),),
+          Text(email, style: TextStyle(fontSize: 20),),
           SizedBox(height: 20,),
           Container(
              padding: EdgeInsets.all(16),
