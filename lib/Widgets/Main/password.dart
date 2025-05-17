@@ -17,8 +17,9 @@ class PasswordInput extends StatelessWidget{
         padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
         child: TextField(
                       controller: passwordController,
+                      obscureText: true,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email),
+                        prefixIcon: Icon(Icons.lock),
                         labelText: "Password",
                         enabledBorder: border_input,
                         focusedBorder: border_input,

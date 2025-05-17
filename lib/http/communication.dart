@@ -22,6 +22,7 @@ void verifyAccount(String email, String password, BuildContext context) async {
              final token = data['token'];
              SharedPreferences prefs = await SharedPreferences.getInstance();
              await prefs.setString('jwt_token', token);
+             await prefs.setString("valid_login", "true");
              Navigator.push(context, MaterialPageRoute(builder: (builder) => Mainpage()));
              print(prefs.getString("jwt_token"));
         }
