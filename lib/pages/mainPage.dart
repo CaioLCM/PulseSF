@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pulsesf/main.dart';
 import 'package:pulsesf/pages/profilePage.dart';
+import 'package:pulsesf/pages/projectsPage.dart';
 
 class Mainpage extends StatelessWidget {
   @override
@@ -85,10 +86,14 @@ class Mainpage extends StatelessWidget {
                 SizedBox(width: 10,),
                 Icon(Icons.precision_manufacturing),
                 SizedBox(width: 10),
-                Text("Create/join projects", style: TextStyle(
+                 TextButton(onPressed: ()=>{
+                                       Navigator.push(context, MaterialPageRoute(builder: (builder) => Projectspage()))
+                                    }, child: Text("Create/Join Projects", style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold
-                ),),
+                ),
+                ),
+                )
               ],
             ),
           ),
