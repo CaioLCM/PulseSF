@@ -18,10 +18,31 @@ final passwordController = new TextEditingController();
 final border = new OutlineInputBorder(borderRadius: BorderRadius.circular(12));
 ///////////////////////////////////////////////////////////////////////
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
+  late AnimationController _controller;
+  late Animation<double> _wiggle;
+  
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 500))..repeat(reverse: true);
+    _wiggle = Tween<double>(begin: -0.05, end: 0.05).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return(
+    return( 
       MaterialApp(
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
@@ -36,7 +57,10 @@ class MyApp extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                  MainTitle(),
+                  AnimatedBuilder(animation: _wiggle,
+                    builder: (context, child) => Transform.rotate(angle: _wiggle.value, child: child,),
+                    child: Text("PulseSF", style: TextStyle(color: Colors.purple[400], fontSize: 80, fontWeight: FontWeight.bold)),
+                  ),
                   SizedBox(height: 40),
                   Text("Email", style: TextStyle(fontWeight:FontWeight.bold),),
                   SizedBox(height: 10),
@@ -59,5 +83,6 @@ class MyApp extends StatelessWidget {
         )
       ,)
     );
+ 
   }
 }
