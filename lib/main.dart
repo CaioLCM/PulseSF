@@ -4,9 +4,12 @@ import 'package:pulsesf/Widgets/Main/logInButton.dart';
 import 'package:pulsesf/Widgets/Main/password.dart';
 import 'package:pulsesf/Widgets/Main/signupButton.dart';
 import 'package:pulsesf/Widgets/Main/title.dart';
+import 'package:zhi_starry_sky/starry_sky.dart';
+import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 main(){
-  runApp(new MyApp());
+  runApp(EasyDynamicThemeWidget(child: MyApp()));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -19,21 +22,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return(
-      MaterialApp(home: 
+      MaterialApp(
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: EasyDynamicTheme.of(context).themeMode,
+        home:
         Scaffold(
           backgroundColor: Colors.white,
-            body:
+            body: Stack(
+              children: [
+            const StarrySkyView(),
             SafeArea(child: 
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 80),
                   MainTitle(),
-                  SizedBox(height: 70),
+                  SizedBox(height: 40),
                   Text("Email", style: TextStyle(fontWeight:FontWeight.bold),),
                   SizedBox(height: 10),
                   EmailInput(emailController),
-                  SizedBox(height: 40),
+                  SizedBox(height: 20),
                   Text("Password", style: TextStyle(fontWeight: FontWeight.bold),),
                   SizedBox(height: 10),
                   PasswordInput(passwordController),
@@ -45,6 +53,9 @@ class MyApp extends StatelessWidget {
                 ],
             ),
             ),   
+              ],
+            )
+ 
         )
       ,)
     );

@@ -13,17 +13,20 @@ class PasswordInput extends StatelessWidget{
   
   @override
   Widget build(BuildContext context) {
-      return  TextField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      labelText: "Password",
-                      enabledBorder: border_input,
-                      focusedBorder: border_input,
-                      filled: true,
-                      fillColor: Colors.grey[100],
-
+      return  Padding(
+        padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+        child: TextField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.email),
+                        labelText: "Password",
+                        enabledBorder: border_input,
+                        focusedBorder: border_input,
+                        filled: true,
+                        fillColor: Colors.grey[100],
+        
+                      ),
                     ),
-                  );
+      );
   }
 } 

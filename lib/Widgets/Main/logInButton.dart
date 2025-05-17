@@ -13,7 +13,7 @@ class Loginbutton extends StatelessWidget{
       return ElevatedButton(onPressed: () {
         verifyAccount(email.text, password.text, context);
 
-      }, child: Text("Log in"), 
+      }, child: Text("Log in", style: TextStyle(color: Colors.white),), 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),

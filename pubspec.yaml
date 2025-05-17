@@ -37,6 +37,9 @@ dependencies:
   http: any
   shared_preferences: ^2.5.3
   jwt_decoder: ^2.0.1
+  zhi_starry_sky: ^0.0.2
+  easy_dynamic_theme: ^2.3.1
+  animated_text_kit: ^4.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
