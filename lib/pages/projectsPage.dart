@@ -1,17 +1,30 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pulsesf/pages/createProjectMenu.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+Future<List<project>> loadProjects() async {
+  final prefs = await SharedPreferences.getInstance();
+  final jsonList = prefs.getStringList('projects') ?? [];
+
+  return jsonList.map((jsonString) => project.fromJson(jsonDecode(jsonString))).toList();
+}
 class Projectspage extends StatefulWidget {
   @override
   State<Projectspage> createState() => _ProjectspageState();
 }
 
 class _ProjectspageState extends State<Projectspage> {
-  List <String> projects = [];
+  List <project> projects = [];
 
-  void __addProject(){
-    setState(() {
-      projects.add('Projeto criado');
+  void initState() {
+    super.initState();
+    loadProjects().then((loaded) {
+      setState(() {
+        projects = loaded;
+      });
     });
   }
 
@@ -33,7 +46,16 @@ class _ProjectspageState extends State<Projectspage> {
           ),
           child: Row(
             children: [
-              Text(project),
+              Expanded(
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(project.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+      Text(project.bio),
+      Text('Members: ${project.members.toInt()}'),
+    ],
+  ),
+),
               IconButton(onPressed: () => setState(() {
                  projects.removeAt(index);
               }), icon: Icon(Icons.remove_circle, color: Colors.red,), 
@@ -44,7 +66,15 @@ class _ProjectspageState extends State<Projectspage> {
       },
       )
       ),
-      floatingActionButton: FloatingActionButton(onPressed: __addProject,
+      floatingActionButton: FloatingActionButton(onPressed: () async 
+      {
+        await Navigator.push(context, 
+        MaterialPageRoute(builder: (builder) => Createprojectmenu()));
+        final loaded = await loadProjects();
+        setState(() {
+          projects = loaded;
+        });
+        },
           child: Icon(Icons.add),
           backgroundColor: Colors.purple[400],));
   }
