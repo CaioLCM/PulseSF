@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/pages/mainPage.dart';
 
-class Loginbutton extends StatefulWidget{
+class Createaccount extends StatefulWidget{
+  final TextEditingController user;
   final TextEditingController email;
   final TextEditingController password;
+  final TextEditingController confirmPassword;
 
-  Loginbutton({required this.email, required this.password});
+  Createaccount({required this.user,required this.email, required this.password, required this.confirmPassword});
 
   @override
-  State<Loginbutton> createState() => _LoginbuttonState();
+  State<Createaccount> createState() => _CreateaccountState(); 
 }
 
-class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStateMixin{
+class _CreateaccountState extends State<Createaccount> with SingleTickerProviderStateMixin{
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
   Color pintura = Colors.deepPurple;
-  String info = 'Log in';
+  String info = 'Sign Up';
 
   @override
   void initState() {
@@ -43,18 +45,22 @@ class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStat
       return SlideTransition(position: _offsetAnimation, 
       child:
       ElevatedButton(onPressed: () async {
-        verifyAccount(widget.email.text, widget.password.text, context);
+        if (widget.password.text == widget.confirmPassword.text){
+            CreateAccount(
+              widget.user.text, widget.email.text, widget.confirmPassword.text, context);
+        }
           setState(() {
               _controller.forward(from: 0);
               pintura = Colors.red;
-              info = 'Invalid account!';
+              info = 'Invalid info!';
           });
           Future.delayed(Duration(seconds: 2), () {
             setState(() {
               pintura = Colors.deepPurple;
-              info = 'Log in';
+              info = 'Sign Up';
             });
           });
+        
       }, child: Text(info, style: TextStyle(color: Colors.white),), 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: pintura,
