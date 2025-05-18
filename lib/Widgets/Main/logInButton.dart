@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/pages/mainPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Loginbutton extends StatefulWidget{
   final TextEditingController email;
@@ -43,8 +44,11 @@ class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStat
       return SlideTransition(position: _offsetAnimation, 
       child:
       ElevatedButton(onPressed: () async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
         verifyAccount(widget.email.text, widget.password.text, context);
-          setState(() {
+          final exists = prefs.getBool("valid_account");
+          if (exists == false){
+            setState(() {
               _controller.forward(from: 0);
               pintura = Colors.red;
               info = 'Invalid account!';
@@ -55,6 +59,7 @@ class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStat
               info = 'Log in';
             });
           });
+          }
       }, child: Text(info, style: TextStyle(color: Colors.white),), 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: pintura,

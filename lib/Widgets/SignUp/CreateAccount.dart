@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/pages/mainPage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Createaccount extends StatefulWidget{
   final TextEditingController user;
@@ -49,7 +50,10 @@ class _CreateaccountState extends State<Createaccount> with SingleTickerProvider
             CreateAccount(
               widget.user.text, widget.email.text, widget.confirmPassword.text, context);
         }
-          setState(() {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        final valid = prefs.getBool("valid_account");
+        if (valid == false){
+           setState(() {
               _controller.forward(from: 0);
               pintura = Colors.red;
               info = 'Invalid info!';
@@ -60,7 +64,7 @@ class _CreateaccountState extends State<Createaccount> with SingleTickerProvider
               info = 'Sign Up';
             });
           });
-        
+        }        
       }, child: Text(info, style: TextStyle(color: Colors.white),), 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: pintura,
