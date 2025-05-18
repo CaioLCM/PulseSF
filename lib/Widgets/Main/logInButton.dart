@@ -59,6 +59,8 @@ class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStat
             _controller.forward(from: 0);
           } else {
             setState(() {
+              widget.email.text = '';
+              widget.password.text = '';
               loading = false;
             });
           }

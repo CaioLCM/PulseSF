@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:image_picker/image_picker.dart';
  
 class Profilepage extends StatefulWidget {
   @override
@@ -10,12 +10,57 @@ class Profilepage extends StatefulWidget {
 }
 
 class _ProfilepageState extends State<Profilepage> {
-  String email = '';
-  @override
+  ImageProvider? _profileImage;
+
+  @override   
   void initState(){
     super.initState();
+    _loadProfileImage();
     readToken();
   }
+
+  void _loadProfileImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final imageUrl = prefs.getString("profile");
+
+    if (imageUrl != null) {
+      setState(() {
+        _profileImage = NetworkImage(imageUrl);
+      });
+    }
+  }
+
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final prefs = await SharedPreferences.getInstance();
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null){
+      await prefs.setString("profile", "https://i.pinimg.com/736x/1c/8e/97/1c8e97bebfd438b16a2758a40e565a1f.jpg");
+    }
+
+    setState(() {
+      _profileImage = NetworkImage('https://i.pinimg.com/736x/1c/8e/97/1c8e97bebfd438b16a2758a40e565a1f.jpg');
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('DANGER'),
+        content: Text("User is way too handsome"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Nice rizz bro"),
+          ),
+        ],
+      ),
+    );
+
+  }
+
+  String email = '';
   
   void readToken() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -39,9 +84,14 @@ class _ProfilepageState extends State<Profilepage> {
           Row(
             children: [
               SizedBox(width: 105,),
-              CircleAvatar(
-                radius: 90,
-                child: IconButton(onPressed: null, icon: Icon(Icons.camera_alt), iconSize: 40,),
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 90,
+                    backgroundImage: _profileImage,
+                  ),
+                  IconButton(onPressed: _pickImage, icon: Icon(Icons.camera_alt), iconSize: 40,)
+                ],
               ),
             ],
           ),

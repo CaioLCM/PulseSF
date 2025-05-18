@@ -4,6 +4,7 @@ import 'package:pulsesf/Widgets/Main/logInButton.dart';
 import 'package:pulsesf/Widgets/Main/password.dart';
 import 'package:pulsesf/Widgets/Main/signupButton.dart';
 import 'package:pulsesf/Widgets/Main/title.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zhi_starry_sky/starry_sky.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -30,8 +31,14 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
+    DeleteData();
     _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 500))..repeat(reverse: true);
     _wiggle = Tween<double>(begin: -0.05, end: 0.05).animate(_controller);
+  }
+
+  Future<void> DeleteData() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 
   @override
