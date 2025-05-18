@@ -18,6 +18,7 @@ class Createaccount extends StatefulWidget{
 class _CreateaccountState extends State<Createaccount> with SingleTickerProviderStateMixin{
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
+  bool valid = true;
   Color pintura = Colors.deepPurple;
   String info = 'Sign Up';
 
@@ -47,11 +48,9 @@ class _CreateaccountState extends State<Createaccount> with SingleTickerProvider
       child:
       ElevatedButton(onPressed: () async {
         if (widget.password.text == widget.confirmPassword.text){
-            CreateAccount(
+            valid = await CreateAccount(
               widget.user.text, widget.email.text, widget.confirmPassword.text, context);
         }
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        final valid = prefs.getBool("valid_account");
         if (valid == false){
            setState(() {
               _controller.forward(from: 0);

@@ -44,9 +44,7 @@ class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStat
       return SlideTransition(position: _offsetAnimation, 
       child:
       ElevatedButton(onPressed: () async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        verifyAccount(widget.email.text, widget.password.text, context);
-          final exists = prefs.getBool("valid_account");
+          final exists = await verifyAccount(widget.email.text, widget.password.text, context);
           if (exists == false){
             setState(() {
               _controller.forward(from: 0);
