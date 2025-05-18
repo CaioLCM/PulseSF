@@ -50,9 +50,9 @@ class _ProjectspageState extends State<Projectspage> {
   child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Text(project.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-      Text(project.bio),
-      Text('Members: ${project.members.toInt()}'),
+      Text(project.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: const Color.fromARGB(255, 90, 85, 85))),
+      Text(project.bio, style: TextStyle(color: const Color.fromARGB(255, 90, 85, 85)),),
+      Text('Members: ${project.members.toInt()}', style: TextStyle(color: const Color.fromARGB(255, 90, 85, 85)),),
     ],
   ),
 ),

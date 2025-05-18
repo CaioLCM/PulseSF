@@ -18,6 +18,7 @@ class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStat
   late Animation<Offset> _offsetAnimation;
   Color pintura = Colors.deepPurple;
   String info = 'Log in';
+  bool loading = false;
 
   @override
   void initState() {
@@ -43,29 +44,48 @@ class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStat
   Widget build(BuildContext context) {
       return SlideTransition(position: _offsetAnimation, 
       child:
-      ElevatedButton(onPressed: () async {
+      ElevatedButton(
+        onPressed: (loading || _controller.isAnimating) ? null : () async {
+          setState(() {
+            loading = true;
+          });
           final exists = await verifyAccount(widget.email.text, widget.password.text, context);
           if (exists == false){
             setState(() {
-              _controller.forward(from: 0);
               pintura = Colors.red;
               info = 'Invalid account!';
-          });
+              loading = false;
+            });
+            _controller.forward(from: 0);
+          } else {
+            setState(() {
+              loading = false;
+            });
+          }
           Future.delayed(Duration(seconds: 2), () {
             setState(() {
               pintura = Colors.deepPurple;
               info = 'Log in';
             });
           });
-          }
-      }, child: Text(info, style: TextStyle(color: Colors.white),), 
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: pintura,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    textStyle: TextStyle(fontSize: 20)
-                  ),
-      ) ,);
-      
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: pintura,
+          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          textStyle: TextStyle(fontSize: 20)
+        ),
+        child: loading
+        ? SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              ),
+            )
+        : Text(info, style: TextStyle(color: Colors.white)),
+      ),
+    );
   }
 } 

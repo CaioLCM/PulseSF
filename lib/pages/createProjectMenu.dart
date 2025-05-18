@@ -57,7 +57,9 @@ class _CreateprojectmenuState extends State<Createprojectmenu> {
               controller: ProjectName,
               decoration: InputDecoration(
               labelText: "Project name",
+              labelStyle: TextStyle(color: const Color.fromARGB(255, 90, 85, 85)),
               prefixIcon: Icon(Icons.insert_drive_file_rounded),
+              prefixIconColor: Colors.black,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13) 
               ),
@@ -70,7 +72,9 @@ class _CreateprojectmenuState extends State<Createprojectmenu> {
               controller: DescribeProject,
               decoration: InputDecoration(
               labelText: "Describe your project",
+              labelStyle: TextStyle(color: const Color.fromARGB(255, 90, 85, 85)),
               prefixIcon: Icon(Icons.info),
+              prefixIconColor: Colors.black,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13) 
               ),
@@ -79,7 +83,7 @@ class _CreateprojectmenuState extends State<Createprojectmenu> {
             ),
             ),
             SizedBox(height: 15,),
-            Text("Max number of students (without couting you): $value"),
+            Text("Max number of students (without couting you): $value", style: TextStyle(color: const Color.fromARGB(255, 90, 85, 85)),),
             Slider(
               value: value, max: 4, divisions: 4, label: value.toString(), 
               onChanged: (double newValue) => {

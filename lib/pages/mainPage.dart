@@ -21,7 +21,7 @@ class Mainpage extends StatelessWidget {
                   SizedBox(height: 15,),
                   Row(
                     children: [
-                        SizedBox(width: 130,),
+                        SizedBox(width: 110,),
                         Text("Menu options", style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -38,7 +38,7 @@ class Mainpage extends StatelessWidget {
             margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[200]
+              color: Colors.grey[700]
             ),
             child: Row(
               children: [
@@ -61,7 +61,7 @@ class Mainpage extends StatelessWidget {
             margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[200]
+              color: Colors.grey[700]
             ),
                       child: Row(
                                   children: [
@@ -102,10 +102,14 @@ class Mainpage extends StatelessWidget {
                 Row(
                   children: [
                     SizedBox(width: 20,),
-                    Text("Explore upcoming events tailored"),
+                    Text("Explore upcoming events tailored", style: TextStyle(
+                      color: const Color.fromARGB(255, 90, 85, 85)
+                    )),
                   ],
                 ),
-                Text("to your interests. Find your next experience!")
+                Text("to your interests. Find your next experience!", style: TextStyle(
+                      color: const Color.fromARGB(255, 90, 85, 85)
+                    ))
               ],
             ),
             
@@ -135,10 +139,14 @@ class Mainpage extends StatelessWidget {
                 Row(
                   children: [
                     SizedBox(width: 20,),
-                    Text("Let AI find your perfect coding buddy."),
+                    Text("Let AI find your perfect coding buddy.", style: TextStyle(
+                      color: const Color.fromARGB(255, 90, 85, 85)
+                    ),),
                   ],
                 ),
-                Text("Learn and grow together")
+                Text("Learn and grow together", style: TextStyle(
+                      color: const Color.fromARGB(255, 90, 85, 85)
+                    ))
               ],
             ),
           ),
@@ -167,47 +175,26 @@ class Mainpage extends StatelessWidget {
                 Row(
                   children: [
                     SizedBox(width: 20,),
-                    Text("Join the global conversation. Connect with"),
+                    Text("Join the global conversation. Connect with", style: TextStyle(
+                      color: const Color.fromARGB(255, 90, 85, 85)
+                    )),
                   ],
                 ),
-                Text("other developers")
+                Text("other developers", style: TextStyle(
+                      color: const Color.fromARGB(255, 90, 85, 85)
+                    ))
               ],
             ),
           ),
-           Container(
-             padding: EdgeInsets.all(16),
-            margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[200]
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    SizedBox(width: 10,),
-                    Icon(Icons.book),
-                    SizedBox(width: 10),
-                    Text("Quizz", style: TextStyle(
-                       fontSize: 20,
-                      color: Colors.grey.withValues(alpha: 0.5),
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold
-                    ),),
-                  ],
-                ),
-                Row(
-                  children: [
-                    SizedBox(width: 20,),
-                    Text("Test your knowledge and boost your"
-
-),
-                  ],
-                ),
-                Text("skills with quick coding quizzes!")
-              ],
-            ),
-          ),
+        ElevatedButton(onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (builder) => MyApp()));
+        }, 
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red
+        ),
+        child: Text("Log out", style: TextStyle(color: Colors.white),),
+        )
+        
         ],
       ),
     );

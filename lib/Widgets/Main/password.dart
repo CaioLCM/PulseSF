@@ -17,10 +17,17 @@ class PasswordInput extends StatelessWidget{
         padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
         child: TextField(
                       controller: passwordController,
+                      style: TextStyle(
+                      color: Colors.black
+                      ),
                       obscureText: true,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.lock),
+                        prefixIconColor: Colors.black,
                         labelText: "Password",
+                        labelStyle: TextStyle(
+                          color: Colors.black
+                        ),
                         enabledBorder: border_input,
                         focusedBorder: border_input,
                         filled: true,

@@ -70,6 +70,8 @@ class _SignupscreenState extends State<Signupscreen> with SingleTickerProviderSt
               decoration: InputDecoration(
               labelText: "Name",
               prefixIcon: Icon(Icons.person),
+              labelStyle: TextStyle(color: Colors.black),
+              prefixIconColor: Colors.black,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13) 
               ),
@@ -83,6 +85,8 @@ class _SignupscreenState extends State<Signupscreen> with SingleTickerProviderSt
               decoration: InputDecoration(
               labelText: "Email",
               prefixIcon: Icon(Icons.email),
+              labelStyle: TextStyle(color: Colors.black),
+              prefixIconColor: Colors.black,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13) 
               ),
@@ -94,6 +98,8 @@ class _SignupscreenState extends State<Signupscreen> with SingleTickerProviderSt
             TextField(controller: password, obscureText: true, decoration: InputDecoration(
               labelText: "Password",
               prefixIcon: Icon(Icons.password),
+              labelStyle: TextStyle(color: Colors.black),
+              prefixIconColor: Colors.black,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13) 
               ),
@@ -108,6 +114,8 @@ class _SignupscreenState extends State<Signupscreen> with SingleTickerProviderSt
               decoration:InputDecoration(
               labelText: "Confirm Password",
               prefixIcon: Icon(Icons.password),
+              labelStyle: TextStyle(color: Colors.black),
+              prefixIconColor: Colors.black,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13) 
               ),
@@ -121,12 +129,13 @@ class _SignupscreenState extends State<Signupscreen> with SingleTickerProviderSt
             Createaccount(user: user, email: email, password: password, confirmPassword: confirmPassword,),
             SizedBox(height: 10,),
             Text("Already have an account?", style: TextStyle(
+              color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 15
             ),),
             TextButton(onPressed: () => {
               Navigator.pop(context)
-            }, child: Text("Log in"))  
+            }, child: Text("Log in", style: TextStyle(color: Colors.purple),))  
         ])
       );
   }

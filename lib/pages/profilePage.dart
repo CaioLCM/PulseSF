@@ -38,9 +38,10 @@ class _ProfilepageState extends State<Profilepage> {
           SizedBox(height: 30),
           Row(
             children: [
-              SizedBox(width: 120,),
+              SizedBox(width: 105,),
               CircleAvatar(
                 radius: 90,
+                child: IconButton(onPressed: null, icon: Icon(Icons.camera_alt), iconSize: 40,),
               ),
             ],
           ),
@@ -61,11 +62,12 @@ class _ProfilepageState extends State<Profilepage> {
             child: Row(
               children: [
                 SizedBox(width: 10,),
-                Icon(Icons.person),
+                Icon(Icons.person, color: Colors.black,),
                 SizedBox(width: 10),
                 Text("Bio", style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 90, 85, 85)
                 ),),
               ],
             ),
@@ -80,11 +82,12 @@ class _ProfilepageState extends State<Profilepage> {
             child: Row(
               children: [
                 SizedBox(width: 10,),
-                Icon(Icons.calendar_month),
+                Icon(Icons.calendar_month, color: Colors.black,),
                 SizedBox(width: 10),
                 Text("Participated Events", style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 90, 85, 85)
                 ),),
               ],
             ),
@@ -99,11 +102,12 @@ class _ProfilepageState extends State<Profilepage> {
             child: Row(
               children: [
                 SizedBox(width: 10,),
-                Icon(Icons.code),
+                Icon(Icons.code, color: Colors.black,),
                 SizedBox(width: 10),
                 Text("Active Projects", style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 90, 85, 85)
                 ),),
               ],
             ),
@@ -118,11 +122,12 @@ class _ProfilepageState extends State<Profilepage> {
             child: Row(
               children: [
                 SizedBox(width: 10,),
-                Icon(Icons.people),
+                Icon(Icons.people, color: Colors.black,),
                 SizedBox(width: 10),
                 Text("Friends", style: TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
+                  color: const Color.fromARGB(255, 90, 85, 85)
                 ),),
               ],
             ),
