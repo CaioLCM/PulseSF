@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:pulsesf/http/communication.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class project{
@@ -103,7 +105,10 @@ class _CreateprojectmenuState extends State<Createprojectmenu> {
 
               jsonList.add(jsonEncode(newProject.toJson()));
               await prefs.setStringList('projects', jsonList);
-
+              final token = prefs.getString("jwt_token");
+              final decoded = JwtDecoder.decode(token!);
+              final String email = decoded['user']['email'];
+              addProject(ProjectName.text, DescribeProject.text, value, email);
               Navigator.pop(context);
 
             }, child: Text("Create project"), style: ElevatedButton.styleFrom(
