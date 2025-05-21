@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pulsesf/pages/createProjectMenu.dart';
 import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,8 +43,14 @@ Future<void> updateAccountWithProfIlePicture(String email, String image) async{
   var response = await http.post(url, body: {"email": email, "image": image});
 }
 
+Future<List<project>> getProjects() async {
+    final url = Uri.parse("http://192.168.0.101:3000/projects");
+    var response = await http.get(url);
+    final decoded = jsonDecode(response.body);
+    return decoded.map<project>((item) => project.fromJson(item)).toList();
+}
+
 Future<void> addProject(String title, String bio, double members, String email) async{
-  print("bora criar");
   final url = Uri.parse("http://192.168.0.101:3000/projectCreate");
   var response = await http.post(url, body: {
     "email": email,

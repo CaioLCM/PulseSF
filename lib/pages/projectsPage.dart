@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/pages/createProjectMenu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,6 +22,7 @@ class _ProjectspageState extends State<Projectspage> {
 
   void initState() {
     super.initState();
+    getProjects();
     loadProjects().then((loaded) {
       setState(() {
         projects = loaded;
@@ -31,51 +33,42 @@ class _ProjectspageState extends State<Projectspage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(padding: const EdgeInsets.all(16),
-      child: projects.isEmpty
-      ? Center(child: Text("Create the firts project!"),)
-      : ListView.builder(itemCount: projects.length,
-      itemBuilder: (context, index){
-        final project = projects[index];
-        return Container(
-          margin: EdgeInsets.symmetric(vertical: 8),
-          padding: EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: Colors.grey[200]
-          ),
-          child: Row(
-            children: [
-              Expanded(
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(project.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: const Color.fromARGB(255, 90, 85, 85))),
-      Text(project.bio, style: TextStyle(color: const Color.fromARGB(255, 90, 85, 85)),),
-      Text('Members: ${project.members.toInt()}', style: TextStyle(color: const Color.fromARGB(255, 90, 85, 85)),),
-    ],
-  ),
-),
-              IconButton(onPressed: () => setState(() {
-                 projects.removeAt(index);
-              }), icon: Icon(Icons.remove_circle, color: Colors.red,), 
-              ),
-            ],
-          ),
-        );
-      },
-      )
-      ),
-      floatingActionButton: FloatingActionButton(onPressed: () async 
-      {
-        await Navigator.push(context, 
-        MaterialPageRoute(builder: (builder) => Createprojectmenu()));
-        final loaded = await loadProjects();
-        setState(() {
-          projects = loaded;
+      body: FutureBuilder<List<project>>(future: 
+      getProjects(), 
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting){
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text("Error: ${snapshot.error}"));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty){
+          return Center(child: Text("Nenhum projeto encontrado"));
+        }
+
+        final projects = snapshot.data!;
+        return ListView.builder(itemCount: projects.length, itemBuilder: (context, index) {
+          final proj = projects[index];
+          return ListTile(
+            title: Text(proj.name),
+            subtitle: Text(proj.bio),
+            trailing: Text("${proj.members} members"),
+          );
         });
+      },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (builder) => Createprojectmenu()),
+          );
+          final loaded = await loadProjects();
+          setState(() {
+            projects = loaded;
+          });
         },
-          child: Icon(Icons.add),
-          backgroundColor: Colors.purple[400],));
+        child: Icon(Icons.add),
+        backgroundColor: Colors.purple[400],
+      ),
+    );
   }
 }
