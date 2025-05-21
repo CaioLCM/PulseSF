@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,14 +24,18 @@ class _ProfilepageState extends State<Profilepage> {
   }
 
   void _loadProfileImage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final imageUrl = prefs.getString("profile");
-
-    if (imageUrl != null) {
-      setState(() {
-        _profileImage = NetworkImage(imageUrl);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('jwt_token');
+      if (token != null){
+        var decodedToken = JwtDecoder.decode(token);
+        print(decodedToken['user']['profilePicture']);
+         if (decodedToken['user']['profilePicture'] != null) {
+          setState(() {
+          _profileImage = MemoryImage(base64Decode(decodedToken['user']['profilePicture']));
+      
       });
     }
+      }
   }
 
 
@@ -35,13 +43,16 @@ class _ProfilepageState extends State<Profilepage> {
     final picker = ImagePicker();
     final prefs = await SharedPreferences.getInstance();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    Uint8List bytes;
+    String base64Image = '';
 
-    if (pickedFile != null){
-      await prefs.setString("profile", "https://i.pinimg.com/736x/1c/8e/97/1c8e97bebfd438b16a2758a40e565a1f.jpg");
-    }
-
+    bytes = await pickedFile!.readAsBytes();
+    base64Image = base64Encode(bytes);
+    updateAccountWithProfIlePicture(email, base64Image);
+    
+    await prefs.setString("profile", base64Image);
     setState(() {
-      _profileImage = NetworkImage('https://i.pinimg.com/736x/1c/8e/97/1c8e97bebfd438b16a2758a40e565a1f.jpg');
+      _profileImage = MemoryImage(bytes);
     });
 
     showDialog(
