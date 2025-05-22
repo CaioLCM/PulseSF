@@ -21,7 +21,7 @@ Future<bool> CreateAccount(String nickname, String email, String password, Build
 }
 
 Future<bool> verifyAccount(String email, String password, BuildContext context) async {
-  final url = Uri.parse("http://192.168.0.101:3000/login");
+  final url = Uri.parse("http://10.0.2.2:3000/login");
   var response = await http.post(url, body: {"email": email, "password": password});
   if (response.statusCode == 200){
              final data = jsonDecode(response.body);
@@ -39,19 +39,19 @@ Future<bool> verifyAccount(String email, String password, BuildContext context) 
 }
 
 Future<void> updateAccountWithProfIlePicture(String email, String image) async{
-  final url = Uri.parse("http://192.168.0.101:3000/profileAdd");
+  final url = Uri.parse("http://10.0.2.2:3000/profileAdd");
   var response = await http.post(url, body: {"email": email, "image": image});
 }
 
 Future<List<project>> getProjects() async {
-    final url = Uri.parse("http://192.168.0.101:3000/projects");
+    final url = Uri.parse("http://10.0.2.2:3000/projects");
     var response = await http.get(url);
     final decoded = jsonDecode(response.body);
     return decoded.map<project>((item) => project.fromJson(item)).toList();
 }
 
 Future<void> addProject(String title, String bio, double members, String email) async{
-  final url = Uri.parse("http://192.168.0.101:3000/projectCreate");
+  final url = Uri.parse("http://127.0.0.1:3000/projectCreate");
   var response = await http.post(url, body: {
     "email": email,
     "title": title,
