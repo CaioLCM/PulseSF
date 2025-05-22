@@ -11,17 +11,21 @@ class project{
   final String name;
   final String bio;
   final double members;
+  final String emailOwner;
 
-  project({this.name = 'default', this.bio = 'default', this.members = 0});
+  project({this.name = 'default', this.bio = 'default', this.members = 0, this.emailOwner = 'default'});
   Map<String, dynamic> toJson() => {
     'name': name,
     'bio': bio,
-    'members': members
+    'members': members,
+    "emailOwner": emailOwner
   };
+
   factory project.fromJson(Map<String, dynamic> json) => project(
     name: json['projectName'],
     bio: json['projectBio'],
-    members: (json['projectNumberOfMembers'] as num).toDouble()
+    members: (json['projectNumberOfMembers'] as num).toDouble(),
+    emailOwner: json["emailOwner"]
   );
 }
 
@@ -95,20 +99,22 @@ class _CreateprojectmenuState extends State<Createprojectmenu> {
                 })
               }),
             ElevatedButton(onPressed: () async {
+              final prefs = await SharedPreferences.getInstance();
+              final token = prefs.getString("jwt_token");
+              final decoded = JwtDecoder.decode(token!);
+              final String email = decoded['user']['email'];
               final newProject = project(
                 name: ProjectName.text,
                 bio: DescribeProject.text,
-                members: value
+                members: value,
+                emailOwner: email 
               );
 
-              final prefs = await SharedPreferences.getInstance();
+
               final jsonList = prefs.getStringList('projects') ?? [];
 
               jsonList.add(jsonEncode(newProject.toJson()));
               await prefs.setStringList('projects', jsonList);
-              final token = prefs.getString("jwt_token");
-              final decoded = JwtDecoder.decode(token!);
-              final String email = decoded['user']['email'];
               addProject(ProjectName.text, DescribeProject.text, value, email);
               Navigator.push(context, MaterialPageRoute(builder: (builder) => Projectspage()));
 
