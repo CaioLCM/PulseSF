@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/pages/createProjectMenu.dart';
+import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Projectspage extends StatefulWidget {
   @override
@@ -23,18 +24,22 @@ class _ProjectspageState extends State<Projectspage> {
   final decoded = JwtDecoder.decode(token!);
   final String email = decoded['user']['email']; 
 
-  final result = await getProjects();
   setState(() {
-    projects = result ?? [];
-    emailOwner = email;
+      emailOwner = email;
   });
 
-  return jsonList.map((jsonString) => project.fromJson(jsonDecode(jsonString))).toList();
+  final result = await getProjects();
+  return result ?? [];
+
 }
 
   void initState() {
     super.initState();
-    loadProjects();
+    loadProjects().then((loaded) => {
+      setState(() {
+        projects = loaded;
+      })
+    });
   }
 
   @override
@@ -51,7 +56,13 @@ class _ProjectspageState extends State<Projectspage> {
                     child: ListTile(
                       title: Text(project.name ?? 'No name', style: TextStyle(fontWeight: FontWeight.bold),),
                       subtitle: Text(project.bio),
-                      trailing: project.emailOwner == emailOwner? IconButton(onPressed: (){}, icon: Icon(Icons.remove)) : Text("")
+                      trailing: project.emailOwner == emailOwner? IconButton(onPressed: () async{
+                        await removeProject(project.name);
+                        final loaded = await loadProjects();
+                        setState(() {
+                          projects = loaded;
+                        });
+                        }, icon: Icon(Icons.remove)) : Text("")
                     ),
                   );
                 }).toList()

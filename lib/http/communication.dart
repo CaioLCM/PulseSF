@@ -47,7 +47,6 @@ Future<List<project>> getProjects() async {
     final url = Uri.parse("http://10.0.2.2:3000/projects");
     var response = await http.get(url);
 
-    print(response.body);
 
     final decoded = jsonDecode(response.body);
     return decoded.map<project>((item) => project.fromJson(item)).toList();
@@ -60,5 +59,12 @@ Future<void> addProject(String title, String bio, double members, String email) 
     "title": title,
     "bio": bio,
     "members": members.toString()
+  });
+}
+
+Future<void> removeProject(String name) async{
+  final url = Uri.parse("http://10.0.2.2:3000/removeProject");
+  var response = await http.post(url, body: {
+    "name": name
   });
 }
