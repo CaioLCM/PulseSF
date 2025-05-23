@@ -104,9 +104,9 @@ class _CreateaccountState extends State<Createaccount> with SingleTickerProvider
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: pintura,
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 130, vertical: 15),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            textStyle: TextStyle(fontSize: 20),
+            textStyle: TextStyle(fontSize: 20, fontFamily: "Fredoka"),
           ),
           child: loading
               ? SizedBox(

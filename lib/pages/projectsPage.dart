@@ -73,7 +73,15 @@ class _ProjectspageState extends State<Projectspage> {
                     ),
                   );
                 }).toList()
-              : [Text('No projects found')]
+              : [Column(
+                children: [
+                  SizedBox(height: 400,),
+                  Center(
+                    child: 
+                      Image.asset("assets/images/waiting.png", height: 100, width: 90,),
+                  ),
+                ],
+              )]
           ),
         ],
       ), 

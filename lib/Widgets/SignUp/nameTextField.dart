@@ -13,7 +13,7 @@ class Nametextfield extends StatelessWidget {
               decoration: InputDecoration(
               labelText: "Name",
               prefixIcon: Icon(Icons.person),
-              labelStyle: TextStyle(color: Colors.black),
+              labelStyle: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
               prefixIconColor: Colors.black,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13) 

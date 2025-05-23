@@ -13,7 +13,7 @@ class Emailtextfield extends StatelessWidget {
               decoration:InputDecoration(
               labelText: "E-mail",
               prefixIcon: Icon(Icons.email),
-              labelStyle: TextStyle(color: Colors.black),
+              labelStyle: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
               prefixIconColor: Colors.black,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13) 

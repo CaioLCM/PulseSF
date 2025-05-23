@@ -58,8 +58,9 @@ class _SignupscreenState extends State<Signupscreen> with SingleTickerProviderSt
           children: [
             Text("Create account", style: TextStyle(
               color: Colors.purple[400],
+              fontFamily: "Fredoka",
               fontSize: 40,
-              fontWeight: FontWeight.bold
+              fontWeight: FontWeight.w700
             ),),
             Container(
               padding: EdgeInsets.all(15),
@@ -83,13 +84,14 @@ class _SignupscreenState extends State<Signupscreen> with SingleTickerProviderSt
             Createaccount(user: user, email: email, password: password, confirmPassword: confirmPassword,),
             SizedBox(height: 10,),
             Text("Already have an account?", style: TextStyle(
+              fontFamily: "Fredoka",
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 15
             ),),
             TextButton(onPressed: () => {
               Navigator.pop(context)
-            }, child: Text("Log in", style: TextStyle(color: Colors.purple),))  
+            }, child: Text("Log in", style: TextStyle(color: Colors.purple, fontFamily: "Fredoka"),))  
         ])
       );
   }

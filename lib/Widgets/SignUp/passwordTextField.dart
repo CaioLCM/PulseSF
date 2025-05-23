@@ -13,7 +13,7 @@ class Passwordtextfield extends StatelessWidget {
               decoration:InputDecoration(
               labelText: "Password",
               prefixIcon: Icon(Icons.password),
-              labelStyle: TextStyle(color: Colors.black),
+              labelStyle: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
               prefixIconColor: Colors.black,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(13) 

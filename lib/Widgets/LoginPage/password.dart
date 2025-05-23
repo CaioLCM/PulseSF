@@ -5,31 +5,32 @@ final border_input = new OutlineInputBorder(borderRadius:
   borderSide: const BorderSide(color: Colors.transparent),
   );
 
-class EmailInput extends StatelessWidget{
+class PasswordInput extends StatelessWidget{
   
-  TextEditingController emailController;
+  TextEditingController passwordController;
 
-  EmailInput(this.emailController);
+  PasswordInput(this.passwordController);
   
   @override
   Widget build(BuildContext context) {
       return  Padding(
         padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
         child: TextField(
-                      controller: emailController,
+                      controller: passwordController,
                       style: TextStyle(
-                        color: Colors.black
+                      color: Colors.black
                       ),
+                      obscureText: true,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.email),
+                        prefixIcon: Icon(Icons.lock),
                         prefixIconColor: Colors.black,
-                        labelText: "Email",
+                        labelText: "Password",
                         labelStyle: TextStyle(
+                          fontFamily: "Fredoka",
                           color: Colors.black
                         ),
                         enabledBorder: border_input,
                         focusedBorder: border_input,
-                        focusColor: Colors.black,
                         filled: true,
                         fillColor: Colors.grey[100],
         

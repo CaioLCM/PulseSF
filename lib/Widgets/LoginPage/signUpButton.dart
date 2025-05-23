@@ -9,7 +9,7 @@ class Signupbutton extends StatelessWidget{
         Navigator.push(context, MaterialPageRoute(builder: (builder) => Signupscreen()));
       }, child: Text("Sign up"), style: 
                   ButtonStyle(
-                    textStyle: WidgetStatePropertyAll(TextStyle(color: Colors.blue))
+                    textStyle: WidgetStatePropertyAll(TextStyle(color: Colors.blue, fontFamily: "Fredoka"))
                   ),);
       
   }

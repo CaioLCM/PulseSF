@@ -73,7 +73,7 @@ class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStat
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: pintura,
-          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           textStyle: TextStyle(fontSize: 20)
         ),
@@ -86,7 +86,7 @@ class _LoginbuttonState extends State<Loginbutton> with SingleTickerProviderStat
                 strokeWidth: 2,
               ),
             )
-        : Text(info, style: TextStyle(color: Colors.white)),
+        : Text(info, style: TextStyle(color: Colors.white, fontFamily: "Fredoka")),
       ),
     );
   }

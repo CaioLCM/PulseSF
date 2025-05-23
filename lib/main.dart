@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pulsesf/Widgets/Main/email.dart';
-import 'package:pulsesf/Widgets/Main/logInButton.dart';
-import 'package:pulsesf/Widgets/Main/password.dart';
-import 'package:pulsesf/Widgets/Main/signupButton.dart';
-import 'package:pulsesf/Widgets/Main/title.dart';
+import 'package:pulsesf/Widgets/LoginPage/email.dart';
+import 'package:pulsesf/Widgets/LoginPage/logInButton.dart';
+import 'package:pulsesf/Widgets/LoginPage/password.dart';
+import 'package:pulsesf/Widgets/LoginPage/signUpButton.dart';
+
+import 'package:pulsesf/Widgets/LoginPage/title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zhi_starry_sky/starry_sky.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
@@ -66,20 +67,20 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin{
               children: [
                   AnimatedBuilder(animation: _wiggle,
                     builder: (context, child) => Transform.rotate(angle: _wiggle.value, child: child,),
-                    child: Text("PulseSF", style: TextStyle(color: Colors.purple[400], fontSize: 80, fontWeight: FontWeight.bold)),
+                    child: Text("PulseSF", style: TextStyle(color: Colors.purple[400], fontSize: 80, fontFamily: "Fredoka", fontWeight: FontWeight.w700)),
                   ),
                   SizedBox(height: 40),
-                  Text("Email", style: TextStyle(fontWeight:FontWeight.bold),),
+                  Text("Email", style: TextStyle(fontWeight:FontWeight.w700, fontFamily: "Fredoka"),),
                   SizedBox(height: 10),
                   EmailInput(emailController),
                   SizedBox(height: 20),
-                  Text("Password", style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text("Password", style: TextStyle(fontWeight:FontWeight.w700, fontFamily: "Fredoka"),),
                   SizedBox(height: 10),
                   PasswordInput(passwordController),
                   SizedBox(height: 50),
                   Loginbutton(email: emailController, password: passwordController),
                   SizedBox(height: 10),
-                  Text("Don't have an account?", style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text("Don't have an account?", style: TextStyle(fontWeight:FontWeight.w700, fontFamily: "Fredoka")),
                   Signupbutton()
                 ],
             ),
