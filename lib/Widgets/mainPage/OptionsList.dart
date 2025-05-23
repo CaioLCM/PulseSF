@@ -23,7 +23,7 @@ class Optionslist extends StatelessWidget {
                     },
                 child: Text(
                   "Projects",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: "Fredoka",),
                 ),
               ),
             ],
@@ -45,7 +45,7 @@ class Optionslist extends StatelessWidget {
                     },
                 child: Text(
                   "Profile",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: "Fredoka",),
                 ),
               ),
             ],
@@ -62,9 +62,8 @@ Row(
                       "Match a coding buddy",
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.grey.withValues(alpha: 0.5),
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontFamily: "Fredoka",
                       ),
                     ),
                   ],
@@ -78,9 +77,8 @@ Row(
                       "Global chat",
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.grey.withValues(alpha: 0.5),
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
+                           color: Colors.black,
+                        fontFamily: "Fredoka",
                       ),
                     ),
                   ],
@@ -97,9 +95,8 @@ Row(
                       "Discover Events",
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.grey.withValues(alpha: 0.5),
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontFamily: "Fredoka",
                       ),
                     ),
                   ],
@@ -113,9 +110,8 @@ Row(
                       "More about SF",
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.grey.withValues(alpha: 0.5),
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontFamily: "Fredoka",
                       ),
                     ),
                   ],
@@ -143,7 +139,7 @@ Row(
             margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[700],
+              color: Colors.blue[400],
             ),
             child: Personal[index]);
           }
@@ -169,7 +165,7 @@ Row(
             margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[700],
+              color: Colors.orange[400],
             ),
             child: Social[index]);
           }
@@ -196,7 +192,7 @@ Row(
             margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[700],
+              color: Colors.green,
             ),
             child: SF[index]);
           }
