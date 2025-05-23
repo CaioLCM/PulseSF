@@ -62,7 +62,26 @@ class _ProjectspageState extends State<Projectspage> {
                     margin: EdgeInsets.all(15),
                     child: ListTile(
                       title: Text(project.name ?? 'No name', style: TextStyle(fontWeight: FontWeight.bold),),
-                      subtitle: Text(project.bio),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(project.bio),
+                          Container(
+                            height: 50,
+                            child: ListView.builder(
+                              itemCount: project.members.toInt(),
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                  child: CircleAvatar(child: Icon(Icons.add)),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                       trailing: project.emailOwner == emailOwner? IconButton(onPressed: () async{
                         await removeProject(project.name);
                         final loaded = await loadProjects();
