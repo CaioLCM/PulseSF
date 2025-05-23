@@ -9,8 +9,8 @@ import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> CreateAccount(String nickname, String email, String password, BuildContext context) async {
-  final url = Uri.parse('http://192.168.0.101:3000/logon');
-  var response = await http.post(url, body: {"nickname": nickname, 'email': email, 'password': password});
+  final url = Uri.parse('http://10.0.2.2:3000/logon');
+  var response = await http.post(url, body: {"username": nickname, 'email': email, 'password': password});
   if (response.statusCode == 200){
     Navigator.pop(context);
     return true;

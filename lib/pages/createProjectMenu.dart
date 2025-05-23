@@ -116,7 +116,7 @@ class _CreateprojectmenuState extends State<Createprojectmenu> {
               jsonList.add(jsonEncode(newProject.toJson()));
               await prefs.setStringList('projects', jsonList);
               addProject(ProjectName.text, DescribeProject.text, value, email);
-              Navigator.push(context, MaterialPageRoute(builder: (builder) => Projectspage()));
+              Navigator.pop(context);
 
             }, child: Text("Create project"), style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),

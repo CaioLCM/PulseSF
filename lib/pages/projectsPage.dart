@@ -13,6 +13,13 @@ class Projectspage extends StatefulWidget {
 }
 
 class _ProjectspageState extends State<Projectspage> {
+
+  _openProjectCreationModal(BuildContext context){
+    showModalBottomSheet(context: context, builder: (_){
+      return Createprojectmenu();
+    });
+  }
+
   List <project> projects = [];
   String emailOwner = '';
 
@@ -72,10 +79,7 @@ class _ProjectspageState extends State<Projectspage> {
       ), 
        floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (builder) => Createprojectmenu()),
-          );
+          await _openProjectCreationModal(context);
           final loaded = await loadProjects();
           setState(() {
             projects = loaded;

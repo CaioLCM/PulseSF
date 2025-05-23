@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pulsesf/Widgets/SignUp/ConfirmTextField.dart';
 import 'package:pulsesf/Widgets/SignUp/CreateAccount.dart';
+import 'package:pulsesf/Widgets/SignUp/emailTextField.dart';
+import 'package:pulsesf/Widgets/SignUp/nameTextField.dart';
+import 'package:pulsesf/Widgets/SignUp/passwordTextField.dart';
 import 'package:pulsesf/http/communication.dart';
+import 'package:pulsesf/main.dart';
 
 class Signupscreen extends StatefulWidget{
   
@@ -65,64 +70,13 @@ class _SignupscreenState extends State<Signupscreen> with SingleTickerProviderSt
               ),
               child: Column(
               children: [
-                 TextField(
-              controller: user,
-              decoration: InputDecoration(
-              labelText: "Name",
-              prefixIcon: Icon(Icons.person),
-              labelStyle: TextStyle(color: Colors.black),
-              prefixIconColor: Colors.black,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(13) 
-              ),
-              filled: true,
-              fillColor: Colors.grey[100]
-            ),
-            ),
+            Nametextfield(user),
             SizedBox(height: 15,),
-            TextField(
-              controller: email,
-              decoration: InputDecoration(
-              labelText: "Email",
-              prefixIcon: Icon(Icons.email),
-              labelStyle: TextStyle(color: Colors.black),
-              prefixIconColor: Colors.black,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(13) 
-              ),
-              filled: true,
-              fillColor: Colors.grey[100]
-            ),
-            ),
+            Emailtextfield(email),
             SizedBox(height: 15,),
-            TextField(controller: password, obscureText: true, decoration: InputDecoration(
-              labelText: "Password",
-              prefixIcon: Icon(Icons.password),
-              labelStyle: TextStyle(color: Colors.black),
-              prefixIconColor: Colors.black,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(13) 
-              ),
-              filled: true,
-              fillColor: Colors.grey[100]
-            ),
-            ),
+            Passwordtextfield(password),
             SizedBox(height: 15,),
-            TextField(
-              controller: confirmPassword,
-              obscureText: true,
-              decoration:InputDecoration(
-              labelText: "Confirm Password",
-              prefixIcon: Icon(Icons.password),
-              labelStyle: TextStyle(color: Colors.black),
-              prefixIconColor: Colors.black,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(13) 
-              ),
-              filled: true,
-              fillColor: Colors.grey[100]
-            ),
-            ),
+            Confirmtextfield(confirmPassword)
           ],
               
             )),
