@@ -9,15 +9,25 @@ import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> CreateAccount(String nickname, String email, String password, BuildContext context) async {
+  bool isValidEmail(String email) {
+  final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+  return emailRegex.hasMatch(email);
+}
+  if (isValidEmail(email) && nickname.isNotEmpty && password.isNotEmpty){
   final url = Uri.parse('http://10.0.2.2:3000/logon');
   var response = await http.post(url, body: {"username": nickname, 'email': email, 'password': password});
   if (response.statusCode == 200){
-    Navigator.pop(context);
-    return true;
+  Navigator.pop(context);
+  return true;
   }
   else {
-      return false; 
+    return false;
   }
+  }
+  else{
+    return false;
+  }
+  
 }
 
 Future<bool> verifyAccount(String email, String password, BuildContext context) async {
