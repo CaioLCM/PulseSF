@@ -9,7 +9,7 @@ class Emailtextfield extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
               controller: controller,
-              obscureText: true,
+              obscureText: false,
               decoration:InputDecoration(
               labelText: "E-mail",
               prefixIcon: Icon(Icons.email),

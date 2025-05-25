@@ -12,20 +12,32 @@ class project{
   final String bio;
   final double members;
   final String emailOwner;
+  final List<String> member_list;
 
-  project({this.name = 'default', this.bio = 'default', this.members = 0, this.emailOwner = 'default'});
+  project({this.name = 'default', this.bio = 'default', this.members = 0, this.emailOwner = 'default', required this.member_list});
   Map<String, dynamic> toJson() => {
     'name': name,
     'bio': bio,
     'members': members,
-    "emailOwner": emailOwner
+    "emailOwner": emailOwner,
+    "member_list": member_list
   };
 
-  factory project.fromJson(Map<String, dynamic> json) => project(
+  factory project.fromJson(Map<String, dynamic> json) {
+    var membersDataFromJson = json['member_list'];
+    List<String> parsedMemberList = <String>[];
+
+    if (membersDataFromJson is List){
+      parsedMemberList = List<String>.from(
+        membersDataFromJson.map((item) => item.toString())
+      );
+    }
+  return project(
     name: json['projectName'],
     bio: json['projectBio'],
     members: (json['projectNumberOfMembers'] as num).toDouble(),
-    emailOwner: json["emailOwner"]
+    emailOwner: json["emailOwner"],
+    member_list: parsedMemberList
   );
 }
 
@@ -35,6 +47,7 @@ Future<void> saveProjects(List<project> projects) async {
   await prefs.setStringList('projects', jsonList);
 }
 
+}
 
 class Createprojectmenu extends StatefulWidget{
 
@@ -107,7 +120,8 @@ class _CreateprojectmenuState extends State<Createprojectmenu> {
                 name: ProjectName.text,
                 bio: DescribeProject.text,
                 members: value,
-                emailOwner: email 
+                emailOwner: email,
+                member_list: [] 
               );
 
 

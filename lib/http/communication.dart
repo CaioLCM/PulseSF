@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pulsesf/pages/createProjectMenu.dart';
@@ -71,7 +69,6 @@ Future<void> updateAccountWithProfIlePicture(String email, String image) async {
 Future<List<project>> getProjects() async {
   final url = Uri.parse("http://10.0.2.2:3000/projects");
   var response = await http.get(url);
-
   final decoded = jsonDecode(response.body);
   return decoded.map<project>((item) => project.fromJson(item)).toList();
 }
@@ -107,8 +104,20 @@ Future<String> searchForProfilePicture(String email) async {
   return decoded["picture"];
 }
 
-void addUserToProject(dynamic name, String email, String emailOwner) async {
-  
+void addUserToProject(dynamic name, List<String> member_list) async {
+  print(member_list);
+  final url = Uri.parse("http://10.0.2.2:3000/addMember");
+  var response = await http.post(
+    url,
+    headers: {"Content-Type": "application/json; charset=UTF-8"},
+    body: jsonEncode({"project_name": name.toString(), "member_list": member_list}),
+  );
+  if (response.statusCode == 200){
+    print(response.body);
+  }
+  else {
+    print(response.body);
+  }
 }
 
 // O QUE EU QUERO FAZER:

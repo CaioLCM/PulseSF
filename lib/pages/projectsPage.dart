@@ -25,7 +25,7 @@ class _ProjectspageState extends State<Projectspage> {
     );
   }
 
-  Future<void> _loadUserEmail()async{
+  Future<void> _loadUserEmail() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("jwt_token");
     final decoded = JwtDecoder.decode(token!);
@@ -57,7 +57,7 @@ class _ProjectspageState extends State<Projectspage> {
     return result ?? [];
   }
 
-  List<String> membersPicture = [];
+  List<List<String>> projects_members = [];
 
   void initState() {
     super.initState();
@@ -65,8 +65,20 @@ class _ProjectspageState extends State<Projectspage> {
     loadProjects().then(
       (loaded) => {
         setState(() {
+          projects_members = [];
           projects = loaded;
+          projects.forEach((project) {
+            print(project.member_list);
+            List<dynamic>? rawMemberList = project.member_list;
+           
+            if (rawMemberList != null){
+              projects_members.add(List<String>.from(rawMemberList.map((item) => item.toString())));
+            } else {
+              projects_members.add(<String>[]);
+            }
+          });
         }),
+      //print(projects_members)
       },
     );
   }
@@ -142,14 +154,35 @@ class _ProjectspageState extends State<Projectspage> {
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 4.0,
                                       ),
-                                      child:
-                                        CircleAvatar(
-                                          child:
-                                        IconButton(onPressed: (){addUserToProject(project.name, user_email, project.emailOwner);}, icon: Icon(Icons.add))
-                                        ),
-                                        
-                                      );
-        
+                                      child: Stack(
+                                        children: [
+                                          CircleAvatar(
+                                            child: IconButton(
+                                              onPressed: () {
+                                                int projectActualIndex =
+                                                    projects.indexWhere(
+                                                      (p) => p == project,
+                                                    );
+                                                if (projectActualIndex != -1 &&
+                                                    !projects_members[projectActualIndex]
+                                                        .contains(user_email) &&
+                                                    user_email !=
+                                                        project.emailOwner && (project.member_list).length <= int.parse(project.members.toString())) {
+                                                  setState(() {
+                                                    projects_members[projectActualIndex] = [
+                                                      ...projects_members[projectActualIndex],
+                                                      user_email,
+                                                    ];
+                                                  });
+                                                  addUserToProject(project.name, projects_members[projectActualIndex]);
+                                                }
+                                              },
+                                              icon: Icon(Icons.add),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
