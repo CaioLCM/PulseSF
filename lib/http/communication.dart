@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -120,5 +121,8 @@ void addUserToProject(dynamic name, List<String> member_list) async {
   }
 }
 
-// O QUE EU QUERO FAZER:
-// QUANDO UM USUÁRIO CLICAR NO SIMBOLO DE MAIS, FAZER UMA REQUISIÇÃO E ATUALIZAR O PROJETO COM A PROFILE PICTURE DELE!!!
+void removeUserFromProject(String email, List<String> member_list) async {
+  final url = Uri.parse("http://10.0.2.2:3000/removeUser");
+  var response = await http.post(url, headers: {"ContentType": "application/json; charset=UTF-8"},
+  body: jsonEncode({"email": email, "member_list": member_list}));
+}
