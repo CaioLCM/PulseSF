@@ -10,6 +10,8 @@ import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Projectspage extends StatefulWidget {
+  const Projectspage({super.key});
+
   @override
   State<Projectspage> createState() => _ProjectspageState();
 }
@@ -37,17 +39,8 @@ class _ProjectspageState extends State<Projectspage> {
 
   Future<ImageProvider<Object>>? _loadProfileImage(String email) async {
     final imageString = await searchForProfilePicture(email);
-    if (imageString != null) {
-      final _profileImage = MemoryImage(base64Decode(imageString));
-      return _profileImage;
-    } else {
-      final _profileImage = MemoryImage(
-        base64Decode(
-          "/9j/4QGvRXhpZgAATU0AKgAAAAgABwEQAAIAAAAUAAAAYgEAAAQAAAABAAAFoAEBAAQAAAABAAAHgAEyAAIAAAAUAAAAdgESAAMAAAABAAEAAIdpAAQAAAABAAAAkQEPAAIAAAAHAAAAigAAAABzZGtfZ3Bob25lNjRfeDg2XzY0ADIwMjU6MDU6MjEgMjQ6MDA6MzIAR29vZ2xlAAAQgp0ABQAAAAEAAAFXgpoABQAAAAEAAAFfkpIAAgAAAAQ3NDEAkpEAAgAAAAQ3NDEAkpAAAgAAAAQ3NDEAkgoABQAAAAEAAAFnkgkAAwAAAAEAAAAAiCcAAwAAAAEAZAAAkAQAAgAAABQAAAFvkAMAAgAAABQAAAGDoAMABAAAAAEAAAeApAMAAwAAAAEAAAAAoAIABAAAAAEAAAWgkgIABQAAAAEAAAGXkgEACgAAAAEAAAGfkAAABwAAAAQwMjIwAAAAAAAAAK0AAABkACKgxzuaygAAABEcAAAD6DIwMjU6MDU6MjEgMjQ6MDA6MzIAMjAyNTowNToyMSAyNDowMDozMgAAAACeAAAAZAAAIk8AAAPo/+AAEEpGSUYAAQEAAAEAAQAA/9sAQwACAQEBAQECAQEBAgICAgIEAwICAgIFBAQDBAYFBgYGBQYGBgcJCAYHCQcGBggLCAkKCgoKCgYICwwLCgwJCgoK/9sAQwECAgICAgIFAwMFCgcGBwoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK/8AAEQgHgAWgAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpe",
-        ),
-      );
-      return _profileImage;
-    }
+    final _profileImage = MemoryImage(base64Decode(imageString));
+    return _profileImage;
   }
 
   List<project> projects = [];
@@ -59,6 +52,7 @@ class _ProjectspageState extends State<Projectspage> {
 
   List<List<String>> projects_members = [];
 
+  @override
   void initState() {
     super.initState();
     _loadUserEmail();
@@ -67,18 +61,16 @@ class _ProjectspageState extends State<Projectspage> {
         setState(() {
           projects_members = [];
           projects = loaded;
-          projects.forEach((project) {
+          for (var project in projects) {
             print(project.member_list);
             List<dynamic>? rawMemberList = project.member_list;
-           
-            if (rawMemberList != null){
-              projects_members.add(List<String>.from(rawMemberList.map((item) => item.toString())));
-            } else {
-              projects_members.add(<String>[]);
-            }
-          });
+
+            projects_members.add(
+              List<String>.from(rawMemberList.map((item) => item.toString())),
+            );
+          }
         }),
-      //print(projects_members)
+        //print(projects_members)
       },
     );
   }
@@ -110,7 +102,8 @@ class _ProjectspageState extends State<Projectspage> {
                         ),
                         Container(
                           height: 50,
-                          child: Wrap(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: Row(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -122,31 +115,99 @@ class _ProjectspageState extends State<Projectspage> {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
                                       return CircleAvatar(
+                                        radius: 20,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2.0,
                                         ),
                                       );
                                     } else if (snapshot.hasError) {
                                       return CircleAvatar(
+                                        radius: 20,
                                         child: Icon(Icons.error_outline),
                                       );
                                     } else if (snapshot.hasData &&
                                         snapshot.data != null) {
                                       return CircleAvatar(
+                                        radius: 20,
                                         backgroundImage: snapshot.data,
                                       );
                                     } else {
                                       return CircleAvatar(
+                                        radius: 20,
                                         child: Icon(Icons.person_outline),
                                       );
                                     }
                                   },
                                 ),
                               ),
+
+                              Expanded(
+                                child: Container(
+                                  height: 30,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: project.member_list.length,
+                                    itemBuilder: (context, memberIndex) {
+                                      final String memberEmail =
+                                          project.member_list[memberIndex];
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 4.0,
+                                        ),
+                                        child: FutureBuilder<
+                                          ImageProvider<Object>?
+                                        >(
+                                          future: _loadProfileImage(memberEmail),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return CircleAvatar(
+                                                radius: 40, 
+                                                child: CircularProgressIndicator(
+                                                  strokeWidth: 2.0,
+                                                ),
+                                              );
+                                            } else if (snapshot.hasError) {
+                                              return CircleAvatar(
+                                                radius: 20,
+                                                child: Icon(
+                                                  Icons.error_outline,
+                                                  size: 20,
+                                                ),
+                                              );
+                                            } else if (snapshot.hasData &&
+                                                snapshot.data != null) {
+                                              return CircleAvatar(
+                                                radius: 20,
+                                                backgroundImage:
+                                                    snapshot
+                                                        .data!, 
+                                              );
+                                            } else {
+                                              return CircleAvatar(
+                                                radius: 20,
+                                                child: Text(
+                                                  memberEmail.isNotEmpty
+                                                      ? memberEmail[0]
+                                                          .toUpperCase()
+                                                      : "?",
+                                                  style: TextStyle(fontSize: 12),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+
                               SizedBox(
                                 height: 40,
                                 child: ListView.builder(
-                                  itemCount: project.members.toInt(),
+                                  itemCount: 
+                                  max(0, project.members.toInt() - project.member_list.length),
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
@@ -157,6 +218,7 @@ class _ProjectspageState extends State<Projectspage> {
                                       child: Stack(
                                         children: [
                                           CircleAvatar(
+                                            radius: 20,
                                             child: IconButton(
                                               onPressed: () {
                                                 int projectActualIndex =
@@ -167,14 +229,23 @@ class _ProjectspageState extends State<Projectspage> {
                                                     !projects_members[projectActualIndex]
                                                         .contains(user_email) &&
                                                     user_email !=
-                                                        project.emailOwner && (project.member_list).length <= int.parse(project.members.toString())) {
+                                                        project.emailOwner &&
+                                                    (project.member_list)
+                                                            .length <=
+                                                        int.parse(
+                                                          project.members
+                                                              .toString(),
+                                                        )) {
                                                   setState(() {
                                                     projects_members[projectActualIndex] = [
                                                       ...projects_members[projectActualIndex],
                                                       user_email,
                                                     ];
                                                   });
-                                                  addUserToProject(project.name, projects_members[projectActualIndex]);
+                                                  addUserToProject(
+                                                    project.name,
+                                                    projects_members[projectActualIndex],
+                                                  );
                                                 }
                                               },
                                               icon: Icon(Icons.add),
@@ -231,8 +302,8 @@ class _ProjectspageState extends State<Projectspage> {
             projects = loaded;
           });
         },
-        child: Icon(Icons.add),
         backgroundColor: Colors.purple[400],
+        child: Icon(Icons.add),
       ),
     );
   }

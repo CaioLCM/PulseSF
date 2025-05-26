@@ -3,9 +3,9 @@ import 'package:pulsesf/main.dart';
 
 class MyAppbar extends StatelessWidget {
   String email = '';
-  ImageProvider? _profileImage;
+  final ImageProvider? _profileImage;
 
-  MyAppbar(this.email, this._profileImage);
+  MyAppbar(this.email, this._profileImage, {super.key});
 
   @override
   Widget build(BuildContext context) {

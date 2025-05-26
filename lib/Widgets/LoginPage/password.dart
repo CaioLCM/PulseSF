@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final border_input = new OutlineInputBorder(borderRadius: 
+final border_input = OutlineInputBorder(borderRadius: 
   BorderRadius.circular(12),
   borderSide: const BorderSide(color: Colors.transparent),
   );
@@ -9,7 +9,7 @@ class PasswordInput extends StatelessWidget{
   
   TextEditingController passwordController;
 
-  PasswordInput(this.passwordController);
+  PasswordInput(this.passwordController, {super.key});
   
   @override
   Widget build(BuildContext context) {

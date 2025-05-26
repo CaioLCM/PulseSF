@@ -50,6 +50,8 @@ Future<void> saveProjects(List<project> projects) async {
 }
 
 class Createprojectmenu extends StatefulWidget{
+  const Createprojectmenu({super.key});
+
 
   @override
   State<Createprojectmenu> createState() => _CreateprojectmenuState();
@@ -58,11 +60,11 @@ class Createprojectmenu extends StatefulWidget{
 class _CreateprojectmenuState extends State<Createprojectmenu> {
   List<project> projects = [];
 
-  TextEditingController choice = new TextEditingController();
+  TextEditingController choice = TextEditingController();
 
-  TextEditingController ProjectName = new TextEditingController();
+  TextEditingController ProjectName = TextEditingController();
 
-  TextEditingController DescribeProject = new TextEditingController();
+  TextEditingController DescribeProject = TextEditingController();
 
   double value = 1;
 
@@ -132,11 +134,11 @@ class _CreateprojectmenuState extends State<Createprojectmenu> {
               addProject(ProjectName.text, DescribeProject.text, value, email);
               Navigator.pop(context);
 
-            }, child: Text("Create project"), style: ElevatedButton.styleFrom(
+            }, style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 textStyle: TextStyle(fontSize: 20)
-                )),
+                ), child: Text("Create project")),
           ],
         ),
       );

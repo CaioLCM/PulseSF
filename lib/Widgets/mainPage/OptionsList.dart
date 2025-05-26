@@ -3,6 +3,8 @@ import 'package:pulsesf/pages/profilePage.dart';
 import 'package:pulsesf/pages/projectsPage.dart';
 
 class Optionslist extends StatelessWidget {
+  const Optionslist({super.key});
+
   @override
   Widget build(BuildContext context) {
     List<Widget> Personal = [
@@ -135,7 +137,7 @@ class Optionslist extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          Container(
+          SizedBox(
             height: 300,
             child: ListView.builder(
               itemCount: Personal.length,
@@ -165,7 +167,7 @@ class Optionslist extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          Container(
+          SizedBox(
             height: 300,
             child: ListView.builder(
               itemCount: Personal.length,
@@ -195,7 +197,7 @@ class Optionslist extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20),
-          Container(
+          SizedBox(
             height: 300,
             child: ListView.builder(
               itemCount: SF.length,
@@ -216,7 +218,7 @@ class Optionslist extends StatelessWidget {
         ],
       ),
     ];
-    return Container(
+    return SizedBox(
       height: 800,
       child: ListView.builder(
         itemCount: Options.length,

@@ -8,7 +8,7 @@ class Createaccount extends StatefulWidget {
   final TextEditingController password;
   final TextEditingController confirmPassword;
 
-  Createaccount({
+  const Createaccount({super.key, 
     required this.user,
     required this.email,
     required this.password,

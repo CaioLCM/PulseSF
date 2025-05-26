@@ -15,12 +15,14 @@ main(){
 }
 
 ////////////////////////////////////////////////////////////////////////
-final emailController = new TextEditingController();
-final passwordController = new TextEditingController();
-final border = new OutlineInputBorder(borderRadius: BorderRadius.circular(12));
+final emailController = TextEditingController();
+final passwordController = TextEditingController();
+final border = OutlineInputBorder(borderRadius: BorderRadius.circular(12));
 ///////////////////////////////////////////////////////////////////////
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
 }

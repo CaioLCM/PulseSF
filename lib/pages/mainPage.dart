@@ -11,6 +11,8 @@ import 'package:pulsesf/pages/projectsPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Mainpage extends StatefulWidget {
+  const Mainpage({super.key});
+
   @override
   State<Mainpage> createState() => _MainpageState();
 }

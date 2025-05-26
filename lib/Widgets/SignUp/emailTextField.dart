@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Emailtextfield extends StatelessWidget {
   TextEditingController controller;
-  Emailtextfield(this.controller);
+  Emailtextfield(this.controller, {super.key});
 
   @override
   Widget build(BuildContext context) {

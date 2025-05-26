@@ -8,6 +8,8 @@ import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/main.dart';
 
 class Signupscreen extends StatefulWidget{
+  const Signupscreen({super.key});
+
   
   @override
   State<Signupscreen> createState() => _SignupscreenState();
@@ -15,13 +17,13 @@ class Signupscreen extends StatefulWidget{
 
 class _SignupscreenState extends State<Signupscreen> with SingleTickerProviderStateMixin{
 
-  TextEditingController user = new TextEditingController();
+  TextEditingController user = TextEditingController();
 
-  TextEditingController email = new TextEditingController();
+  TextEditingController email = TextEditingController();
 
-  TextEditingController password = new TextEditingController();
+  TextEditingController password = TextEditingController();
 
-  TextEditingController confirmPassword = new TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
 
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;

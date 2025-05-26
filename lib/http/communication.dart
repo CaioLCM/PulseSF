@@ -104,13 +104,13 @@ Future<String> searchForProfilePicture(String email) async {
   return decoded["picture"];
 }
 
-void addUserToProject(dynamic name, List<String> member_list) async {
-  print(member_list);
+void addUserToProject(dynamic name, List<String> memberList) async {
+  print(memberList);
   final url = Uri.parse("http://10.0.2.2:3000/addMember");
   var response = await http.post(
     url,
     headers: {"Content-Type": "application/json; charset=UTF-8"},
-    body: jsonEncode({"project_name": name.toString(), "member_list": member_list}),
+    body: jsonEncode({"project_name": name.toString(), "member_list": memberList}),
   );
   if (response.statusCode == 200){
     print(response.body);

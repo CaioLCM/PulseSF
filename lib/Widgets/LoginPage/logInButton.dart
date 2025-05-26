@@ -7,7 +7,7 @@ class Loginbutton extends StatefulWidget{
   final TextEditingController email;
   final TextEditingController password;
 
-  Loginbutton({required this.email, required this.password});
+  const Loginbutton({super.key, required this.email, required this.password});
 
   @override
   State<Loginbutton> createState() => _LoginbuttonState();
