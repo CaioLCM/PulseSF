@@ -126,3 +126,26 @@ void removeUserFromProject(String email, List<String> member_list) async {
   var response = await http.post(url, headers: {"ContentType": "application/json; charset=UTF-8"},
   body: jsonEncode({"email": email, "member_list": member_list}));
 }
+
+Future<List<Map<String, dynamic>>> searchUsers() async{
+  final url = Uri.parse("http://10.0.2.2:3000/searchUsers");
+  var response = await http.get(url);
+  final response_body = jsonDecode(response.body);
+  List<Map<String, dynamic>> final_body = [];
+  response_body["users_info"].forEach((user) => {
+    final_body.add({"email": user["email"], "profile_picture": user["profile_picture"]})
+  });
+  print(final_body[1]);
+  return final_body;
+}
+
+/*
+
+  searchUsers --> return (
+    List<Map<String, String>> = [
+      {user: "x", pfp: "x"},
+      {user: "y", pfp: "y"}
+    ]
+  )
+
+;*/

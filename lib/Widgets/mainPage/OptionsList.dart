@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pulsesf/main.dart';
 import 'package:pulsesf/pages/profilePage.dart';
+import 'package:pulsesf/pages/profilesPage.dart';
 import 'package:pulsesf/pages/projectsPage.dart';
 
 class Optionslist extends StatelessWidget {
@@ -62,7 +63,7 @@ class Optionslist extends StatelessWidget {
     List<Widget> Social = [
       GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => null));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Profilespage()));
         },
         child: Row(
           children: [
