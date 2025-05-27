@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:math'; 
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:pulsesf/http/communication.dart';
+import 'package:pulsesf/http/communication.dart'; 
 import 'package:pulsesf/pages/createProjectMenu.dart';
-import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Projectspage extends StatefulWidget {
@@ -18,60 +16,185 @@ class Projectspage extends StatefulWidget {
 
 class _ProjectspageState extends State<Projectspage> {
   String user_email = '';
-  _openProjectCreationModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (_) {
-        return Createprojectmenu();
-      },
-    );
+  List<project> projects = [];
+  List<List<String>> projects_members_ui_state = [];
+  bool _isLoadingProjects = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializePageData();
+  }
+
+  Future<void> _initializePageData() async {
+    if (mounted) {
+      setState(() {
+        _isLoadingProjects = true;
+      });
+    }
+    await _loadUserEmail();
+    await _fetchProjectsAndUpdateState();
+  }
+
+  Future<List<project>> _internalLoadProjects() async {
+    try {
+      List<project>? result = await getProjects(); 
+      return result ?? <project>[]; 
+    } catch (e) {
+      print("Erro em _internalLoadProjects: $e");
+      return <project>[]; 
+    }
+  }
+
+  Future<void> _fetchProjectsAndUpdateState() async {
+    if (!_isLoadingProjects && mounted) {
+       setState(() { _isLoadingProjects = true; });
+    }
+
+    List<project> loadedProjectsList = await _internalLoadProjects(); 
+
+    if (mounted) {
+      setState(() {
+        projects = loadedProjectsList;
+        
+        projects_members_ui_state = projects.map((p) {
+          List<dynamic>? rawMemberList = p.member_list; 
+          if (rawMemberList != null) {
+            return List<String>.from(rawMemberList.map((item) => item.toString()));
+          }
+          return <String>[];
+        }).toList();
+        
+        _isLoadingProjects = false;
+      });
+    }
   }
 
   Future<void> _loadUserEmail() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("jwt_token");
-    final decoded = JwtDecoder.decode(token!);
-    final String email = decoded['user']['email'];
-    setState(() {
-      user_email = email;
+    if (token == null || token.isEmpty) {
+      print("Projectspage: Token JWT não encontrado.");
+      if (mounted) setState(() => _isLoadingProjects = false);
+      return;
+    }
+    try {
+      final decoded = JwtDecoder.decode(token);
+      final String? emailFromToken = decoded['user']?['email'] as String?;
+      if (mounted) {
+        setState(() {
+          user_email = emailFromToken ?? '';
+          if (user_email.isEmpty) print("Projectspage: Email não encontrado no token.");
+        });
+      }
+    } catch (e) {
+      print("Projectspage: Erro ao decodificar token JWT: $e");
+      if (mounted) setState(() => _isLoadingProjects = false);
+    }
+  }
+
+  Future<ImageProvider<Object>?> _loadProfileImage(String email) async {
+    if (email.isEmpty) return null;
+    try {
+      final String? imageString = await searchForProfilePicture(email);
+      if (imageString != null && imageString.isNotEmpty) {
+        if (imageString.length % 4 == 0 && RegExp(r'^[a-zA-Z0-9+/]*={0,2}$').hasMatch(imageString)) {
+          return MemoryImage(base64Decode(imageString));
+        } else {
+           print("Projectspage: String de imagem para $email não parece ser Base64: $imageString");
+           return null;
+        }
+      }
+    } catch (e) {
+      print("Projectspage: Erro ao carregar/decodificar imagem para $email: $e");
+    }
+    return null;
+  }
+
+  void _openProjectCreationModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => Createprojectmenu(),
+    ).then((_) {
+      _fetchProjectsAndUpdateState();
     });
   }
 
-  Future<ImageProvider<Object>>? _loadProfileImage(String email) async {
-    final imageString = await searchForProfilePicture(email);
-    final _profileImage = MemoryImage(base64Decode(imageString));
-    return _profileImage;
+  void _handleJoinProject(project targetProject, int projectIndex) {
+    if (projectIndex < 0 || projectIndex >= projects_members_ui_state.length) {
+      print("Projectspage: Índice de projeto inválido _handleJoinProject: $projectIndex");
+      return;
+    }
+
+    List<String> currentLocalMembersCopy = List.from(projects_members_ui_state[projectIndex]);
+    
+    bool isOwner = user_email == targetProject.emailOwner;
+    bool alreadyMember = currentLocalMembersCopy.contains(user_email);
+    bool hasSlots = currentLocalMembersCopy.length < targetProject.members.toInt();
+
+    if (user_email.isEmpty) {
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Usuário não identificado.")));
+       return;
+    }
+
+    if (!isOwner && !alreadyMember && hasSlots) {
+      currentLocalMembersCopy.add(user_email);
+
+      setState(() {
+        projects_members_ui_state[projectIndex] = currentLocalMembersCopy;
+      });
+
+      addUserToProject(targetProject.name, currentLocalMembersCopy); 
+    } else {
+      String message = "Não foi possível entrar no projeto.";
+      if (isOwner) message = "Você é o dono.";
+      else if (alreadyMember) message = "Você já é membro.";
+      else if (!hasSlots) message = "Este projeto está cheio.";
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    }
   }
 
-  List<project> projects = [];
-
-  Future<List<project>> loadProjects() async {
-    final result = await getProjects();
-    return result ?? [];
+  void _handleRemoveProject(String projectName) async {
+    final bool? confirmDelete = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext ctx) => AlertDialog(
+        title: Text('Confirmar Exclusão'),
+        content: Text('Deseja excluir o projeto "$projectName"?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text('Cancelar')),
+          TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text('Excluir', style: TextStyle(color: Colors.red))),
+        ],),
+    );
+    if (confirmDelete == true) {
+      await removeProject(projectName);
+      _fetchProjectsAndUpdateState();
+    }
   }
 
-  List<List<String>> projects_members = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserEmail();
-    loadProjects().then(
-      (loaded) => {
-        setState(() {
-          projects_members = [];
-          projects = loaded;
-          for (var project in projects) {
-            print(project.member_list);
-            List<dynamic>? rawMemberList = project.member_list;
-
-            projects_members.add(
-              List<String>.from(rawMemberList.map((item) => item.toString())),
-            );
+  Widget _buildMemberAvatar(String email) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2.0),
+      child: FutureBuilder<ImageProvider<Object>?>(
+        key: ValueKey(email),
+        future: _loadProfileImage(email),
+        builder: (context, snapshot) {
+          Widget placeholder = CircleAvatar(
+            radius: 20,
+            backgroundColor: Colors.grey[350], 
+            child: Text(email.isNotEmpty ? email[0].toUpperCase() : "?", style: TextStyle(fontSize: 12, color: Colors.black87)),
+          );
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircleAvatar(radius: 20, child: SizedBox(width: 15, height: 15, child: CircularProgressIndicator(strokeWidth: 1.5)));
+          } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+            return placeholder;
+          } else {
+            return CircleAvatar(radius: 20, backgroundImage: snapshot.data);
           }
-        }),
-        //print(projects_members)
-      },
+        },
+      ),
     );
   }
 
@@ -80,230 +203,120 @@ class _ProjectspageState extends State<Projectspage> {
     return Scaffold(
       body: Column(
         children: [
-          ...(projects.isNotEmpty
-              ? projects.map((project) {
-                return Container(
-                  color: Colors.grey[400],
-                  margin: EdgeInsets.all(15),
-                  child: ListTile(
-                    title: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        project.name ?? 'No name',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 0, 20),
-                          child: Text(project.bio),
+          Expanded(
+            child: _isLoadingProjects
+                ? const Center(child: CircularProgressIndicator())
+                : projects.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset("assets/images/waiting.png", height: 100, width: 90),
+                            const SizedBox(height: 10),
+                            const Text("Nenhum projeto para mostrar.", style: TextStyle(fontSize: 16)),
+                          ],
                         ),
-                        Container(
-                          height: 50,
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 4.0,
-                                ),
-                                child: FutureBuilder<ImageProvider<Object>?>(
-                                  future: _loadProfileImage(project.emailOwner),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return CircleAvatar(
-                                        radius: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2.0,
-                                        ),
-                                      );
-                                    } else if (snapshot.hasError) {
-                                      return CircleAvatar(
-                                        radius: 20,
-                                        child: Icon(Icons.error_outline),
-                                      );
-                                    } else if (snapshot.hasData &&
-                                        snapshot.data != null) {
-                                      return CircleAvatar(
-                                        radius: 20,
-                                        backgroundImage: snapshot.data,
-                                      );
-                                    } else {
-                                      return CircleAvatar(
-                                        radius: 20,
-                                        child: Icon(Icons.person_outline),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ),
+                      )
+                    : ListView.builder(
+                        itemCount: projects.length,
+                        itemBuilder: (context, projectIndex) {
+                          final project currentProject = projects[projectIndex];
+                          final List<String> currentProjectSpecificMembers =
+                              (projectIndex < projects_members_ui_state.length)
+                                  ? projects_members_ui_state[projectIndex]
+                                  : <String>[];
 
-                              Expanded(
-                                child: Container(
-                                  height: 30,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: project.member_list.length,
-                                    itemBuilder: (context, memberIndex) {
-                                      final String memberEmail =
-                                          project.member_list[memberIndex];
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 4.0,
-                                        ),
-                                        child: FutureBuilder<
-                                          ImageProvider<Object>?
-                                        >(
-                                          future: _loadProfileImage(memberEmail),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return CircleAvatar(
-                                                radius: 40, 
-                                                child: CircularProgressIndicator(
-                                                  strokeWidth: 2.0,
-                                                ),
-                                              );
-                                            } else if (snapshot.hasError) {
-                                              return CircleAvatar(
-                                                radius: 20,
-                                                child: Icon(
-                                                  Icons.error_outline,
-                                                  size: 20,
-                                                ),
-                                              );
-                                            } else if (snapshot.hasData &&
-                                                snapshot.data != null) {
-                                              return CircleAvatar(
-                                                radius: 20,
-                                                backgroundImage:
-                                                    snapshot
-                                                        .data!, 
-                                              );
-                                            } else {
-                                              return CircleAvatar(
-                                                radius: 20,
-                                                child: Text(
-                                                  memberEmail.isNotEmpty
-                                                      ? memberEmail[0]
-                                                          .toUpperCase()
-                                                      : "?",
-                                                  style: TextStyle(fontSize: 12),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
+                          bool canUserJoin = user_email.isNotEmpty &&
+                              currentProjectSpecificMembers.length < currentProject.members.toInt() &&
+                              user_email != currentProject.emailOwner &&
+                              !currentProjectSpecificMembers.contains(user_email);
 
-                              SizedBox(
-                                height: 40,
-                                child: ListView.builder(
-                                  itemCount: 
-                                  max(0, project.members.toInt() - project.member_list.length),
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0,
+                          return Card(
+                            elevation: 3,
+                            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          currentProject.name,
+                                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                      child: Stack(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 20,
-                                            child: IconButton(
-                                              onPressed: () {
-                                                int projectActualIndex =
-                                                    projects.indexWhere(
-                                                      (p) => p == project,
-                                                    );
-                                                if (projectActualIndex != -1 &&
-                                                    !projects_members[projectActualIndex]
-                                                        .contains(user_email) &&
-                                                    user_email !=
-                                                        project.emailOwner &&
-                                                    (project.member_list)
-                                                            .length <=
-                                                        int.parse(
-                                                          project.members
-                                                              .toString(),
-                                                        )) {
-                                                  setState(() {
-                                                    projects_members[projectActualIndex] = [
-                                                      ...projects_members[projectActualIndex],
-                                                      user_email,
-                                                    ];
-                                                  });
-                                                  addUserToProject(
-                                                    project.name,
-                                                    projects_members[projectActualIndex],
-                                                  );
-                                                }
-                                              },
-                                              icon: Icon(Icons.add),
+                                      if (currentProject.emailOwner == user_email)
+                                        IconButton(
+                                          iconSize: 24,
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(),
+                                          visualDensity: VisualDensity.compact,
+                                          onPressed: () => _handleRemoveProject(currentProject.name),
+                                          icon: Icon(Icons.delete_outline, color: Colors.red[600]),
+                                        ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(currentProject.bio, style: Theme.of(context).textTheme.bodyMedium),
+                                  const SizedBox(height: 12),
+                                  Container(
+                                    height: 40,
+                                    child: Row(
+                                      children: [
+                                        _buildMemberAvatar(currentProject.emailOwner),
+                                        const SizedBox(width: 4),
+                                        Expanded(
+                                          child: ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: currentProjectSpecificMembers.length,
+                                            itemBuilder: (context, memberIdx) {
+                                              final String memberEmail = currentProjectSpecificMembers[memberIdx];
+                                              if (memberEmail == currentProject.emailOwner) {
+                                                return const SizedBox.shrink();
+                                              }
+                                              return _buildMemberAvatar(memberEmail);
+                                            },
+                                          ),
+                                        ),
+                                        if (canUserJoin)
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 4.0),
+                                            child: CircleAvatar(
+                                              radius: 20,
+                                              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                                              child: IconButton(
+                                                iconSize: 20,
+                                                padding: EdgeInsets.zero,
+                                                icon: Icon(Icons.add, color: Theme.of(context).colorScheme.onSecondaryContainer),
+                                                onPressed: () {
+                                                  _handleJoinProject(currentProject, projectIndex);
+                                                },
+                                              ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    trailing:
-                        project.emailOwner == user_email
-                            ? IconButton(
-                              onPressed: () async {
-                                await removeProject(project.name);
-                                final loaded = await loadProjects();
-                                setState(() {
-                                  projects = loaded;
-                                });
-                              },
-                              icon: Icon(Icons.remove),
-                            )
-                            : Text(""),
-                  ),
-                );
-              }).toList()
-              : [
-                Column(
-                  children: [
-                    SizedBox(height: 400),
-                    Center(
-                      child: Image.asset(
-                        "assets/images/waiting.png",
-                        height: 100,
-                        width: 90,
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  ],
-                ),
-              ]),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await _openProjectCreationModal(context);
-          final loaded = await loadProjects();
-          setState(() {
-            projects = loaded;
-          });
+        onPressed: () {
+          _openProjectCreationModal(context);
         },
-        backgroundColor: Colors.purple[400],
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
