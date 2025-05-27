@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pulsesf/main.dart';
 import 'package:pulsesf/pages/profilePage.dart';
 import 'package:pulsesf/pages/projectsPage.dart';
 
@@ -59,20 +60,25 @@ class Optionslist extends StatelessWidget {
     ];
 
     List<Widget> Social = [
-      Row(
-        children: [
-          SizedBox(width: 10),
-          Icon(Icons.code),
-          SizedBox(width: 10),
-          Text(
-            "Match a coding buddy",
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-              fontFamily: "Fredoka",
+      GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => null));
+        },
+        child: Row(
+          children: [
+            SizedBox(width: 10),
+            Icon(Icons.code),
+            SizedBox(width: 10),
+            Text(
+              "Match a coding buddy",
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+                fontFamily: "Fredoka",
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       Row(
         children: [
