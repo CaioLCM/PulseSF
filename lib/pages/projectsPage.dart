@@ -147,10 +147,10 @@ class _ProjectspageState extends State<Projectspage> {
 
       addUserToProject(targetProject.name, currentLocalMembersCopy); 
     } else {
-      String message = "Não foi possível entrar no projeto.";
-      if (isOwner) message = "Você é o dono.";
-      else if (alreadyMember) message = "Você já é membro.";
-      else if (!hasSlots) message = "Este projeto está cheio.";
+      String message = "Not possible to join the project";
+      if (isOwner) message = "You are the owner";
+      else if (alreadyMember) message = "Already member";
+      else if (!hasSlots) message = "Project full";
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
     }
   }
@@ -159,13 +159,13 @@ class _ProjectspageState extends State<Projectspage> {
     final bool? confirmDelete = await showDialog<bool>(
       context: context,
       builder: (BuildContext ctx) => AlertDialog(
-        title: Text('Confirm deletion'),
-        content: Text('Are you sure you want to delete "$projectName"?'),
+        title: Text('Confirm'),
+        content: Text('Are you sure about deleting "$projectName"?'),
         actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text('Cancelar')),
+          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text('Cancel')),
           TextButton(
               onPressed: () => Navigator.of(ctx).pop(true),
-              child: Text('Delete', style: TextStyle(color: Colors.red))),
+              child: Text('Exclude', style: TextStyle(color: Colors.red))),
         ],),
     );
     if (confirmDelete == true) {
