@@ -132,7 +132,7 @@ class _CreateprojectmenuState extends State<Createprojectmenu> {
               jsonList.add(jsonEncode(newProject.toJson()));
               await prefs.setStringList('projects', jsonList);
               addProject(ProjectName.text, DescribeProject.text, value, email);
-              Navigator.pop(context);
+              Navigator.of(context).pop(true);
 
             }, style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 8),

@@ -112,14 +112,16 @@ class _ProjectspageState extends State<Projectspage> {
     return null;
   }
 
-  void _openProjectCreationModal(BuildContext context) {
-    showModalBottomSheet(
+  void _openProjectCreationModal(BuildContext context) async{
+    final result = await showModalBottomSheet<bool>(
       context: context,
-      isScrollControlled: true,
       builder: (_) => Createprojectmenu(),
-    ).then((_) {
-      _fetchProjectsAndUpdateState();
-    });
+    );
+
+    if (result == true){
+      await _fetchProjectsAndUpdateState();
+    }
+
   }
 
   void _handleJoinProject(project targetProject, int projectIndex) {
