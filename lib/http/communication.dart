@@ -111,41 +111,60 @@ void addUserToProject(dynamic name, List<String> memberList) async {
   var response = await http.post(
     url,
     headers: {"Content-Type": "application/json; charset=UTF-8"},
-    body: jsonEncode({"project_name": name.toString(), "member_list": memberList}),
+    body: jsonEncode({
+      "project_name": name.toString(),
+      "member_list": memberList,
+    }),
   );
-  if (response.statusCode == 200){
+  if (response.statusCode == 200) {
     print(response.body);
-  }
-  else {
+  } else {
     print(response.body);
   }
 }
 
 void removeUserFromProject(String email, List<String> member_list) async {
   final url = Uri.parse("http://10.0.2.2:3000/removeUser");
-  var response = await http.post(url, headers: {"ContentType": "application/json; charset=UTF-8"},
-  body: jsonEncode({"email": email, "member_list": member_list}));
+  var response = await http.post(
+    url,
+    headers: {"ContentType": "application/json; charset=UTF-8"},
+    body: jsonEncode({"email": email, "member_list": member_list}),
+  );
 }
 
-Future<List<Map<String, dynamic>>> searchUsers() async{
+Future<List<Map<String, dynamic>>> searchUsers() async {
   final url = Uri.parse("http://10.0.2.2:3000/searchUsers");
   var response = await http.get(url);
   final response_body = jsonDecode(response.body);
   List<Map<String, dynamic>> final_body = [];
-  response_body["users_info"].forEach((user) => {
-    final_body.add({"email": user["email"], "profile_picture": user["profile_picture"]})
-  });
-  print(final_body[1]);
+  response_body["users_info"].forEach(
+    (user) => {
+      final_body.add({
+        "email": user["email"],
+        "profile_picture": user["profile_picture"],
+      }),
+    },
+  );
   return final_body;
 }
 
-/*
+Future<String> searchBio(String email) async {
+  final url = Uri.parse("http://10.0.2.2:3000/searchUser");
+  var response = await http.post(url, body: {"email": email});
+  final encoded = jsonDecode(response.body);
+  final bio = encoded["bio"];
+  return bio;
+}
 
-  searchUsers --> return (
-    List<Map<String, String>> = [
-      {user: "x", pfp: "x"},
-      {user: "y", pfp: "y"}
-    ]
-  )
+Future<void> updateBio(String email, String bio) async {
+  final url = Uri.parse("http://10.0.2.2:3000/updateBio");
+  final response = await http.post(url, body: {"email": email, "bio": bio});
+}
 
-;*/
+/* searchBio()
+
+  req = userInfo
+  bio = req["bio"]
+  res.send(bio)
+
+*/

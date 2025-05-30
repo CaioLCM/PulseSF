@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pulsesf/http/communication.dart'; 
 import 'package:pulsesf/pages/createProjectMenu.dart';
+import 'package:pulsesf/pages/displayProfiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Projectspage extends StatefulWidget {
@@ -174,26 +175,42 @@ class _ProjectspageState extends State<Projectspage> {
     }
   }
 
+  Future<String> getProfilePictureString(String email)async{
+    final profile_string = await searchForProfilePicture(email);
+    return profile_string;
+  }
+
   Widget _buildMemberAvatar(String email) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2.0),
-      child: FutureBuilder<ImageProvider<Object>?>(
-        key: ValueKey(email),
-        future: _loadProfileImage(email),
-        builder: (context, snapshot) {
-          Widget placeholder = CircleAvatar(
-            radius: 20,
-            backgroundColor: Colors.grey[350], 
-            child: Text(email.isNotEmpty ? email[0].toUpperCase() : "?", style: TextStyle(fontSize: 12, color: Colors.black87)),
-          );
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircleAvatar(radius: 20, child: SizedBox(width: 15, height: 15, child: CircularProgressIndicator(strokeWidth: 1.5)));
-          } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
-            return placeholder;
-          } else {
-            return CircleAvatar(radius: 20, backgroundImage: snapshot.data);
-          }
-        },
+    return GestureDetector(
+      onTap: () async {
+        String profilePicture = await getProfilePictureString(email);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => Displayprofiles(email: email, profile_picture: profilePicture),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 2.0),
+        child: FutureBuilder<ImageProvider<Object>?>(
+          key: ValueKey(email),
+          future: _loadProfileImage(email),
+          builder: (context, snapshot) {
+            Widget placeholder = CircleAvatar(
+              radius: 20,
+              backgroundColor: Colors.grey[350], 
+              child: Text(email.isNotEmpty ? email[0].toUpperCase() : "?", style: TextStyle(fontSize: 12, color: Colors.black87)),
+            );
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircleAvatar(radius: 20, child: SizedBox(width: 15, height: 15, child: CircularProgressIndicator(strokeWidth: 1.5)));
+            } else if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+              return placeholder;
+            } else {
+              return CircleAvatar(radius: 20, backgroundImage: snapshot.data);
+            }
+          },
+        ),
       ),
     );
   }
@@ -203,6 +220,22 @@ class _ProjectspageState extends State<Projectspage> {
     return Scaffold(
       body: Column(
         children: [
+           Container(
+            color: Colors.purple,
+            width: double.infinity,
+            height: 90,
+            child: Row(
+              children: [
+                IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.exit_to_app), iconSize: 40, color: Colors.red,),
+                SizedBox(width: 60,),
+                Text("Projects", style: TextStyle(
+                  fontFamily: "Fredoka",
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold
+                ),)
+              ],
+            ),
+          ),
           Expanded(
             child: _isLoadingProjects
                 ? const Center(child: CircularProgressIndicator())
