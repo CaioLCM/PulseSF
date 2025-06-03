@@ -10,6 +10,10 @@ class Confirmtextfield extends StatelessWidget {
     return TextField(
               controller: controller,
               obscureText: true,
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: "Fredoka"
+              ),
               decoration:InputDecoration(
               labelText: "Confirm Password",
               prefixIcon: Icon(Icons.password),

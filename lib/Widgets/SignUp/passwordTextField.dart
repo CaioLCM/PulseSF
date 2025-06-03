@@ -10,6 +10,10 @@ class Passwordtextfield extends StatelessWidget {
     return TextField(
               controller: controller,
               obscureText: true,
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: "Fredoka"
+              ),
               decoration:InputDecoration(
               labelText: "Password",
               prefixIcon: Icon(Icons.password),

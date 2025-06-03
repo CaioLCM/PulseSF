@@ -56,7 +56,7 @@ class _Biopage extends State<Biopage> {
           children: [
             Container(
               child: TextField(
-                maxLines: 14,
+                maxLines: 13,
                 controller: bio_controller,
                 decoration: InputDecoration(
                   label: Center(

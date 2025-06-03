@@ -99,6 +99,7 @@ class _ProfilepageState extends State<Profilepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Profile"), backgroundColor: Colors.purple, titleTextStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: "Fredoka"),),
       body: Column(
         children: [
           SizedBox(height: 30),
@@ -158,7 +159,7 @@ class _ProfilepageState extends State<Profilepage> {
                 SizedBox(width: 10,),
                 Icon(Icons.calendar_month, color: Colors.black,),
                 SizedBox(width: 10),
-                Text("Participated Events (coming soon)", style: TextStyle(
+                Text("Participated Events (coming)", style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: const Color.fromARGB(255, 90, 85, 85)
@@ -206,9 +207,6 @@ class _ProfilepageState extends State<Profilepage> {
               ],
             ),
           ),
-          IconButton(onPressed:() => {
-                                        Navigator.push(context, MaterialPageRoute(builder: (builder) => Mainpage()))
-                                      }, icon: Icon(Icons.subdirectory_arrow_left_sharp))
         ],
       ),
     );

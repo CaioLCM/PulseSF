@@ -33,9 +33,10 @@ class _ProfilespageState extends State<Profilespage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Coders"), backgroundColor: Colors.purple, titleTextStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: "Fredoka"),),
       body: Column(
         children: [
-          Container(
+          /* Container(
             color: Colors.purple,
             width: double.infinity,
             height: 90,
@@ -50,10 +51,10 @@ class _ProfilespageState extends State<Profilespage> {
                 ),)
               ],
             ),
-          ),
+          ), */
           SizedBox(height: 30),
           Container(
-            height: 778,
+            height: 654,
             margin: EdgeInsets.symmetric(vertical: 5),
             padding: EdgeInsets.only(bottom: 10),
             child: ListView.builder(

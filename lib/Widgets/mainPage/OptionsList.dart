@@ -226,7 +226,7 @@ class Optionslist extends StatelessWidget {
       ),
     ];
     return SizedBox(
-      height: 800,
+      height: 685,
       child: ListView.builder(
         itemCount: Options.length,
         itemBuilder: (context, index) {
