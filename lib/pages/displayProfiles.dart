@@ -39,25 +39,10 @@ class _Displayprofiles extends State<Displayprofiles> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text(widget.email), backgroundColor: Colors.purple, titleTextStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: "Fredoka"),),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            color: Colors.purple,
-            width: double.infinity,
-            height: 90,
-            child: Row(
-              children: [
-                IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.exit_to_app), iconSize: 40, color: Colors.red,),
-                SizedBox(width: 60,),
-                Text(widget.email, style: TextStyle(
-                  fontFamily: "Fredoka",
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold
-                ),)
-              ],
-            ),
-          ),
           SizedBox(height: 30),
           Row(
             children: [
@@ -81,7 +66,7 @@ class _Displayprofiles extends State<Displayprofiles> {
           Card(
             elevation: 10,
             child: Container(
-              height: 500,
+              height: 369,
               width: 350,
               child: FutureBuilder(future: _loadBio(), builder: (context, snapshot) {
                 if (snapshot.hasData){

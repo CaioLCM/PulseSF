@@ -10,6 +10,10 @@ class Nametextfield extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
               controller: email,
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: "Fredoka"
+              ),
               decoration: InputDecoration(
               labelText: "Name",
               prefixIcon: Icon(Icons.person),

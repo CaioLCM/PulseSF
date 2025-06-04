@@ -161,10 +161,24 @@ Future<void> updateBio(String email, String bio) async {
   final response = await http.post(url, body: {"email": email, "bio": bio});
 }
 
-/* searchBio()
+Future<void> addFriend(String email_req, String email_res) async{
+  final url = Uri.parse("http://10.0.2.2:3000/addFriend");
+  final response =  await http.post(url, body: {
+    "email_req": email_req,
+    "email_res": email_res
+  });
+}
 
-  req = userInfo
-  bio = req["bio"]
-  res.send(bio)
-
-*/
+Future<bool> checkFriend(String email_req, String email_res) async{
+  final url = Uri.parse("http://10.0.2.2:3000/checkFriend");
+  final response = await http.post(url, body: {
+    "email_req": email_req,
+    "email_res": email_res
+  });
+  if (response.statusCode == 200){
+    return true;
+  }
+  else {
+    return false;
+  }
+}

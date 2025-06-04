@@ -220,9 +220,10 @@ class _ProjectspageState extends State<Projectspage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Projects"), backgroundColor: Colors.purple, titleTextStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: "Fredoka"),),
       body: Column(
         children: [
-           Container(
+           /* Container(
             color: Colors.purple,
             width: double.infinity,
             height: 90,
@@ -237,7 +238,7 @@ class _ProjectspageState extends State<Projectspage> {
                 ),)
               ],
             ),
-          ),
+          ), */
           Expanded(
             child: _isLoadingProjects
                 ? const Center(child: CircularProgressIndicator())

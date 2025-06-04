@@ -10,6 +10,10 @@ class Emailtextfield extends StatelessWidget {
     return TextField(
               controller: controller,
               obscureText: false,
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: "Fredoka"
+              ),
               decoration:InputDecoration(
               labelText: "E-mail",
               prefixIcon: Icon(Icons.email),
