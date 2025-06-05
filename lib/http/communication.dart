@@ -181,4 +181,52 @@ Future<bool> checkFriend(String email_req, String email_res) async{
   else {
     return false;
   }
+
+
 }
+  Future<List<String>> searchFriendsRequests(String email) async{
+    final url = Uri.parse("http://10.0.2.2:3000/searchRequests");
+    final response = await http.post(url, body: {
+      "email": email
+    });
+
+    final dynamic response_decode = jsonDecode(response.body);
+
+    if (response.statusCode == 200){
+      if (response_decode != null && response_decode['requests'] is List){
+        final List<dynamic> dynamicList = response_decode["requests"];
+        final List<String> listString = dynamicList.map((e) => e.toString()).toList(); 
+        return listString;
+      }
+      else{
+        return ["Nothing to show"];
+      }
+    }
+    else {
+      return ["Nothing to show"];
+    }
+  }
+
+Future<void> removeFriendRequest(String emailRequest, String emailResponse) async{
+  final url = Uri.parse("http://10.0.2.2:3000/removeFriendRequest");
+  final response = await http.post(url, body: {
+    "email_request": emailRequest,
+    "email_response": emailResponse
+  });
+}
+
+Future<void> acceptFriendRequest(String emailRequest, String emailResponse) async{
+  final url = Uri.parse("http://10.0.2.2:3000/acceptFriendRequest");
+  final response = await http.post(url, body: {
+    "email_req": emailRequest,
+    "email_res": emailResponse
+  });
+}
+
+Future<List<String>> searchFriends(String email) async {
+  final url = Uri.parse("http://10.0.2.2:3000/searchFriends");
+  var response = await http.get(url);
+  print(jsonDecode(response.body));
+
+  return jsonDecode(response.body);
+  }

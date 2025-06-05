@@ -27,7 +27,6 @@ class _MainpageState extends State<Mainpage> {
       final token = prefs.getString('jwt_token');
       if (token != null){
         var decodedToken = JwtDecoder.decode(token);
-        print(decodedToken['user']['profilePicture']);
          if (decodedToken['user']['profilePicture'] != null) {
           setState(() {
           _profileImage = MemoryImage(base64Decode(decodedToken['user']['profilePicture']));

@@ -77,6 +77,7 @@ class _ProfilespageState extends State<Profilespage> {
               itemBuilder: (BuildContext context, int index) {
                 return FutureBuilder(future: checkFriend(userEmail, profiles[index]["email"]), builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done){
+                    print(snapshot.data);
                   return Card(
                   elevation: 3,
                   child: GestureDetector(
