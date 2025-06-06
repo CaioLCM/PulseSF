@@ -197,7 +197,7 @@ class _ProfilepageState extends State<Profilepage> {
             ),
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (builder)=> Friendspage()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (builder)=> Friendspage(email: email,)));
               },
               child: Row(
                 children: [

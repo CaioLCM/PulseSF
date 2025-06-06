@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/main.dart';
 import 'package:pulsesf/pages/bioPage.dart';
 import 'package:pulsesf/pages/notificationPage.dart';
 
-class MyAppbar extends StatelessWidget {
+class MyAppbar extends StatefulWidget {
   String email = '';
   final ImageProvider? _profileImage;
   MyAppbar(this.email, this._profileImage, {super.key});
 
   @override
+  State<MyAppbar> createState() => _MyAppbarState();
+}
+
+class _MyAppbarState extends State<MyAppbar> {
+  int notifications = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    searchFriendsRequests(widget.email).then((requests) => {
+      setState(() {
+        notifications = requests != ["Nothing to show"]? requests.length: 0;
+      })
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     void _openNotificationsModal(BuildContext context){
     showModalBottomSheet(context: context, 
-      builder: (_) => Notificationpage(email: email,)
+      builder: (_) => Notificationpage(email: widget.email,)
       );
   }
+
+  
 
     return Container(
             padding: EdgeInsets.all(18),
@@ -30,9 +50,9 @@ class MyAppbar extends StatelessWidget {
                     children: [
                         Row(
                           children: [
-                            CircleAvatar(backgroundImage: _profileImage,),
+                            CircleAvatar(backgroundImage: widget._profileImage,),
                             SizedBox(width: 15,),
-                            Text(email, style: TextStyle(
+                            Text(widget.email, style: TextStyle(
                               fontFamily: "Fredoka",
                                   color: Colors.white,
                                   fontSize: 20,
@@ -43,7 +63,11 @@ class MyAppbar extends StatelessWidget {
                             IconButton(onPressed: (){
                               Navigator.push(context, MaterialPageRoute(builder: (builder) => MyApp()));
                             }, icon: Icon(Icons.logout), color: const Color.fromARGB(255, 255, 17, 0),),
-                            IconButton(onPressed: (){_openNotificationsModal(context);}, icon: Icon(Icons.notifications))
+                            IconButton(onPressed: (){_openNotificationsModal(context);}, icon: Icon(Icons.notifications)),
+                            CircleAvatar(
+                              radius: 15,
+                              child: Text(notifications.toString()),
+                            )
                           ],
                         ),
                     ],

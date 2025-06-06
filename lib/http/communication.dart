@@ -225,8 +225,31 @@ Future<void> acceptFriendRequest(String emailRequest, String emailResponse) asyn
 
 Future<List<String>> searchFriends(String email) async {
   final url = Uri.parse("http://10.0.2.2:3000/searchFriends");
-  var response = await http.get(url);
-  print(jsonDecode(response.body));
-
-  return jsonDecode(response.body);
+  var response = await http.post(url, body: {
+    "email_user": email
+  });
+  final decoded = await jsonDecode(response.body);
+  if(decoded["friends"] is List){
+    final List<dynamic> friendsDynamic = decoded["friends"];
+    final List<String> friendslist = friendsDynamic.map((item) => item.toString()).toList();
+    return friendslist;
   }
+  
+  else{
+      return decoded["friends"];
+  }
+  }
+
+Future<bool> removeFriend(String email_req, String email_res) async {
+  final url = Uri.parse("http://10.0.2.2:3000/removeFriend");
+  final response = await http.post(url, body: {
+    "email_req": email_req,
+    "email_res": email_res
+  });
+  if (response.statusCode == 200){
+    return true;
+  }
+  else {
+    return false;
+  }
+}
