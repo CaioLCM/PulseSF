@@ -31,10 +31,7 @@ class Optionslist extends StatelessWidget {
               SizedBox(width: 10),
               Text(
                 "Projects",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: "Fredoka",
-                ),
+                style: TextStyle(fontSize: 20, fontFamily: "Fredoka"),
               ),
             ],
           ),
@@ -61,10 +58,7 @@ class Optionslist extends StatelessWidget {
               SizedBox(width: 10),
               Text(
                 "Profile",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: "Fredoka",
-                ),
+                style: TextStyle(fontSize: 20, fontFamily: "Fredoka"),
               ),
             ],
           ),
@@ -110,18 +104,28 @@ class Optionslist extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           color: Colors.orange[400],
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(width: 10),
-            Icon(Icons.chat),
-            SizedBox(width: 10),
+            Row(
+              children: [
+                SizedBox(width: 10),
+                Icon(Icons.chat),
+                SizedBox(width: 10),
+                Text(
+                  "Global chat",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontFamily: "Fredoka",
+                  ),
+                ),
+              ],
+            ),
             Text(
-              "Global chat",
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-                fontFamily: "Fredoka",
-              ),
+              "Coming soon",
+              style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
             ),
           ],
         ),
@@ -129,33 +133,53 @@ class Optionslist extends StatelessWidget {
     ];
 
     List<Widget> SF = [
-      Row(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(width: 10),
-          Icon(Icons.place_outlined),
-          SizedBox(width: 10),
+          Row(
+            children: [
+              SizedBox(width: 10),
+              Icon(Icons.place_outlined),
+              SizedBox(width: 10),
+              Text(
+                "Discover Events",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontFamily: "Fredoka",
+                ),
+              ),
+            ],
+          ),
           Text(
-            "Discover Events",
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-              fontFamily: "Fredoka",
-            ),
+            "Coming soon",
+            style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
           ),
         ],
       ),
-      Row(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(width: 10),
-          Icon(Icons.car_crash),
-          SizedBox(width: 10),
+          Row(
+            children: [
+              SizedBox(width: 10),
+              Icon(Icons.car_crash),
+              SizedBox(width: 10),
+              Text(
+                "More about SF",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontFamily: "Fredoka",
+                ),
+              ),
+            ],
+          ),
           Text(
-            "More about SF",
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-              fontFamily: "Fredoka",
-            ),
+            "Coming soon",
+            style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
           ),
         ],
       ),
