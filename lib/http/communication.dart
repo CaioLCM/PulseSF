@@ -25,6 +25,11 @@ Future<bool> CreateAccount(
       body: {"username": nickname, 'email': email, 'password': password},
     );
     if (response.statusCode == 200) {
+      showDialog(context: context, builder: (context) => AlertDialog(
+        title: Text("Account created successfully!"),
+        content: Text("User will be redirected to the login page"),
+        actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text("Login page"))],
+      ));
       Navigator.pop(context);
       return true;
     } else {

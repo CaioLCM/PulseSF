@@ -35,23 +35,25 @@ class _MyAppbarState extends State<MyAppbar> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                        Row(
-                          children: [
-                            CircleAvatar(backgroundImage: widget._profileImage,),
-                            SizedBox(width: 15,),
-                            Text(widget.email, style: TextStyle(
-                              fontFamily: "Fredoka",
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
-                                  )
-                                    ),
-                            SizedBox(width: 20,),
-                            IconButton(onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (builder) => MyApp()));
-                            }, icon: Icon(Icons.logout), color: const Color.fromARGB(255, 255, 17, 0),),
-                            IconButton(onPressed: (){_openNotificationsModal(context);}, icon: Icon(Icons.notifications)),
-                          ],
+                        FittedBox(
+                          child: Row(
+                            children: [
+                              CircleAvatar(backgroundImage: widget._profileImage,),
+                              SizedBox(width: 15,),
+                              Text(widget.email, style: TextStyle(
+                                fontFamily: "Fredoka",
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold
+                                    )
+                                      ),
+                              SizedBox(width: 20,),
+                              IconButton(onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (builder) => MyApp()));
+                              }, icon: Icon(Icons.logout), color: const Color.fromARGB(255, 255, 17, 0),),
+                              IconButton(onPressed: (){_openNotificationsModal(context);}, icon: Icon(Icons.notifications)),
+                            ],
+                          ),
                         ),
                     ],
                   ),

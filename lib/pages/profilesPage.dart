@@ -25,7 +25,6 @@ class _ProfilespageState extends State<Profilespage> {
     );
   }
 
-
   Future<void> _loadUserEmail() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("jwt_token");
@@ -44,11 +43,18 @@ class _ProfilespageState extends State<Profilespage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Coders"), backgroundColor: Colors.purple, titleTextStyle: TextStyle(color: Colors.white, fontSize: 17, fontFamily: "Fredoka"),),
+      appBar: AppBar(
+        title: Text("Coders"),
+        backgroundColor: Colors.purple,
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 17,
+          fontFamily: "Fredoka",
+        ),
+      ),
       body: Column(
         children: [
           /* Container(
@@ -75,67 +81,93 @@ class _ProfilespageState extends State<Profilespage> {
             child: ListView.builder(
               itemCount: profiles.length,
               itemBuilder: (BuildContext context, int index) {
-                return FutureBuilder(future: checkFriend(userEmail, profiles[index]["email"]), builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done){
-                    print(snapshot.data);
-                  return Card(
-                  elevation: 3,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (builder) => Displayprofiles(email: profiles[index]["email"], profile_picture: profiles[index]["profile_picture"])));
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(8.0),
-                      padding: EdgeInsets.only(bottom: 30),
-                      child: ListTile(
-                        title: FittedBox(
-                          child: Row(
-                            children: [
-                              profiles[index]["profile_picture"] != "No profile picture"
-                                  ? CircleAvatar(
-                                    backgroundImage: MemoryImage(
-                                      base64Decode(profiles[index]["profile_picture"]),
-                                    ),
-                                  )
-                                  : CircleAvatar(
-                                    backgroundColor: Colors.green,
-                                    child: Text(profiles[index]["email"][0]),
+                return FutureBuilder(
+                  future: checkFriend(userEmail, profiles[index]["email"]),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return GestureDetector(
+                         onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (builder) => Displayprofiles(
+                                        email: profiles[index]["email"],
+                                        profile_picture:
+                                            profiles[index]["profile_picture"],
+                                      ),
+                                ),
+                              );
+                            },
+                        child: Card(
+                          elevation: 3,
+                            child: Container(
+                              margin: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.only(bottom: 30),
+                              child: ListTile(
+                                title: FittedBox(
+                                  child: Row(
+                                    children: [
+                                      profiles[index]["profile_picture"] !=
+                                              "No profile picture"
+                                          ? CircleAvatar(
+                                            backgroundImage: MemoryImage(
+                                              base64Decode(
+                                                profiles[index]["profile_picture"],
+                                              ),
+                                            ),
+                                          )
+                                          : CircleAvatar(
+                                            backgroundColor: Colors.green,
+                                            child: Text(
+                                              profiles[index]["email"][0],
+                                            ),
+                                          ),
+                                      SizedBox(width: 15),
+                                      Text(profiles[index]["email"]),
+                                      SizedBox(width: 150),
+                                      if (userEmail != profiles[index]["email"] &&
+                                          snapshot.data == false)
+                                        IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              addFriend(
+                                                userEmail,
+                                                profiles[index]["email"],
+                                              );
+                                              _loadprofiles();
+                                            });
+                                          },
+                                          icon: Icon(Icons.add),
+                                          iconSize: 30,
+                                        ),
+                                      if (snapshot.data == true)
+                                        Icon(Icons.timer),
+                                    ],
                                   ),
-                              SizedBox(width: 15),
-                              Text(profiles[index]["email"]),
-                              SizedBox(width: 150,),
-                              if (userEmail != profiles[index]["email"] && snapshot.data == false)
-                                IconButton(onPressed: (){
-                                  setState(() {
-                                    addFriend(userEmail, profiles[index]["email"]);
-                                  });
-                                  }, icon: Icon(Icons.add), iconSize: 30,),
-                              if (snapshot.data == true)
-                                Icon( Icons.timer),
-                            ],
+                                ),
+                                //subtitle: Text("House at the future!!!"),
+                              ),
+                            ),
                           ),
-                        ),
-                        //subtitle: Text("House at the future!!!"),
-                      ),
-                    ),
-                  ),
-                );
-                  }
-                  
-                  if (snapshot.hasError){
-                    return ListTile( // Exemplo simples de como mostrar um erro
-          title: Text(profiles[index]["email"]),
-          subtitle: Text("Error!", style: TextStyle(color: Colors.red)),
-          leading: Icon(Icons.error, color: Colors.red),
-        );
-                  }
+                      );
+                    }
 
-                  else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },); 
+                    if (snapshot.hasError) {
+                      return ListTile(
+                        // Exemplo simples de como mostrar um erro
+                        title: Text(profiles[index]["email"]),
+                        subtitle: Text(
+                          "Error!",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        leading: Icon(Icons.error, color: Colors.red),
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
+                );
               },
             ),
           ),

@@ -119,34 +119,38 @@ class _ProfilepageState extends State<Profilepage> {
             ],
           ),
           SizedBox(height: 20,),
-          Text(email, style: TextStyle(
-            fontSize: 30
-          ),),
+          FittedBox(
+            child: Text(email, style: TextStyle(
+              fontSize: 30
+            ),),
+          ),
           SizedBox(height: 8,),
           //Text(email, style: TextStyle(fontSize: 20),),
           SizedBox(height: 20,),
-          Container(
-             padding: EdgeInsets.all(16),
-            margin: EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[200]
-            ),
-            child: GestureDetector(
-              onTap: () => _openBioModal(context),
-              child: Row(
-                children: [
-                  SizedBox(width: 10,),
-                  Icon(Icons.person, color: Colors.black,),
-                  SizedBox(width: 10),
-                  Text("Bio", style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(255, 90, 85, 85)
-                  ),),
-                ],
+          GestureDetector(
+            onTap: () {
+              _openBioModal(context);
+            },
+            child: Container(
+               padding: EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[200]
               ),
-            ),
+                child: Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Icon(Icons.person, color: Colors.black,),
+                    SizedBox(width: 10),
+                    Text("Bio", style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 90, 85, 85)
+                    ),),
+                  ],
+                ),
+              ),
           ),
         Container(
              padding: EdgeInsets.all(16),
@@ -188,30 +192,30 @@ class _ProfilepageState extends State<Profilepage> {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(16),
-            margin: EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[200]
-            ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (builder)=> Friendspage(email: email,)));
-              },
-              child: Row(
-                children: [
-                  SizedBox(width: 10,),
-                  Icon(Icons.people, color: Colors.black,),
-                  SizedBox(width: 10),
-                  Text("Friends", style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(255, 90, 85, 85)
-                  ),),
-                ],
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (builder)=> Friendspage(email: email,)));
+            },
+            child: Container(
+              padding: EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[200]
               ),
-            ),
+                child: Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Icon(Icons.people, color: Colors.black,),
+                    SizedBox(width: 10),
+                    Text("Friends", style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(255, 90, 85, 85)
+                    ),),
+                  ],
+                ),
+              ),
           ),
         ],
       ),

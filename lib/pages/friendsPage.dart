@@ -74,6 +74,7 @@ class _FriendspageState extends State<Friendspage> {
                       if (removed){
                         setState(() {
                           _getFriends();
+                          _getFriends();
                         });
                       }
                     }
