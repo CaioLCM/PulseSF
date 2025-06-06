@@ -14,17 +14,6 @@ class MyAppbar extends StatefulWidget {
 }
 
 class _MyAppbarState extends State<MyAppbar> {
-  int notifications = 0;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    searchFriendsRequests(widget.email).then((requests) => {
-      setState(() {
-        notifications = requests != ["Nothing to show"]? requests.length: 0;
-      })
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +22,6 @@ class _MyAppbarState extends State<MyAppbar> {
       builder: (_) => Notificationpage(email: widget.email,)
       );
   }
-
-  
 
     return Container(
             padding: EdgeInsets.all(18),
@@ -64,10 +51,6 @@ class _MyAppbarState extends State<MyAppbar> {
                               Navigator.push(context, MaterialPageRoute(builder: (builder) => MyApp()));
                             }, icon: Icon(Icons.logout), color: const Color.fromARGB(255, 255, 17, 0),),
                             IconButton(onPressed: (){_openNotificationsModal(context);}, icon: Icon(Icons.notifications)),
-                            CircleAvatar(
-                              radius: 15,
-                              child: Text(notifications.toString()),
-                            )
                           ],
                         ),
                     ],

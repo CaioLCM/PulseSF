@@ -10,68 +10,113 @@ class Optionslist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> Personal = [
-      Row(
-        children: [
-          SizedBox(width: 10),
-          Icon(Icons.precision_manufacturing),
-          SizedBox(width: 10),
-          TextButton(
-            onPressed:
-                () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (builder) => Projectspage()),
-                  ),
-                },
-            child: Text(
-              "Projects",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Fredoka",
-              ),
-            ),
+      GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (builder) => Projectspage()),
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(20, 20, 40, 20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.blue[400],
           ),
-        ],
+          child: Row(
+            children: [
+              SizedBox(width: 10),
+              Icon(Icons.precision_manufacturing),
+              SizedBox(width: 10),
+              Text(
+                "Projects",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Fredoka",
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      Row(
-        children: [
-          SizedBox(width: 10),
-          Icon(Icons.person),
-          SizedBox(width: 10),
-          TextButton(
-            onPressed:
-                () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (builder) => Profilepage()),
-                  ),
-                },
-            child: Text(
-              "Profile",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Fredoka",
-              ),
-            ),
+      GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (builder) => Profilepage()),
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(20, 20, 40, 20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.blue[400],
           ),
-        ],
+          child: Row(
+            children: [
+              SizedBox(width: 10),
+              Icon(Icons.person),
+              SizedBox(width: 10),
+              Text(
+                "Profile",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontFamily: "Fredoka",
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     ];
 
     List<Widget> Social = [
       GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Profilespage()));
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (context) => Profilespage()));
         },
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.orange[400],
+          ),
+          child: Row(
+            children: [
+              SizedBox(width: 10),
+              Icon(Icons.code),
+              SizedBox(width: 10),
+              Text(
+                "Match a coding buddy",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontFamily: "Fredoka",
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Container(
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.orange[400],
+        ),
         child: Row(
           children: [
             SizedBox(width: 10),
-            Icon(Icons.code),
+            Icon(Icons.chat),
             SizedBox(width: 10),
             Text(
-              "Match a coding buddy",
+              "Global chat",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
@@ -80,21 +125,6 @@ class Optionslist extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      Row(
-        children: [
-          SizedBox(width: 10),
-          Icon(Icons.chat),
-          SizedBox(width: 10),
-          Text(
-            "Global chat",
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-              fontFamily: "Fredoka",
-            ),
-          ),
-        ],
       ),
     ];
 
@@ -150,15 +180,7 @@ class Optionslist extends StatelessWidget {
               itemCount: Personal.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Container(
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.blue[400],
-                  ),
-                  child: Personal[index],
-                );
+                return Personal[index];
               },
             ),
           ),
@@ -180,15 +202,7 @@ class Optionslist extends StatelessWidget {
               itemCount: Personal.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Container(
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.orange[400],
-                  ),
-                  child: Social[index],
-                );
+                return Social[index];
               },
             ),
           ),
