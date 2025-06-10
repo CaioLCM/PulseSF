@@ -7,11 +7,9 @@ class ChatService {
   late IO.Socket socket;
 
   Future<List<Map<String, dynamic>>> fetchMessageHistory() async{
-    print("Chegou aq pdcrer?");
     try{
       final response = await http.get(Uri.parse("http://10.0.2.2:3000/messages"));
       if (response.statusCode == 200){
-        print("Deu tudo certo aq para pegar as msg papai");
         List<dynamic> messagesJson = json.decode(response.body);
         return messagesJson.cast<Map<String, dynamic>>();
       } else {
@@ -33,14 +31,14 @@ class ChatService {
     socket.connect();
 
     socket.onConnect((_){
-      print("conectado ao servidor");
+      print("Connected to server");
     });
 
     socket.on("newMessage", (data) {
-      print("Nova mensagem recebida: $data");
+      print("New message: $data");
       onNewMessage(data);
     });
-    socket.onDisconnect((_) => print("Desconectado do servidor"));
+    socket.onDisconnect((_) => print("Desconected"));
   }
 
   void sendGlobalMessage(String text, String senderEmail){

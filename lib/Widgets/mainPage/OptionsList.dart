@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pulsesf/main.dart';
+import 'package:pulsesf/pages/aboutSF_page.dart';
 import 'package:pulsesf/pages/chat_page.dart';
 import 'package:pulsesf/pages/profilePage.dart';
 import 'package:pulsesf/pages/profilesPage.dart';
@@ -41,13 +42,13 @@ class Optionslist extends StatelessWidget {
                   ),
                 ],
               ),
-               Container(
+              Container(
                 margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                 child: Text(
+                child: Text(
                   "Create/join a project!",
                   style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
-                               ),
-               ),
+                ),
+              ),
             ],
           ),
         ),
@@ -81,13 +82,13 @@ class Optionslist extends StatelessWidget {
                   ),
                 ],
               ),
-               Container(
+              Container(
                 margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                 child: Text(
+                child: Text(
                   "Access your profile",
                   style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
-                               ),
-               ),
+                ),
+              ),
             ],
           ),
         ),
@@ -127,17 +128,19 @@ class Optionslist extends StatelessWidget {
                   ),
                 ],
               ),
-               Text(
+              Text(
                 "See the neighbors' profile",
                 style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
               ),
             ],
           ),
-          
         ),
       ),
       GestureDetector(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChatPage(email: email,))),
+        onTap:
+            () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => ChatPage(email: email))),
         child: Container(
           padding: EdgeInsets.all(20),
           margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
@@ -175,55 +178,76 @@ class Optionslist extends StatelessWidget {
     ];
 
     List<Widget> SF = [
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              SizedBox(width: 10),
-              Icon(Icons.place_outlined),
-              SizedBox(width: 10),
-              Text(
-                "Discover Events",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontFamily: "Fredoka",
+      Container(
+        padding: EdgeInsets.all(20),
+        margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.green,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                SizedBox(width: 10),
+                Icon(Icons.place_outlined),
+                SizedBox(width: 10),
+                Text(
+                  "Discover Events",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontFamily: "Fredoka",
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Text(
-            "Coming soon",
-            style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
-          ),
-        ],
+              ],
+            ),
+            Text(
+              "Coming soon",
+              style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
+            ),
+          ],
+        ),
       ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
+      GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => AboutsfPage()));
+        },
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.green,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(width: 10),
-              Icon(Icons.car_crash),
-              SizedBox(width: 10),
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.car_crash),
+                  SizedBox(width: 10),
+                  Text(
+                    "More about SF",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontFamily: "Fredoka",
+                    ),
+                  ),
+                ],
+              ),
               Text(
-                "More about SF",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontFamily: "Fredoka",
-                ),
+                "See more about San Francisco",
+                style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
               ),
             ],
           ),
-          Text(
-            "Coming soon",
-            style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
-          ),
-        ],
+        ),
       ),
     ];
 
@@ -290,15 +314,7 @@ class Optionslist extends StatelessWidget {
               itemCount: SF.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Container(
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.green,
-                  ),
-                  child: SF[index],
-                );
+                return SF[index];
               },
             ),
           ),
