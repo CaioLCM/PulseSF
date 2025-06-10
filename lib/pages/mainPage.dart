@@ -69,7 +69,7 @@ class _MainpageState extends State<Mainpage> {
       body: Column(
         children: [
             MyAppbar(email, _profileImage),
-            Optionslist()
+            Optionslist(email: email,)
         ],
       ),
     );

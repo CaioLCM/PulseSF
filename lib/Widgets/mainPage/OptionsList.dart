@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pulsesf/main.dart';
+import 'package:pulsesf/pages/chat_page.dart';
 import 'package:pulsesf/pages/profilePage.dart';
 import 'package:pulsesf/pages/profilesPage.dart';
 import 'package:pulsesf/pages/projectsPage.dart';
 
 class Optionslist extends StatelessWidget {
-  const Optionslist({super.key});
+  final String email;
+  const Optionslist({required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -97,37 +99,40 @@ class Optionslist extends StatelessWidget {
           ),
         ),
       ),
-      Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.orange[400],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                SizedBox(width: 10),
-                Icon(Icons.chat),
-                SizedBox(width: 10),
-                Text(
-                  "Global chat",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                    fontFamily: "Fredoka",
+      GestureDetector(
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChatPage(email: email,))),
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.orange[400],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.chat),
+                  SizedBox(width: 10),
+                  Text(
+                    "Global chat",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontFamily: "Fredoka",
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Text(
-              "Coming soon",
-              style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
-            ),
-          ],
+                ],
+              ),
+              Text(
+                "Coming soon",
+                style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
+              ),
+            ],
+          ),
         ),
       ),
     ];
