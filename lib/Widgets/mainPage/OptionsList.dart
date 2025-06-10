@@ -26,15 +26,28 @@ class Optionslist extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             color: Colors.blue[400],
           ),
-          child: Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(width: 10),
-              Icon(Icons.precision_manufacturing),
-              SizedBox(width: 10),
-              Text(
-                "Projects",
-                style: TextStyle(fontSize: 20, fontFamily: "Fredoka"),
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.precision_manufacturing),
+                  SizedBox(width: 10),
+                  Text(
+                    "Projects",
+                    style: TextStyle(fontSize: 20, fontFamily: "Fredoka"),
+                  ),
+                ],
               ),
+               Container(
+                margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                 child: Text(
+                  "Create/join a project!",
+                  style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
+                               ),
+               ),
             ],
           ),
         ),
@@ -53,15 +66,28 @@ class Optionslist extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             color: Colors.blue[400],
           ),
-          child: Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(width: 10),
-              Icon(Icons.person),
-              SizedBox(width: 10),
-              Text(
-                "Profile",
-                style: TextStyle(fontSize: 20, fontFamily: "Fredoka"),
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.person),
+                  SizedBox(width: 10),
+                  Text(
+                    "Profile",
+                    style: TextStyle(fontSize: 20, fontFamily: "Fredoka"),
+                  ),
+                ],
               ),
+               Container(
+                margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                 child: Text(
+                  "Access your profile",
+                  style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
+                               ),
+               ),
             ],
           ),
         ),
@@ -82,21 +108,32 @@ class Optionslist extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             color: Colors.orange[400],
           ),
-          child: Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(width: 10),
-              Icon(Icons.code),
-              SizedBox(width: 10),
-              Text(
-                "Match a coding buddy",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontFamily: "Fredoka",
-                ),
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.code),
+                  SizedBox(width: 10),
+                  Text(
+                    "Match a coding buddy",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontFamily: "Fredoka",
+                    ),
+                  ),
+                ],
+              ),
+               Text(
+                "See the neighbors' profile",
+                style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
               ),
             ],
           ),
+          
         ),
       ),
       GestureDetector(
@@ -128,7 +165,7 @@ class Optionslist extends StatelessWidget {
                 ],
               ),
               Text(
-                "Coming soon",
+                "Talk with your neighbors",
                 style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
               ),
             ],
