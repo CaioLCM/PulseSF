@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pulsesf/main.dart';
 import 'package:pulsesf/pages/aboutSF_page.dart';
 import 'package:pulsesf/pages/chat_page.dart';
+import 'package:pulsesf/pages/eventsSF_page.dart';
 import 'package:pulsesf/pages/profilePage.dart';
 import 'package:pulsesf/pages/profilesPage.dart';
 import 'package:pulsesf/pages/projectsPage.dart';
@@ -178,37 +179,42 @@ class Optionslist extends StatelessWidget {
     ];
 
     List<Widget> SF = [
-      Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.green,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                SizedBox(width: 10),
-                Icon(Icons.place_outlined),
-                SizedBox(width: 10),
-                Text(
-                  "Discover Events",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                    fontFamily: "Fredoka",
+      GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => EventssfPage(email: email,)));
+        },
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.green,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.place_outlined),
+                  SizedBox(width: 10),
+                  Text(
+                    "Discover Events",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontFamily: "Fredoka",
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Text(
-              "Coming soon",
-              style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
-            ),
-          ],
+                ],
+              ),
+              Text(
+                "See what's happening at the city",
+                style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
+              ),
+            ],
+          ),
         ),
       ),
       GestureDetector(

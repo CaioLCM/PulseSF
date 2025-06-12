@@ -258,3 +258,13 @@ Future<bool> removeFriend(String email_req, String email_res) async {
     return false;
   }
 }
+
+Future<void> addEvent(String email_req, String title, String description, String date) async {
+  final url = Uri.parse("http://10.0.2.2:3000/addEvent");
+  final response = await http.post(url, body: {
+    "email_req": email_req,
+    "title": title,
+    "description": description,
+    "Date": date,
+  });
+}
