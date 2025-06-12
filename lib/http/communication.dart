@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pulsesf/Widgets/LoginPage/email.dart';
 import 'package:pulsesf/pages/createProjectMenu.dart';
 import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -269,16 +270,32 @@ Future<void> addEvent(String email_req, String title, String description, String
   });
 }
 
-Future<List<Map<String, String>>> getEvents() async {
+Future<List<Map<String, dynamic>>> getEvents() async {
   final url = Uri.parse("http://10.0.2.2:3000/getEvents");
   final response = await http.get(url);
-  List<Map<String, String>> events = [];
+  List<Map<String, dynamic>> events = [];
   if (response.statusCode == 200) {
-    final decoded = jsonDecode(response.body);
+   final decoded = jsonDecode(response.body);
     if(decoded is List){
-      decoded.map((e) => events.add({"emailOwner": e["creatorEmail"], "title": e["title"], "description": e["description"], "timestamp": e["timestamp"]})).toList();
+      decoded.map((e) => events.add({"emailOwner": e["creatorEmail"], "title": e["title"], "description": e["description"], "timestamp": e["timestamp"], "upvotes": e["upvotes"]??[], "downvotes": e["downvotes"]??[]})).toList();
       return events;
     }
   }
-  return <Map<String, String>>[];
+  return <Map<String, dynamic>>[];
+}
+
+Future<void> UpVote(String email, String title) async {
+  final url = Uri.parse("http://10.0.2.2:3000/UpVote");
+  final response = await http.post(url, body: {
+    "email": email,
+    "title": title
+  });
+}
+
+Future<void> DownVote(String email, String title) async {
+  final url = Uri.parse("http://10.0.2.2:3000/DownVote");
+  final response = await http.post(url, body: {
+    "email": email,
+    "title": title
+  });
 }

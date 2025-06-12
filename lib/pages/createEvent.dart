@@ -63,10 +63,10 @@ class _CreateeventState extends State<Createevent> {
             child: Text(date?? "Select date", style: TextStyle(fontFamily: "Fredoka"),),
           ),
           SizedBox(height: 30,),
-          ElevatedButton(onPressed: (){
+          ElevatedButton(onPressed: () async{
             if (date != null && titleController.text != "" && descriptionController.text != "") {
-              addEvent(widget.email, titleController.text, descriptionController.text, date!);
-              Navigator.of(context).pop();
+              await addEvent(widget.email, titleController.text, descriptionController.text, date!);
+              Navigator.of(context).pop(true);
             } else {
               if(date == null && titleController.text != "" && descriptionController.text != ""){
               ScaffoldMessenger.of(context).showSnackBar(
