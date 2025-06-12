@@ -66,6 +66,7 @@ class _CreateeventState extends State<Createevent> {
           ElevatedButton(onPressed: (){
             if (date != null && titleController.text != "" && descriptionController.text != "") {
               addEvent(widget.email, titleController.text, descriptionController.text, date!);
+              Navigator.of(context).pop();
             } else {
               if(date == null && titleController.text != "" && descriptionController.text != ""){
               ScaffoldMessenger.of(context).showSnackBar(

@@ -268,3 +268,17 @@ Future<void> addEvent(String email_req, String title, String description, String
     "Date": date,
   });
 }
+
+Future<List<Map<String, String>>> getEvents() async {
+  final url = Uri.parse("http://10.0.2.2:3000/getEvents");
+  final response = await http.get(url);
+  List<Map<String, String>> events = [];
+  if (response.statusCode == 200) {
+    final decoded = jsonDecode(response.body);
+    if(decoded is List){
+      decoded.map((e) => events.add({"emailOwner": e["creatorEmail"], "title": e["title"], "description": e["description"], "timestamp": e["timestamp"]})).toList();
+      return events;
+    }
+  }
+  return <Map<String, String>>[];
+}

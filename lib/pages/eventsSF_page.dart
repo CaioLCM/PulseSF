@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/pages/createEvent.dart';
 
 class EventssfPage extends StatefulWidget {
@@ -10,6 +11,20 @@ class EventssfPage extends StatefulWidget {
 }
 
 class EventssfPageState extends State<EventssfPage> {
+  List<Map<String, String>> events = [];
+  _EventsHandler() async{
+    getEvents().then((ev){
+      setState(() {
+        events = ev;
+      });
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _EventsHandler();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,15 +38,15 @@ class EventssfPageState extends State<EventssfPage> {
       body: Container(
         height: 300,
         child: ListView.builder(
-          itemCount: 5,
+          itemCount: events.length,
           itemBuilder:
               (context, index) => Column(
                 children: [
                   ListTile(
-                    leading: Text("Leading", style: TextStyle(fontFamily: "Fredoka"),),
-                    title: Text("Title", style: TextStyle(fontFamily: "Fredoka"),),
+                    leading: Text(events[index]["timestamp"]!, style: TextStyle(fontFamily: "Fredoka"),),
+                    title: Text(events[index]["title"]!, style: TextStyle(fontFamily: "Fredoka"),),
                     subtitle: Text(
-                      "Explaining aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", style: TextStyle(fontFamily: "Fredoka"),
+                      events[index]["description"]!, style: TextStyle(fontFamily: "Fredoka"),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
