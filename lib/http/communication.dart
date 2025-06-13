@@ -299,3 +299,10 @@ Future<void> DownVote(String email, String title) async {
     "title": title
   });
 }
+
+Future<void> RemoveEvent(String title) async{
+  final url = Uri.parse("http://10.0.2.2:3000/removeEvent");
+  final response = await http.post(url, body: {
+    "title": title
+  });
+}

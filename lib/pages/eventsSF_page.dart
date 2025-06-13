@@ -20,6 +20,10 @@ class EventssfPageState extends State<EventssfPage> {
     });
   }
 
+  _RemoveEventHandler(String title) async{
+    RemoveEvent(title).then((_) => _EventsHandler());
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -54,6 +58,7 @@ class EventssfPageState extends State<EventssfPage> {
                 downvoted = true;
               }
             });
+            bool owner = events[index]["emailOwner"] == widget.email;
             return Column(
               children: [
                 ListTile(
@@ -61,9 +66,22 @@ class EventssfPageState extends State<EventssfPage> {
                     events[index]["timestamp"]!,
                     style: TextStyle(fontFamily: "Fredoka"),
                   ),
-                  title: Text(
-                    events[index]["title"]!,
-                    style: TextStyle(fontFamily: "Fredoka"),
+                  title: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          events[index]["title"]!,
+                          style: TextStyle(fontFamily: "Fredoka"),
+                        ),
+                      ),
+
+                      owner
+                          ? IconButton(
+                              onPressed:  () async{await _RemoveEventHandler(events[index]["title"]);},
+                              icon: Icon(Icons.remove, color: Colors.red,),
+                            )
+                          : SizedBox.shrink(),
+                    ],
                   ),
                   subtitle: Text(
                     events[index]["description"]!,
