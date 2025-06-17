@@ -57,22 +57,6 @@ class _ProfilespageState extends State<Profilespage> {
       ),
       body: Column(
         children: [
-          /* Container(
-            color: Colors.purple,
-            width: double.infinity,
-            height: 90,
-            child: Row(
-              children: [
-                IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.exit_to_app), iconSize: 40, color: Colors.red,),
-                SizedBox(width: 120,),
-                Text("Users", style: TextStyle(
-                  fontFamily: "Fredoka",
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold
-                ),)
-              ],
-            ),
-          ), */
           SizedBox(height: 30),
           Container(
             height: 654,
@@ -128,8 +112,9 @@ class _ProfilespageState extends State<Profilespage> {
                                       SizedBox(width: 150),
                                       if (userEmail != profiles[index]["email"] &&
                                           snapshot.data == false)
-                                        
-                                        IconButton(
+                                        profiles[index]["friends"].contains(userEmail)
+                                        ? Icon(Icons.people)
+                                        :IconButton(
                                           onPressed: () {
                                             setState(() {
                                               addFriend(
@@ -143,7 +128,9 @@ class _ProfilespageState extends State<Profilespage> {
                                           iconSize: 30,
                                         ),
                                       if (snapshot.data == true)
-                                        Icon(Icons.timer),
+                                        profiles[index]["friends"].contains(userEmail)
+                                            ? Icon(Icons.people)
+                                            : Icon(Icons.hourglass_empty),
                                     ],
                                   ),
                                 ),
@@ -156,7 +143,6 @@ class _ProfilespageState extends State<Profilespage> {
 
                     if (snapshot.hasError) {
                       return ListTile(
-                        // Exemplo simples de como mostrar um erro
                         title: Text(profiles[index]["email"]),
                         subtitle: Text(
                           "Error!",

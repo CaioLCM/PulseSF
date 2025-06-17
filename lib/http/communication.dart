@@ -162,6 +162,7 @@ Future<List<Map<String, dynamic>>> searchUsers() async {
       final_body.add({
         "email": user["email"],
         "profile_picture": user["profile_picture"],
+        "friends": user["friends"]
       }),
     },
   );
