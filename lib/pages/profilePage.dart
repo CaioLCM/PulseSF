@@ -7,6 +7,7 @@ import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/pages/bioPage.dart';
 import 'package:pulsesf/pages/friendsPage.dart';
 import 'package:pulsesf/pages/mainPage.dart';
+import 'package:pulsesf/pages/userProjects_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
  
@@ -172,24 +173,27 @@ class _ProfilepageState extends State<Profilepage> {
               ],
             ),
           ),
-          Container(
-             padding: EdgeInsets.all(16),
-            margin: EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[200]
-            ),
-            child: Row(
-              children: [
-                SizedBox(width: 10,),
-                Icon(Icons.code, color: Colors.black,),
-                SizedBox(width: 10),
-                Text("Active Projects (coming soon)", style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 90, 85, 85)
-                ),),
-              ],
+          GestureDetector(
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserprojectsPage(user_email: email,))),
+            child: Container(
+               padding: EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[200]
+              ),
+              child: Row(
+                children: [
+                  SizedBox(width: 10,),
+                  Icon(Icons.code, color: Colors.black,),
+                  SizedBox(width: 10),
+                  Text("Active Projects", style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 90, 85, 85)
+                  ),),
+                ],
+              ),
             ),
           ),
           GestureDetector(

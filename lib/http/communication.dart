@@ -129,12 +129,13 @@ void addUserToProject(dynamic name, List<String> memberList) async {
   }
 }
 
-void removeUserFromProject(String email, List<String> member_list) async {
+Future<void> removeUserFromProject(String email, String project_name) async {
   final url = Uri.parse("http://10.0.2.2:3000/removeUser");
   var response = await http.post(
-    url,
-    headers: {"ContentType": "application/json; charset=UTF-8"},
-    body: jsonEncode({"email": email, "member_list": member_list}),
+    url, body: {
+      "email": email,
+      "project_name": project_name
+    }
   );
 }
 
@@ -143,6 +144,7 @@ Future<List<Map<String, dynamic>>> searchUsers() async {
   var response = await http.get(url);
   final response_body = jsonDecode(response.body);
   List<Map<String, dynamic>> final_body = [];
+  print(response_body);
   response_body["users_info"].forEach(
     (user) => {
       final_body.add({
