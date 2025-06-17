@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pulsesf/http/communication.dart';
+import 'package:pulsesf/pages/attending_events_page.dart';
 import 'package:pulsesf/pages/bioPage.dart';
 import 'package:pulsesf/pages/friendsPage.dart';
 import 'package:pulsesf/pages/mainPage.dart';
@@ -153,26 +154,29 @@ class _ProfilepageState extends State<Profilepage> {
                 ),
               ),
           ),
-        Container(
-             padding: EdgeInsets.all(16),
-            margin: EdgeInsets.only(bottom: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[200]
+        GestureDetector(
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AttendingEventsPage(email: email,))),
+          child: Container(
+               padding: EdgeInsets.all(16),
+              margin: EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[200]
+              ),
+              child: Row(
+                children: [
+                  SizedBox(width: 10,),
+                  Icon(Icons.calendar_month, color: Colors.black,),
+                  SizedBox(width: 10),
+                  Text("Attending events", style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 90, 85, 85)
+                  ),),
+                ],
+              ),
             ),
-            child: Row(
-              children: [
-                SizedBox(width: 10,),
-                Icon(Icons.calendar_month, color: Colors.black,),
-                SizedBox(width: 10),
-                Text("Participated Events (coming)", style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 90, 85, 85)
-                ),),
-              ],
-            ),
-          ),
+        ),
           GestureDetector(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserprojectsPage(user_email: email,))),
             child: Container(
