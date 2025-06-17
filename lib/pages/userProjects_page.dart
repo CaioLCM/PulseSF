@@ -56,30 +56,38 @@ class _UserprojectsPageState extends State<UserprojectsPage> {
                 child: ListView.builder(
                   itemCount: projects.length,
                   itemBuilder:
-                      (context, index) => ListTile(
-                        title: Text(
-                          projects[index].name,
-                          style: TextStyle(fontFamily: "Fredoka"),
-                        ),
-                        trailing: Text(
-                          "Members: ${projects[index].members}",
-                          style: TextStyle(fontFamily: "Fredoka"),
-                        ),
-                        subtitle: Text(
-                          projects[index].bio,
-                          style: TextStyle(fontFamily: "Fredoka"),
-                        ),
-                        leading: IconButton(
-                          onPressed: () async {
-                            await removeUserFromProject(
-                              widget.user_email,
+                      (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(
                               projects[index].name,
-                            );
-                            await _userProjectsHandler(widget.user_email);
-                          },
-                          icon: Icon(Icons.exit_to_app, color: Colors.red),
-                        ),
-                      ),
+                              style: TextStyle(fontFamily: "Fredoka"),
+                            ),
+                            trailing: Text(
+                              "Members: ${projects[index].members}",
+                              style: TextStyle(fontFamily: "Fredoka"),
+                            ),
+                            subtitle: Text(
+                              projects[index].bio,
+                              style: TextStyle(fontFamily: "Fredoka"),
+                            ),
+                            leading: IconButton(
+                              onPressed: () async {
+                                await removeUserFromProject(
+                                  widget.user_email,
+                                  projects[index].name,
+                                );
+                                await _userProjectsHandler(widget.user_email);
+                              },
+                              icon: Icon(Icons.exit_to_app, color: Colors.red),
+                            ),
+                          ),
+                          Divider(),
+                          SizedBox(height: 15,),
+                        ],
+                      );
+                      },
                 ),
               ),
             ),
