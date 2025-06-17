@@ -26,11 +26,20 @@ Future<bool> CreateAccount(
       body: {"username": nickname, 'email': email, 'password': password},
     );
     if (response.statusCode == 200) {
-      showDialog(context: context, builder: (context) => AlertDialog(
-        title: Text("Account created successfully!"),
-        content: Text("User will be redirected to the login page"),
-        actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text("Login page"))],
-      ));
+      showDialog(
+        context: context,
+        builder:
+            (context) => AlertDialog(
+              title: Text("Account created successfully!"),
+              content: Text("User will be redirected to the login page"),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Login page"),
+                ),
+              ],
+            ),
+      );
       Navigator.pop(context);
       return true;
     } else {
@@ -105,9 +114,14 @@ Future<void> removeProject(String name) async {
 
 Future<String> searchForProfilePicture(String email) async {
   final url = Uri.parse("http://10.0.2.2:3000/searchPicture");
-  var response = await http.post(url, body: {"email": email});
+  var response = await http.post(url, 
+  headers: {"Content-Type": "application/json"},
+  body: jsonEncode({"email": email}));
   final body = response.body;
+  print(response.statusCode);
   final decoded = jsonDecode(body);
+  print("AAAAAAAAAAAAAAAAAAA");
+  print(decoded);
   return decoded["picture"];
 }
 
@@ -132,10 +146,8 @@ void addUserToProject(dynamic name, List<String> memberList) async {
 Future<void> removeUserFromProject(String email, String project_name) async {
   final url = Uri.parse("http://10.0.2.2:3000/removeUser");
   var response = await http.post(
-    url, body: {
-      "email": email,
-      "project_name": project_name
-    }
+    url,
+    body: {"email": email, "project_name": project_name},
   );
 }
 
@@ -169,107 +181,112 @@ Future<void> updateBio(String email, String bio) async {
   final response = await http.post(url, body: {"email": email, "bio": bio});
 }
 
-Future<void> addFriend(String email_req, String email_res) async{
+Future<void> addFriend(String email_req, String email_res) async {
   final url = Uri.parse("http://10.0.2.2:3000/addFriend");
-  final response =  await http.post(url, body: {
-    "email_req": email_req,
-    "email_res": email_res
-  });
+  final response = await http.post(
+    url,
+    body: {"email_req": email_req, "email_res": email_res},
+  );
 }
 
-Future<bool> checkFriend(String email_req, String email_res) async{
+Future<bool> checkFriend(String email_req, String email_res) async {
   final url = Uri.parse("http://10.0.2.2:3000/checkFriend");
-  final response = await http.post(url, body: {
-    "email_req": email_req,
-    "email_res": email_res
-  });
-  if (response.statusCode == 200){
+  final response = await http.post(
+    url,
+    body: {"email_req": email_req, "email_res": email_res},
+  );
+  if (response.statusCode == 200) {
     return true;
-  }
-  else {
+  } else {
     return false;
   }
-
-
 }
-  Future<List<String>> searchFriendsRequests(String email) async{
-    final url = Uri.parse("http://10.0.2.2:3000/searchRequests");
-    final response = await http.post(url, body: {
-      "email": email
-    });
 
-    final dynamic response_decode = jsonDecode(response.body);
+Future<List<String>> searchFriendsRequests(String email) async {
+  final url = Uri.parse("http://10.0.2.2:3000/searchRequests");
+  final response = await http.post(url, body: {"email": email});
 
-    if (response.statusCode == 200){
-      if (response_decode != null && response_decode['requests'] is List){
-        final List<dynamic> dynamicList = response_decode["requests"];
-        final List<String> listString = dynamicList.map((e) => e.toString()).toList(); 
-        return listString;
-      }
-      else{
-        return ["Nothing to show"];
-      }
-    }
-    else {
+  final dynamic response_decode = jsonDecode(response.body);
+
+  if (response.statusCode == 200) {
+    if (response_decode != null && response_decode['requests'] is List) {
+      final List<dynamic> dynamicList = response_decode["requests"];
+      final List<String> listString =
+          dynamicList.map((e) => e.toString()).toList();
+      return listString;
+    } else {
       return ["Nothing to show"];
     }
+  } else {
+    return ["Nothing to show"];
   }
-
-Future<void> removeFriendRequest(String emailRequest, String emailResponse) async{
-  final url = Uri.parse("http://10.0.2.2:3000/removeFriendRequest");
-  final response = await http.post(url, body: {
-    "email_request": emailRequest,
-    "email_response": emailResponse
-  });
 }
 
-Future<void> acceptFriendRequest(String emailRequest, String emailResponse) async{
+Future<void> removeFriendRequest(
+  String emailRequest,
+  String emailResponse,
+) async {
+  final url = Uri.parse("http://10.0.2.2:3000/removeFriendRequest");
+  final response = await http.post(
+    url,
+    body: {"email_request": emailRequest, "email_response": emailResponse},
+  );
+}
+
+Future<void> acceptFriendRequest(
+  String emailRequest,
+  String emailResponse,
+) async {
   final url = Uri.parse("http://10.0.2.2:3000/acceptFriendRequest");
-  final response = await http.post(url, body: {
-    "email_req": emailRequest,
-    "email_res": emailResponse
-  });
+  final response = await http.post(
+    url,
+    body: {"email_req": emailRequest, "email_res": emailResponse},
+  );
 }
 
 Future<List<String>> searchFriends(String email) async {
   final url = Uri.parse("http://10.0.2.2:3000/searchFriends");
-  var response = await http.post(url, body: {
-    "email_user": email
-  });
+  var response = await http.post(url, body: {"email_user": email});
   final decoded = await jsonDecode(response.body);
-  if(decoded["friends"] is List){
+  if (decoded["friends"] is List) {
     final List<dynamic> friendsDynamic = decoded["friends"];
-    final List<String> friendslist = friendsDynamic.map((item) => item.toString()).toList();
+    final List<String> friendslist =
+        friendsDynamic.map((item) => item.toString()).toList();
     return friendslist;
+  } else {
+    return decoded["friends"];
   }
-  
-  else{
-      return decoded["friends"];
-  }
-  }
+}
 
 Future<bool> removeFriend(String email_req, String email_res) async {
   final url = Uri.parse("http://10.0.2.2:3000/removeFriend");
-  final response = await http.post(url, body: {
-    "email_req": email_req,
-    "email_res": email_res
-  });
-  if (response.statusCode == 200){
+  final response = await http.post(
+    url,
+    body: {"email_req": email_req, "email_res": email_res},
+  );
+  if (response.statusCode == 200) {
     return true;
-  }
-  else {
+  } else {
     return false;
   }
 }
 
-Future<void> addEvent(String email_req, String title, String description, String date) async {
+Future<void> addEvent(
+  String email_req,
+  String title,
+  String description,
+  String date,
+) async {
   final url = Uri.parse("http://10.0.2.2:3000/addEvent");
-  final response = await http.post(url, body: {
-    "email_req": email_req,
-    "title": title,
-    "description": description,
-    "Date": date,
-  });
+  final response = await http.post(
+    url,
+    body: {
+      "email_req": email_req,
+      "title": title,
+      "description": description,
+      "Date": date,
+    },
+  );
 }
 
 Future<List<Map<String, dynamic>>> getEvents() async {
@@ -277,9 +294,20 @@ Future<List<Map<String, dynamic>>> getEvents() async {
   final response = await http.get(url);
   List<Map<String, dynamic>> events = [];
   if (response.statusCode == 200) {
-   final decoded = jsonDecode(response.body);
-    if(decoded is List){
-      decoded.map((e) => events.add({"emailOwner": e["creatorEmail"], "title": e["title"], "description": e["description"], "timestamp": e["timestamp"], "upvotes": e["upvotes"]??[], "downvotes": e["downvotes"]??[]})).toList();
+    final decoded = jsonDecode(response.body);
+    if (decoded is List) {
+      decoded
+          .map(
+            (e) => events.add({
+              "emailOwner": e["creatorEmail"],
+              "title": e["title"],
+              "description": e["description"],
+              "timestamp": e["timestamp"],
+              "upvotes": e["upvotes"] ?? [],
+              "downvotes": e["downvotes"] ?? [],
+            }),
+          )
+          .toList();
       return events;
     }
   }
@@ -288,23 +316,15 @@ Future<List<Map<String, dynamic>>> getEvents() async {
 
 Future<void> UpVote(String email, String title) async {
   final url = Uri.parse("http://10.0.2.2:3000/UpVote");
-  final response = await http.post(url, body: {
-    "email": email,
-    "title": title
-  });
+  final response = await http.post(url, body: {"email": email, "title": title});
 }
 
 Future<void> DownVote(String email, String title) async {
   final url = Uri.parse("http://10.0.2.2:3000/DownVote");
-  final response = await http.post(url, body: {
-    "email": email,
-    "title": title
-  });
+  final response = await http.post(url, body: {"email": email, "title": title});
 }
 
-Future<void> RemoveEvent(String title) async{
+Future<void> RemoveEvent(String title) async {
   final url = Uri.parse("http://10.0.2.2:3000/removeEvent");
-  final response = await http.post(url, body: {
-    "title": title
-  });
+  final response = await http.post(url, body: {"title": title});
 }

@@ -58,7 +58,7 @@ class Optionslist extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (builder) => Profilepage()),
+            MaterialPageRoute(builder: (builder) => Profilepage(email: email,)),
           );
         },
         child: Container(

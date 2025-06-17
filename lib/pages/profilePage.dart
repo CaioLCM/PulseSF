@@ -13,7 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
  
 class Profilepage extends StatefulWidget {
-  const Profilepage({super.key});
+  final String email;
+  const Profilepage({super.key, required this.email});
 
   @override
   State<Profilepage> createState() => _ProfilepageState();
@@ -33,37 +34,25 @@ class _ProfilepageState extends State<Profilepage> {
   void initState(){
     super.initState();
     _loadProfileImage();
-    readToken();
   }
 
   void _loadProfileImage() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('jwt_token');
-      if (token != null){
-        var decodedToken = JwtDecoder.decode(token);
-        print(decodedToken['user']['profilePicture']);
-         if (decodedToken['user']['profilePicture'] != null) {
-          setState(() {
-          _profileImage = MemoryImage(base64Decode(decodedToken['user']['profilePicture']));
-      
-      });
-    }
-      }
+    searchForProfilePicture(widget.email).then((loaded) => setState(() {
+      _profileImage = MemoryImage(base64Decode(loaded));
+    }));
   }
 
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final prefs = await SharedPreferences.getInstance();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     Uint8List bytes;
     String base64Image = '';
 
     bytes = await pickedFile!.readAsBytes();
     base64Image = base64Encode(bytes);
-    updateAccountWithProfIlePicture(email, base64Image);
+    updateAccountWithProfIlePicture(widget.email, base64Image);
     
-    await prefs.setString("profile", base64Image);
     setState(() {
       _profileImage = MemoryImage(bytes);
     });
@@ -83,21 +72,6 @@ class _ProfilepageState extends State<Profilepage> {
     );
 
   }
-
-  String email = '';
-  
-  void readToken() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('jwt_token');
-
-      if (token != null){
-        var decodedToken = JwtDecoder.decode(token);
-        setState(() {
-        email = decodedToken['user']['email'];
-        });
-
-      }
-  }  
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +96,7 @@ class _ProfilepageState extends State<Profilepage> {
           ),
           SizedBox(height: 20,),
           FittedBox(
-            child: Text(email, style: TextStyle(
+            child: Text(widget.email, style: TextStyle(
               fontSize: 30
             ),),
           ),
@@ -155,7 +129,7 @@ class _ProfilepageState extends State<Profilepage> {
               ),
           ),
         GestureDetector(
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AttendingEventsPage(email: email,))),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AttendingEventsPage(email: widget.email,))),
           child: Container(
                padding: EdgeInsets.all(16),
               margin: EdgeInsets.only(bottom: 16),
@@ -178,7 +152,7 @@ class _ProfilepageState extends State<Profilepage> {
             ),
         ),
           GestureDetector(
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserprojectsPage(user_email: email,))),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => UserprojectsPage(user_email: widget.email,))),
             child: Container(
                padding: EdgeInsets.all(16),
               margin: EdgeInsets.only(bottom: 16),
@@ -202,7 +176,7 @@ class _ProfilepageState extends State<Profilepage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (builder)=> Friendspage(email: email,)));
+              Navigator.of(context).push(MaterialPageRoute(builder: (builder)=> Friendspage(email: widget.email,)));
             },
             child: Container(
               padding: EdgeInsets.all(16),
