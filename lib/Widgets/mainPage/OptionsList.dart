@@ -94,6 +94,46 @@ class Optionslist extends StatelessWidget {
           ),
         ),
       ),
+      GestureDetector(
+        onTap: () {
+          /* Navigator.push(
+            context,
+            MaterialPageRoute(builder: (builder) => Profilepage(email: email,)),
+          ); */
+        },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(20, 20, 40, 20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.blue[400],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.person),
+                  SizedBox(width: 10),
+                  Text(
+                    "To-do list",
+                    style: TextStyle(fontSize: 20, fontFamily: "Fredoka"),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                child: Text(
+                  "Access your to-do list",
+                  style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     ];
 
     List<Widget> Social = [

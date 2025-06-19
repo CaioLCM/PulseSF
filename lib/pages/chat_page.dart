@@ -17,7 +17,7 @@ class _ChatPageState extends State<ChatPage> {
   bool _isLoading = true;
 
   Future<void> _loadChat() async {
-    final history = await _chatService.fetchMessageHistory();
+    final history = await _chatService.fetchGlobalMessageHistory();
     setState(() {
       _isLoading = false;
       _messages = history;

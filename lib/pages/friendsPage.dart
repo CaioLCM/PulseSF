@@ -69,17 +69,24 @@ class _FriendspageState extends State<Friendspage> {
                   // need to add profile picture lol
                   Text(friends[index]),
                   SizedBox(width: 60,),
-                  IconButton(onPressed: (){removeFriend(widget.email, friends[index]).then(
-                    (removed){
-                      if (removed){
-                        setState(() {
-                          _getFriends();
-                          _getFriends();
-                        });
-                      }
-                    }
-                  );
-                  }, icon: Icon(Icons.remove_circle))
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(onPressed: (){removeFriend(widget.email, friends[index]).then(
+                          (removed){
+                            if (removed){
+                              setState(() {
+                                _getFriends();
+                                _getFriends();
+                              });
+                            }
+                          }
+                        );
+                        }, icon: Icon(Icons.remove_circle)),
+                      ],
+                    ),
+                  )
                   //remove friend option
                 ],
               ),

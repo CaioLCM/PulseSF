@@ -1,14 +1,13 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatService {
   late IO.Socket socket;
 
-  Future<List<Map<String, dynamic>>> fetchMessageHistory() async{
+  Future<List<Map<String, dynamic>>> fetchGlobalMessageHistory() async{
     try{
-      final response = await http.get(Uri.parse("http://10.0.2.2:3000/messages"));
+      final response = await http.get(Uri.parse("http://10.0.2.2:3000/Globalmessages"));
       if (response.statusCode == 200){
         List<dynamic> messagesJson = json.decode(response.body);
         return messagesJson.cast<Map<String, dynamic>>();
@@ -21,6 +20,18 @@ class ChatService {
       return [];
     }
   } 
+
+  Future<void> fetchLocalMessageHistory() async{
+    try{
+      final response = await http.get(Uri.parse("http://10.0.2.2:3000/Localmessages"));
+      if (response.statusCode == 200){
+        List<dynamic> messagesJson = json.decode(response.body);
+        //return messagesJson.cast<Map<String, dynamic>>();
+      }
+    } catch (error){
+      print(error);
+    }
+  }
 
   void connect(Null Function(dynamic data) onNewMessage){
     socket = IO.io('http://10.0.2.2:3000', {
