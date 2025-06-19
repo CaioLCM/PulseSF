@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pulsesf/http/communication.dart';
 import 'package:pulsesf/pages/displayProfiles.dart';
+import 'package:pulsesf/pages/message_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Profilespage extends StatefulWidget {
@@ -127,6 +128,9 @@ class _ProfilespageState extends State<Profilespage> {
                                           icon: Icon(Icons.add),
                                           iconSize: 30,
                                         ),
+                                      IconButton(onPressed: (){
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (builder) => MessagePage(send_email: userEmail, receive_email: profiles[index]["email"])));
+                                      }, icon: Icon(Icons.message)),
                                       if (snapshot.data == true)
                                         profiles[index]["friends"].contains(userEmail)
                                             ? Icon(Icons.people)
