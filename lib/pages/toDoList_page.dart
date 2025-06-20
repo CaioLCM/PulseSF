@@ -12,7 +12,7 @@ class TodolistPage extends StatefulWidget {
 class _TodolistPageState extends State<TodolistPage> {
   final _formKey = GlobalKey<FormState>();
   String title_content = "";
-  List<dynamic> toDoList = [];
+  List<Map<String, dynamic>> toDoList = [];
 
   Future<void> _submit() async{
     final isValid = _formKey.currentState?.validate();
@@ -35,6 +35,11 @@ class _TodolistPageState extends State<TodolistPage> {
 
   Future<void> _updateToDoList(String title) async {
     await updateToDoList(widget.email, title);
+  }
+
+  Future<void> _removeToDoItem(String title) async{
+    await removeToDoItem(widget.email, title);
+    await _loadToDoList();
   }
 
   @override
@@ -64,23 +69,35 @@ class _TodolistPageState extends State<TodolistPage> {
               Text("Create an event!", style: TextStyle(fontFamily: "Fredoka", fontSize: 20),),
             ],
           )
-          :ListView.builder(
-            shrinkWrap: true,
-            itemCount: toDoList.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(children: [Text(toDoList[index])]),
+          :SizedBox(
+            height: 834,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: toDoList.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(children: [
+                          Checkbox(value: toDoList[index]["checked"] as bool, onChanged: (bool? value){
+                            setState(() {
+                              toDoList[index]["checked"] = !(toDoList[index]["checked"] as bool);
+                              updateCheckState(widget.email, toDoList[index]["title"]);
+                            }); 
+                          }),
+                          Expanded(child: Text(toDoList[index]["title"], style: TextStyle(fontFamily: "Fredoka", fontStyle: toDoList[index]["checked"]? FontStyle.italic: FontStyle.normal, decoration: toDoList[index]["checked"]? TextDecoration.lineThrough: TextDecoration.none),)),
+                          IconButton(onPressed: (){_removeToDoItem(toDoList[index]["title"]);}, icon: Icon(Icons.delete, color: Colors.red,))
+                          ]),
+                      ),
                     ),
-                  ),
-                  Divider(),
-                ],
-              );
-            },
+                    Divider(),
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),

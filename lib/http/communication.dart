@@ -330,15 +330,28 @@ Future<void> RemoveEvent(String title) async {
   final response = await http.post(url, body: {"title": title});
 }
 
-Future<List> loadToDoList(String email) async {
+Future<List<Map<String, dynamic>>> loadToDoList(String email) async {
   final url = Uri.parse("http://10.0.2.2:3000/loadToDoList");
   final response = await http.post(url, body: {"email": email});
   final decoded = jsonDecode(response.body);
-  print(decoded is List);
-  return decoded;
+  return List<Map<String, dynamic>>.from(decoded);
 }
 
 Future<void> updateToDoList(String email, String title) async {
   final url = Uri.parse("http://10.0.2.2:3000/updateToDoList");
   final response = await http.post(url, body: {"email": email, "title": title});
+}
+
+Future<void> updateCheckState(String email, String title) async{
+  final url = Uri.parse("http://10.0.2.2:3000/updateCheckState");
+  final response = await http.post(url, body: {
+    "email": email, "title": title 
+  });
+}
+
+Future<void> removeToDoItem(String email, String title) async {
+  final url = Uri.parse("http://10.0.2.2:3000/removeToDoItem");
+  final response = await http.post(url, body: {
+    "email": email, "title": title
+  });
 }
