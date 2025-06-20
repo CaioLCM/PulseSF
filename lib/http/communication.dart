@@ -329,3 +329,14 @@ Future<void> RemoveEvent(String title) async {
   final url = Uri.parse("http://10.0.2.2:3000/removeEvent");
   final response = await http.post(url, body: {"title": title});
 }
+
+Future<List<String>> loadToDoList(String email) async {
+  final url = Uri.parse("http://10.0.2.2:3000/loadToDoList");
+  final response = await http.post(url, body: {"email": email});
+  return response.body as List<String>;
+}
+
+Future<void> updateToDoList(String email) async {
+  final url = Uri.parse("http://10.0.2.2:3000/updateToDoList");
+  final response = await http.post(url, body: {"email": email});
+}

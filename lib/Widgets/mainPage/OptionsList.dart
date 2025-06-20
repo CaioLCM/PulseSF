@@ -6,6 +6,7 @@ import 'package:pulsesf/pages/eventsSF_page.dart';
 import 'package:pulsesf/pages/profilePage.dart';
 import 'package:pulsesf/pages/profilesPage.dart';
 import 'package:pulsesf/pages/projectsPage.dart';
+import 'package:pulsesf/pages/toDoList_page.dart';
 
 class Optionslist extends StatelessWidget {
   final String email;
@@ -96,10 +97,10 @@ class Optionslist extends StatelessWidget {
       ),
       GestureDetector(
         onTap: () {
-          /* Navigator.push(
+          Navigator.push(
             context,
-            MaterialPageRoute(builder: (builder) => Profilepage(email: email,)),
-          ); */
+            MaterialPageRoute(builder: (builder) => TodolistPage(email: email,)),
+          ); 
         },
         child: Container(
           padding: EdgeInsets.fromLTRB(20, 20, 40, 20),
