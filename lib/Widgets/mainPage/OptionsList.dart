@@ -336,7 +336,7 @@ class Optionslist extends StatelessWidget {
           SizedBox(
             height: 300,
             child: ListView.builder(
-              itemCount: Personal.length,
+              itemCount: Social.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return Social[index];

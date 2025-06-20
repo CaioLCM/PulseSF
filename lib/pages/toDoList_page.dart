@@ -12,12 +12,16 @@ class TodolistPage extends StatefulWidget {
 class _TodolistPageState extends State<TodolistPage> {
   final _formKey = GlobalKey<FormState>();
   String title_content = "";
-  List<String> toDoList = [];
+  List<dynamic> toDoList = [];
 
-  void _submit(){
+  Future<void> _submit() async{
     final isValid = _formKey.currentState?.validate();
     if (isValid!){
-      //dsdddd
+      Navigator.of(context).pop();
+      await updateToDoList(widget.email, title_content);
+      _loadToDoList().then((_) => setState(() {
+        title_content = "";
+      }));
     }
   }
 
@@ -29,8 +33,14 @@ class _TodolistPageState extends State<TodolistPage> {
     });
   }
 
-  Future<void> _updateToDoList() async {
-    await updateToDoList(widget.email);
+  Future<void> _updateToDoList(String title) async {
+    await updateToDoList(widget.email, title);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     _loadToDoList();
   }
 
@@ -45,10 +55,18 @@ class _TodolistPageState extends State<TodolistPage> {
         backgroundColor: Colors.purple,
       ),
       body: Column(
+        mainAxisAlignment: toDoList.isEmpty? MainAxisAlignment.center: MainAxisAlignment.start,
         children: [
-          ListView.builder(
+          toDoList.isEmpty 
+          ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("Create an event!", style: TextStyle(fontFamily: "Fredoka", fontSize: 20),),
+            ],
+          )
+          :ListView.builder(
             shrinkWrap: true,
-            itemCount: 5,
+            itemCount: toDoList.length,
             itemBuilder: (context, index) {
               return Column(
                 children: [
@@ -56,7 +74,7 @@ class _TodolistPageState extends State<TodolistPage> {
                     margin: EdgeInsets.all(10),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Row(children: [Text("Event name")]),
+                      child: Row(children: [Text(toDoList[index])]),
                     ),
                   ),
                   Divider(),
@@ -78,10 +96,11 @@ class _TodolistPageState extends State<TodolistPage> {
                       Padding(
                         padding: const EdgeInsets.all(13.0),
                         child: TextFormField(
+                          style: TextStyle(fontFamily: "Fredoka"),
                           key: ValueKey("name"),
                           initialValue: title_content,
                           onChanged: (name) => title_content = name,
-                          decoration: InputDecoration(label: Text("Title")),
+                          decoration: InputDecoration(label: Text("Title", style: TextStyle(fontFamily: "Fredoka"),)),
                           validator: (name){
                             final _name = name ?? '';
                             if (_name.trim().length < 3){
@@ -94,7 +113,6 @@ class _TodolistPageState extends State<TodolistPage> {
                       ElevatedButton(onPressed: (){_submit();}, child: Text("Save", style: TextStyle(fontFamily: "Fredoka"),))
                     ],
                   )
-                
                 )
               ],
             ),
