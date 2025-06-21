@@ -13,6 +13,7 @@ class _TodolistPageState extends State<TodolistPage> {
   final _formKey = GlobalKey<FormState>();
   String title_content = "";
   List<Map<String, dynamic>> toDoList = [];
+  String? selectedOption;
 
   Future<void> _submit() async{
     final isValid = _formKey.currentState?.validate();
@@ -40,6 +41,87 @@ class _TodolistPageState extends State<TodolistPage> {
   Future<void> _removeToDoItem(String title) async{
     await removeToDoItem(widget.email, title);
     await _loadToDoList();
+  }
+
+  void _showDeleteConfirmationDialog (BuildContext context, String title) {
+    showDialog(context: context, builder:(context) {
+      return AlertDialog(
+        title: Text("Confirm delete", style: TextStyle(fontFamily: "Fredoka"),),
+        content: Text("Are you sure about that?", style: TextStyle(fontFamily: "Fredoka"),),
+        actions: [
+          TextButton(onPressed: (){Navigator.of(context).pop();}, child: Text("Cancel", style: TextStyle(fontFamily: "Fredoka"),)),
+          TextButton(onPressed: () async{
+            Navigator.of(context).pop();
+            await _removeToDoItem(title);
+          }, child: Text("Delete", style: TextStyle(fontFamily: "Fredoka"),))
+        ],
+      );
+    },);
+  }
+
+  void _createNewTag(BuildContext context){
+    Color? selectedColor;
+
+    final List<Color> colors = [
+      Colors.red,
+      Colors.green,
+      Colors.blue,
+      Colors.yellow,
+      Colors.purple
+    ];
+
+    showModalBottomSheet(context: context, builder:(context) {
+      return StatefulBuilder(
+        builder: (context, setState) => Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  label: Text("Tag name", style: TextStyle(fontFamily: "Fredoka"),)
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DropdownButton<Color>(
+                    hint: Text("Color"),
+                    value: selectedColor,
+                    items: colors.map((Color color){
+                      return DropdownMenuItem<Color>(
+                        value: color,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                color: color,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.black26)
+                              ),
+                            )
+                          ],
+                        ));
+                    }).toList(), // Convert Iterable to List
+                    onChanged: (Color? newColor){
+                      setState(() {
+                        selectedColor = newColor;
+                      });
+                    }
+                  ),
+                ),
+                SizedBox(width: 80,),
+                ElevatedButton(onPressed: (){}, child: Text("Create"))
+              ],
+            ),
+          ],
+        ),
+      );
+    },);
   }
 
   @override
@@ -77,6 +159,46 @@ class _TodolistPageState extends State<TodolistPage> {
               itemBuilder: (context, index) {
                 return Column(
                   children: [
+                    SizedBox(height: 7,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 15,),
+                        Expanded(child: Text("deadline", style: TextStyle(fontFamily: "Fredoka"),)),
+                        DropdownButton(
+                          hint: Text("Tag"),
+                          value: selectedOption,
+                          items: [
+                            DropdownMenuItem<String>(
+                              value: "Tag1",
+                              child: Text("None", style: TextStyle(fontFamily: "Fredoka"),),
+                            ),
+                            DropdownMenuItem<String>(
+                              value: "Create",
+                              child: Row(
+                                children: [
+                                Icon(Icons.add),
+                                Text("Create", style: TextStyle(fontFamily: "Fredoka"),)
+                                ]
+                              )
+                            ),
+                          ],
+                          onChanged: (String? newValue) {
+                            if(newValue == "Create"){
+                              _createNewTag(context);
+                              setState(() {
+                                selectedOption = "Tag1";
+                              });
+                            }
+                            else {
+                               setState(() {
+                                  selectedOption = newValue;
+                            });
+                            }
+                          }),
+                          SizedBox(width: 15,)
+                      ],
+                    ),
                     Container(
                       margin: EdgeInsets.all(10),
                       child: Padding(
@@ -89,7 +211,7 @@ class _TodolistPageState extends State<TodolistPage> {
                             }); 
                           }),
                           Expanded(child: Text(toDoList[index]["title"], style: TextStyle(fontFamily: "Fredoka", fontStyle: toDoList[index]["checked"]? FontStyle.italic: FontStyle.normal, decoration: toDoList[index]["checked"]? TextDecoration.lineThrough: TextDecoration.none),)),
-                          IconButton(onPressed: (){_removeToDoItem(toDoList[index]["title"]);}, icon: Icon(Icons.delete, color: Colors.red,))
+                          IconButton(onPressed: (){_showDeleteConfirmationDialog(context, toDoList[index]["title"]);}, icon: Icon(Icons.delete, color: Colors.red,))
                           ]),
                       ),
                     ),
