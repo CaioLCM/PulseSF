@@ -355,3 +355,26 @@ Future<void> removeToDoItem(String email, String title) async {
     "email": email, "title": title
   });
 }
+
+Future<void> createTag(String email, String title, String color) async{
+  final url = Uri.parse("http://10.0.2.2:3000/createTag");
+  final response = await http.post(url, body: {
+    "email": email, "title": title, "color": color
+  });
+}
+
+Future<void> addTag(String email, String title, String color) async{
+  final url = Uri.parse("http://10.0.2.2:300/addTag");
+  final response = await http.post(url, body: {
+    "email": email, "title": title, "color": color
+  });
+}
+
+Future<List<Map<String, dynamic>>> loadTags(String email) async {
+  final url = Uri.parse("http://10.0.2.2:3000/loadTags");
+  final response = await http.post(url, body: {
+    "email": email
+  });
+  final decoded = jsonDecode(response.body);
+  return List<Map<String, dynamic>>.from(decoded);
+}

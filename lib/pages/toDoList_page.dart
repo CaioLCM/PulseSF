@@ -91,6 +91,18 @@ class _TodolistPageState extends State<TodolistPage> {
     return Color(int.parse(hex, radix: 16));
   }
 
+  Future<void> _loadTags() async{
+    await loadTags(widget.email).then((loaded) {
+      print(loaded);
+      setState(() {
+        tags = loaded.map<Map<String, String>>((e) => {
+          "name": e["tagname"] as String,
+          "color": e["color"] as String
+        }).toList();
+      });
+    });
+  }
+
   Future<void> _createNewTag(BuildContext context) async{
     TextEditingController tagNameController = TextEditingController();
     Color? selectedColor;
@@ -101,6 +113,7 @@ class _TodolistPageState extends State<TodolistPage> {
       Colors.blue,
       Colors.yellow,
       Colors.purple,
+      Colors.black
     ];
 
     showModalBottomSheet(
@@ -177,10 +190,9 @@ class _TodolistPageState extends State<TodolistPage> {
               ),
         );
       },
-    ).then((_value) =>{
-      setState(() {
-        tags.add(_value);
-      })
+    ).then((_value) async {
+      await createTag(widget.email, _value["name"], _value["color"]);
+      await _loadTags();
     });
   }
 
@@ -188,6 +200,7 @@ class _TodolistPageState extends State<TodolistPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _loadTags();
     _loadToDoList();
   }
 
