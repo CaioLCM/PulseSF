@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pulsesf/http/communication.dart';
 
 class TodolistPage extends StatefulWidget {
@@ -34,27 +35,28 @@ class _TodolistPageState extends State<TodolistPage> {
     loadToDoList(widget.email).then((loaded) {
       setState(() {
         toDoList = loaded;
-        
+
         selectedTags.clear();
 
-        for (int i = 0; i < toDoList.length; i ++){
+        for (int i = 0; i < toDoList.length; i++) {
           final tag = toDoList[i]["tag"];
 
-          if (tag != null && tag.isNotEmpty){
+          if (tag != null && tag.isNotEmpty) {
             final tagName = tag[0]["tagname"];
             final color = tag[0]["color"];
 
-            final foundIndex = tags.indexWhere((element) => element["name"] == tagName && element["color"] == color);
-          
-            if (foundIndex != -1){
+            final foundIndex = tags.indexWhere(
+              (element) =>
+                  element["name"] == tagName && element["color"] == color,
+            );
+
+            if (foundIndex != -1) {
               selectedTags[i] = "Tag$foundIndex";
             } else {
               selectedTags[i] = null;
             }
-          
           }
         }
-
       });
     });
   }
@@ -68,8 +70,17 @@ class _TodolistPageState extends State<TodolistPage> {
     await _loadToDoList();
   }
 
-  Future<void> _addTagToToDoEvent(String title, String tagName, String color) async {
-    addTagToToDoEvent(widget.email, title, tagName, color).then((_) => _loadToDoList());
+  Future<void> _addTagToToDoEvent(
+    String title,
+    String tagName,
+    String color,
+  ) async {
+    addTagToToDoEvent(
+      widget.email,
+      title,
+      tagName,
+      color,
+    ).then((_) => _loadToDoList());
   }
 
   void _showDeleteConfirmationDialog(BuildContext context, String title) {
@@ -116,20 +127,23 @@ class _TodolistPageState extends State<TodolistPage> {
     return Color(int.parse(hex, radix: 16));
   }
 
-  Future<void> _loadTags() async{
+  Future<void> _loadTags() async {
     await loadTags(widget.email).then((loaded) {
       setState(() {
-        tags = loaded.map<Map<String, String>>((e) => {
-          "name": e["tagname"] as String,
-          "color": e["color"] as String
-        }).toList();
+        tags =
+            loaded
+                .map<Map<String, String>>(
+                  (e) => {
+                    "name": e["tagname"] as String,
+                    "color": e["color"] as String,
+                  },
+                )
+                .toList();
       });
     });
   }
 
-  
-
-  Future<void> _createNewTag(BuildContext context) async{
+  Future<void> _createNewTag(BuildContext context) async {
     TextEditingController tagNameController = TextEditingController();
     Color? selectedColor;
 
@@ -139,7 +153,7 @@ class _TodolistPageState extends State<TodolistPage> {
       Colors.blue,
       Colors.yellow,
       Colors.purple,
-      Colors.black
+      Colors.black,
     ];
 
     showModalBottomSheet(
@@ -202,7 +216,7 @@ class _TodolistPageState extends State<TodolistPage> {
                         onPressed: () {
                           Navigator.of(context).pop({
                             "name": tagNameController.text,
-                            "color": colorToHex(selectedColor!)
+                            "color": colorToHex(selectedColor!),
                           });
                         },
                         child: Text(
@@ -229,7 +243,7 @@ class _TodolistPageState extends State<TodolistPage> {
     _loadTagsAndToDos();
   }
 
-  Future<void> _loadTagsAndToDos() async{
+  Future<void> _loadTagsAndToDos() async {
     await _loadTags();
     await _loadToDoList();
   }
@@ -273,13 +287,8 @@ class _TodolistPageState extends State<TodolistPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SizedBox(width: 15),
-                            Expanded(
-                              child: Text(
-                                "deadline",
-                                style: TextStyle(fontFamily: "Fredoka"),
-                              ),
-                            ),
-                            DropdownButton( ////////////////////////////////////////////////////////////////
+                            DropdownButton(
+                              ////////////////////////////////////////////////////////////////
                               hint: Text("Tag"),
                               value: selectedTags[index],
                               items: [
@@ -297,7 +306,10 @@ class _TodolistPageState extends State<TodolistPage> {
                                     value: "Tag$index",
                                     child: Text(
                                       tag["name"] ?? "",
-                                      style: TextStyle(fontFamily: "Fredoka", color: hexToColor(tag["color"]!)),
+                                      style: TextStyle(
+                                        fontFamily: "Fredoka",
+                                        color: hexToColor(tag["color"]!),
+                                      ),
                                     ),
                                   );
                                 }),
@@ -316,25 +328,39 @@ class _TodolistPageState extends State<TodolistPage> {
                               ],
                               onChanged: (String? newValue) {
                                 if (newValue == "Create") {
-                                  _createNewTag(context).then((_){
+                                  _createNewTag(context).then((_) {
                                     setState(() {
-                                    selectedTags[index] = null;
-                                    });  
+                                      selectedTags[index] = null;
+                                    });
                                   });
                                 } else {
                                   setState(() {
-                                    selectedTags[index] = newValue == "None"? null : newValue;
-                                    if (newValue != "None"){
-                                      final tagIndex = int.parse(newValue!.replaceAll("Tag", ""));
+                                    selectedTags[index] =
+                                        newValue == "None" ? null : newValue;
+                                    if (newValue != "None") {
+                                      final tagIndex = int.parse(
+                                        newValue!.replaceAll("Tag", ""),
+                                      );
                                       final tag = tags[tagIndex];
-
                                       final tagName = tag["name"]!;
                                       final color = tag["color"]!;
-                                      addTagToToDoEvent(widget.email, toDoList[index]["title"], tagName, color);             
+                                      addTagToToDoEvent(
+                                        widget.email,
+                                        toDoList[index]["title"],
+                                        tagName,
+                                        color,
+                                      );
+                                    }
+                                    if (newValue == "None") {
+                                      addTagToToDoEvent(
+                                        widget.email,
+                                        toDoList[index]["title"],
+                                        "None",
+                                        "None",
+                                      );
                                     }
                                   });
                                 }
-                                print(selectedTags);
                               },
                             ),
                             SizedBox(width: 15),
@@ -401,49 +427,54 @@ class _TodolistPageState extends State<TodolistPage> {
           showModalBottomSheet(
             context: context,
             builder: (context) {
-              return Scaffold(
-                body: Column(
-                  children: [
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(13.0),
-                            child: TextFormField(
-                              style: TextStyle(fontFamily: "Fredoka"),
-                              key: ValueKey("name"),
-                              initialValue: title_content,
-                              onChanged: (name) => title_content = name,
-                              decoration: InputDecoration(
-                                label: Text(
-                                  "Title",
-                                  style: TextStyle(fontFamily: "Fredoka"),
+              dynamic selectedDate = "Date";
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  return Scaffold(
+                  body: Column(
+                    children: [
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(13.0),
+                              child: TextFormField(
+                                style: TextStyle(fontFamily: "Fredoka"),
+                                key: ValueKey("name"),
+                                initialValue: title_content,
+                                onChanged: (name) => title_content = name,
+                                decoration: InputDecoration(
+                                  label: Text(
+                                    "Title",
+                                    style: TextStyle(fontFamily: "Fredoka"),
+                                  ),
                                 ),
+                                validator: (name) {
+                                  final _name = name ?? '';
+                                  if (_name.trim().length < 3) {
+                                    return "You need to put more words ; )";
+                                  }
+                                  return null;
+                                },
                               ),
-                              validator: (name) {
-                                final _name = name ?? '';
-                                if (_name.trim().length < 3) {
-                                  return "You need to put more words ; )";
-                                }
-                                return null;
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                  _submit();
                               },
+                              child: Text(
+                                "Save",
+                                style: TextStyle(fontFamily: "Fredoka"),
+                              ),
                             ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              _submit();
-                            },
-                            child: Text(
-                              "Save",
-                              style: TextStyle(fontFamily: "Fredoka"),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                );
+                },
               );
             },
           );

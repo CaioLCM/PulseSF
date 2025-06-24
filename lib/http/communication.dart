@@ -380,7 +380,6 @@ Future<List<Map<String, dynamic>>> loadTags(String email) async {
 }
 
 Future<void> addTagToToDoEvent(String email, String title, String tagName, String color) async {
-  print("chamou");
   final url = Uri.parse("http://10.0.2.2:3000/addTagToToDoEvent");
   final response = await http.post(url, body: {
     "email": email, "title": title, "tagName": tagName, "color": color
