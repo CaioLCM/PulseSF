@@ -34,6 +34,27 @@ class _TodolistPageState extends State<TodolistPage> {
     loadToDoList(widget.email).then((loaded) {
       setState(() {
         toDoList = loaded;
+        
+        selectedTags.clear();
+
+        for (int i = 0; i < toDoList.length; i ++){
+          final tag = toDoList[i]["tag"];
+
+          if (tag != null && tag.isNotEmpty){
+            final tagName = tag[0]["tagname"];
+            final color = tag[0]["color"];
+
+            final foundIndex = tags.indexWhere((element) => element["name"] == tagName && element["color"] == color);
+          
+            if (foundIndex != -1){
+              selectedTags[i] = "Tag$foundIndex";
+            } else {
+              selectedTags[i] = null;
+            }
+          
+          }
+        }
+
       });
     });
   }
@@ -45,6 +66,10 @@ class _TodolistPageState extends State<TodolistPage> {
   Future<void> _removeToDoItem(String title) async {
     await removeToDoItem(widget.email, title);
     await _loadToDoList();
+  }
+
+  Future<void> _addTagToToDoEvent(String title, String tagName, String color) async {
+    addTagToToDoEvent(widget.email, title, tagName, color).then((_) => _loadToDoList());
   }
 
   void _showDeleteConfirmationDialog(BuildContext context, String title) {
@@ -93,7 +118,6 @@ class _TodolistPageState extends State<TodolistPage> {
 
   Future<void> _loadTags() async{
     await loadTags(widget.email).then((loaded) {
-      print(loaded);
       setState(() {
         tags = loaded.map<Map<String, String>>((e) => {
           "name": e["tagname"] as String,
@@ -102,6 +126,8 @@ class _TodolistPageState extends State<TodolistPage> {
       });
     });
   }
+
+  
 
   Future<void> _createNewTag(BuildContext context) async{
     TextEditingController tagNameController = TextEditingController();
@@ -200,8 +226,12 @@ class _TodolistPageState extends State<TodolistPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _loadTags();
-    _loadToDoList();
+    _loadTagsAndToDos();
+  }
+
+  Future<void> _loadTagsAndToDos() async{
+    await _loadTags();
+    await _loadToDoList();
   }
 
   @override
@@ -294,8 +324,17 @@ class _TodolistPageState extends State<TodolistPage> {
                                 } else {
                                   setState(() {
                                     selectedTags[index] = newValue == "None"? null : newValue;
+                                    if (newValue != "None"){
+                                      final tagIndex = int.parse(newValue!.replaceAll("Tag", ""));
+                                      final tag = tags[tagIndex];
+
+                                      final tagName = tag["name"]!;
+                                      final color = tag["color"]!;
+                                      addTagToToDoEvent(widget.email, toDoList[index]["title"], tagName, color);             
+                                    }
                                   });
                                 }
+                                print(selectedTags);
                               },
                             ),
                             SizedBox(width: 15),

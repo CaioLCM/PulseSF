@@ -378,3 +378,15 @@ Future<List<Map<String, dynamic>>> loadTags(String email) async {
   final decoded = jsonDecode(response.body);
   return List<Map<String, dynamic>>.from(decoded);
 }
+
+Future<void> addTagToToDoEvent(String email, String title, String tagName, String color) async {
+  print("chamou");
+  final url = Uri.parse("http://10.0.2.2:3000/addTagToToDoEvent");
+  final response = await http.post(url, body: {
+    "email": email, "title": title, "tagName": tagName, "color": color
+  });
+
+  if(response.body.isNotEmpty){
+      final decoded = jsonDecode(response.body);
+  }
+}
