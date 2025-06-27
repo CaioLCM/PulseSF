@@ -6,6 +6,7 @@ import 'package:pulsesf/pages/eventsSF_page.dart';
 import 'package:pulsesf/pages/profilePage.dart';
 import 'package:pulsesf/pages/profilesPage.dart';
 import 'package:pulsesf/pages/projectsPage.dart';
+import 'package:pulsesf/pages/quiz_page.dart';
 import 'package:pulsesf/pages/toDoList_page.dart';
 
 class Optionslist extends StatelessWidget {
@@ -305,7 +306,7 @@ class Optionslist extends StatelessWidget {
     List<Widget> Games = [
       GestureDetector(
         onTap: () {
-          ///
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => QuizPage(email: email)));
         },
         child: Container(
           padding: EdgeInsets.all(20),
