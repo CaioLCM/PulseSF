@@ -59,7 +59,7 @@ class Optionslist extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (builder) => Profilepage(email: email,)),
+            MaterialPageRoute(builder: (builder) => Profilepage(email: email)),
           );
         },
         child: Container(
@@ -99,8 +99,8 @@ class Optionslist extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (builder) => TodolistPage(email: email,)),
-          ); 
+            MaterialPageRoute(builder: (builder) => TodolistPage(email: email)),
+          );
         },
         child: Container(
           padding: EdgeInsets.fromLTRB(20, 20, 40, 20),
@@ -222,7 +222,9 @@ class Optionslist extends StatelessWidget {
     List<Widget> SF = [
       GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => EventssfPage(email: email,)));
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (_) => EventssfPage(email: email)));
         },
         child: Container(
           padding: EdgeInsets.all(20),
@@ -260,7 +262,9 @@ class Optionslist extends StatelessWidget {
       ),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => AboutsfPage()));
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (_) => AboutsfPage()));
         },
         child: Container(
           padding: EdgeInsets.all(20),
@@ -291,6 +295,43 @@ class Optionslist extends StatelessWidget {
               Text(
                 "See more about San Francisco",
                 style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ];
+
+    List<Widget> Games = [
+      GestureDetector(
+        onTap: () {
+          ///
+        },
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.yellow,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.quiz),
+                  SizedBox(width: 10),
+                  Text(
+                    "Quiz",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontFamily: "Fredoka",
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -365,6 +406,26 @@ class Optionslist extends StatelessWidget {
               },
             ),
           ),
+          SizedBox(height: 15),
+          Text(
+            "Games",
+            style: TextStyle(
+              fontFamily: "Fredoka",
+              fontWeight: FontWeight.bold,
+              fontSize: 30
+            ),
+          ),
+          SizedBox(height: 20,),
+          SizedBox(
+            height: 300,
+            child: ListView.builder(
+              itemCount: Games.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder:(context, index) {
+                return Games[index];
+              },
+            ),
+          )
         ],
       ),
     ];
