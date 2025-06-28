@@ -88,7 +88,7 @@ class _QuizPageState extends State<QuizPage> {
             SizedBox(height: 30),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
+/*                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder:
                         (_) => QuizOptionPage(
@@ -96,11 +96,11 @@ class _QuizPageState extends State<QuizPage> {
                           level: "normal",
                         ),
                   ),
-                );
+                ); */
               },
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (_) => QuizOptionPage(email: widget.email, level: "hard")));
+                  //Navigator.of(context).push(MaterialPageRoute(builder: (_) => QuizOptionPage(email: widget.email, level: "hard")));
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 10),
