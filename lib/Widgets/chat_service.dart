@@ -5,6 +5,31 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 class ChatService {
   late IO.Socket socket;
 
+  Future<List<Map<String, dynamic>>> fetchPrivateMessageHistory(
+    String user1Email, String user2Email
+  ) async {
+    final url = Uri.parse("http://10.0.2:3000/get-private-messages");
+    try {
+      final response = await http.post(url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "user1Email": user1Email,
+        "user2Email": user2Email
+      })
+      );
+      if (response.statusCode == 200){
+        List<dynamic> messagesJson = jsonDecode(response.body);
+        return messagesJson.cast<Map<String, dynamic>>();
+      } else {
+        print("Error fetching private history: ${response.statusCode}");
+        return [];
+      }
+    } catch (e){
+      print("Exception fetching private history: $e");
+      return [];
+    }
+  }
+
   Future<List<Map<String, dynamic>>> fetchGlobalMessageHistory() async{
     try{
       final response = await http.get(Uri.parse("http://10.0.2.2:3000/Globalmessages"));
@@ -33,8 +58,8 @@ class ChatService {
     }
   }
 
-  void connect(Null Function(dynamic data) onNewMessage){
-    socket = IO.io('http://10.0.2.2:3000', {
+  void connect(String userEmail, Function(dynamic data) onNewMessage){
+    socket = IO.io('http://10.0.2.2:3000', <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false
     });

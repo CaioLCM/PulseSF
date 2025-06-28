@@ -13,14 +13,104 @@ class MessagePage extends StatefulWidget {
 class _MessagePageState extends State<MessagePage> {
   final ChatService _chatService = ChatService();
   final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  
   List<Map<String, dynamic>> _messages = [];
   bool _isLoading = true;
 
-  Future<void> _loadChat() async{
-    //final history = await _chatService.fetchMessageHistory();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _chatService.connect(
+      widget.send_email,
+      (newMessage) {
+        if (mounted){
+          setState(() {
+            _messages.add(newMessage);
+          });
+          _scrollToBottom();
+        }
+      },
+    );
+    _loadChatHistory();
+  }
+
+  @override
+  void dispose(){
+    _chatService.disconnect();
+    _textController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadChatHistory() async {
     setState(() {
-      _isLoading = false;
+      _isLoading = true;
     });
+    final history = await _chatService.fetchPrivateMessageHistory(
+      widget.send_email,
+      widget.receive_email
+    );
+
+    if (mounted){
+      setState(() {
+        _messages = history;
+        _isLoading = false;
+      });
+      _scrollToBottom();
+    }
+  }
+
+  void _handleSendMessage(){
+    if (_textController.text.trim().isEmpty) return;
+    final messageText = _textController.text.trim();
+
+    _chatService.sendMessage(messageText, widget.send_email, widget.receive_email);
+
+    setState(() {
+      _messages.add({
+        "senderEmail": widget.send_email,
+        "text": messageText
+      });
+    });
+    _textController.clear();
+    _scrollToBottom();
+  }
+
+  void _scrollToBottom(){
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if (_scrollController.hasClients){
+        _scrollController.animateTo(_scrollController.position.maxScrollExtent, 
+        duration: const Duration(milliseconds: 300), 
+        curve: Curves.easeOut);
+      }
+    });
+  }
+
+  Widget _buildMessageItem(Map<String, dynamic> message){
+    final bool isMe = message["senderEmail"] == widget.send_email;
+
+    return Align(
+      alignment: isMe? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        decoration: BoxDecoration(
+          color: isMe? Colors.purple : Colors.grey.shade300,
+          borderRadius: BorderRadius.circular(16)
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        child: Text(
+          message["text"] ?? "",
+          style: TextStyle(
+            fontFamily: "Fredoka",
+            fontSize: 15,
+            color: isMe? Colors.white : Colors.black87
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -30,23 +120,15 @@ class _MessagePageState extends State<MessagePage> {
         title: Text(widget.receive_email, style: TextStyle(fontFamily: "Fredoka", color: Colors.white),),
         backgroundColor: Colors.purple,
       ),
-      body: Column(children: [
-        Expanded(child: ListView.builder(itemCount: _messages.length,
-        itemBuilder: (context, index) => Column(
-          children: [
-            ListTile(
-              title: Text(
-                _messages[index]["senderEmail"],
-                style: TextStyle(fontFamily: "Fredoka"),
-              ),
-              subtitle: Text(
-                _messages[index]["text"],
-                style: TextStyle(fontFamily: "Fredoka"),
-              ),
-            ),
-            Divider()
-          ],
-        ),
+      body: Column(
+        children: [
+        Expanded(
+        child: _isLoading ? const Center(child: CircularProgressIndicator(),) 
+        : ListView.builder(
+        controller: _scrollController,
+        padding: const EdgeInsets.all(8),  
+        itemCount: _messages.length,
+        itemBuilder: (context, index) => _buildMessageItem(_messages[index])
         )),
         Container(
             color: Colors.purple,
@@ -83,7 +165,7 @@ class _MessagePageState extends State<MessagePage> {
                     ),
                   ),
                   onPressed: () {
-                    //_handleSendMessage();
+                    _handleSendMessage();
                   },
                   child: Text("Send", style: TextStyle(color: Colors.white),),
                 ),

@@ -389,3 +389,44 @@ Future<void> addTagToToDoEvent(String email, String title, String tagName, Strin
       final decoded = jsonDecode(response.body);
   }
 }
+
+Future<void> sendPrivateMessage(String senderEmail, String receiverEmail, String text) async {
+  final url = Uri.parse("http://10.0.2.2:3000/send-private-message");
+  try {
+    await http.post(url, headers: {"Content-Type": "application/json"},
+    body: jsonEncode({
+      "senderEmail": senderEmail,
+      "receiverEmail": receiverEmail,
+      "text": text,
+    }),
+    );
+  } catch (e) {
+    print("Error sending message: $e");
+  }
+}
+
+Future<List<Map<String, dynamic>>> getPrivateMessageHistory(String user1Email, String user2Email) async {
+  final url = Uri.parse("http://10.0.2.2:3000/get-private-messages");
+  try{
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "user1Email": user1Email,
+        "user2Email": user2Email
+      })
+    );
+
+    if (response.statusCode == 200){
+      List<dynamic> decoded = jsonDecode(response.body);
+      return decoded.cast<Map<String, dynamic>>();
+    } else {
+      print("Failed to load messages: ${response.body}");
+      return [];
+    }
+
+  } catch (e) {
+    print("Error fetching messages: $e");
+    return [];
+  }
+}
