@@ -8,7 +8,7 @@ class ChatService {
   Future<List<Map<String, dynamic>>> fetchPrivateMessageHistory(
     String user1Email, String user2Email
   ) async {
-    final url = Uri.parse("http://10.0.2:3000/get-private-messages");
+    final url = Uri.parse("http://10.0.2.2:3000/get-private-messages");
     try {
       final response = await http.post(url,
       headers: {"Content-Type": "application/json"},

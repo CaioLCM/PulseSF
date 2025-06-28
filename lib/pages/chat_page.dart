@@ -23,7 +23,7 @@ class _ChatPageState extends State<ChatPage> {
       _messages = history;
     });
 
-    _chatService.connect((data) {
+    _chatService.connect(widget.email, (data) {
       setState(() {
         _messages.add(data);
       });
