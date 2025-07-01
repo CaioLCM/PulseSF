@@ -88,7 +88,7 @@ class _QuizPageState extends State<QuizPage> {
             SizedBox(height: 30),
             GestureDetector(
               onTap: () {
-/*                 Navigator.of(context).push(
+                /*                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder:
                         (_) => QuizOptionPage(
@@ -100,7 +100,15 @@ class _QuizPageState extends State<QuizPage> {
               },
               child: GestureDetector(
                 onTap: () {
-                  //Navigator.of(context).push(MaterialPageRoute(builder: (_) => QuizOptionPage(email: widget.email, level: "hard")));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder:
+                          (_) => QuizOptionPage(
+                            email: widget.email,
+                            level: "Easy",
+                          ),
+                    ),
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 10),
@@ -116,28 +124,52 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             SizedBox(height: 15),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              padding: EdgeInsets.all(30),
-              alignment: Alignment.center,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadiusDirectional.circular(10),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder:
+                        (_) => QuizOptionPage(
+                          email: widget.email,
+                          level: "Normal",
+                        ),
+                  ),
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.all(30),
+                alignment: Alignment.center,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadiusDirectional.circular(10),
+                ),
+                child: Text("Normal", style: TextStyle(fontFamily: "Fredoka")),
               ),
-              child: Text("Normal", style: TextStyle(fontFamily: "Fredoka")),
             ),
             SizedBox(height: 15),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              padding: EdgeInsets.all(30),
-              alignment: Alignment.center,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadiusDirectional.circular(10),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder:
+                        (_) =>
+                            QuizOptionPage(email: widget.email, level: "Hard"),
+                  ),
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.all(30),
+                alignment: Alignment.center,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadiusDirectional.circular(10),
+                ),
+                child: Text("Hard", style: TextStyle(fontFamily: "Fredoka")),
               ),
-              child: Text("Hard", style: TextStyle(fontFamily: "Fredoka")),
             ),
           ],
         ),

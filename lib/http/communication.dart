@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pulsesf/Widgets/LoginPage/email.dart';
+import 'package:pulsesf/models/question_model.dart';
 import 'package:pulsesf/pages/createProjectMenu.dart';
 import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +21,7 @@ Future<bool> CreateAccount(
   }
 
   if (isValidEmail(email) && nickname.isNotEmpty && password.isNotEmpty) {
-    final url = Uri.parse('https://pulsesf-backend.onrender.com/logon');
+    final url = Uri.parse('http://10.0.2.2:3000/logon');
     var response = await http.post(
       url,
       body: {"username": nickname, 'email': email, 'password': password},
@@ -55,7 +56,7 @@ Future<bool> verifyAccount(
   String password,
   BuildContext context,
 ) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/login");
+  final url = Uri.parse("http://10.0.2.2:3000/login");
   var response = await http.post(
     url,
     body: {"email": email, "password": password},
@@ -78,12 +79,12 @@ Future<bool> verifyAccount(
 }
 
 Future<void> updateAccountWithProfIlePicture(String email, String image) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/profileAdd");
+  final url = Uri.parse("http://10.0.2.2:3000/profileAdd");
   var response = await http.post(url, body: {"email": email, "image": image});
 }
 
 Future<List<project>> getProjects() async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/projects");
+  final url = Uri.parse("http://10.0.2.2:3000/projects");
   var response = await http.get(url);
   final decoded = jsonDecode(response.body);
   return decoded.map<project>((item) => project.fromJson(item)).toList();
@@ -95,7 +96,7 @@ Future<void> addProject(
   double members,
   String email,
 ) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/projectCreate");
+  final url = Uri.parse("http://10.0.2.2:3000/projectCreate");
   var response = await http.post(
     url,
     body: {
@@ -108,15 +109,17 @@ Future<void> addProject(
 }
 
 Future<void> removeProject(String name) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/removeProject");
+  final url = Uri.parse("http://10.0.2.2:3000/removeProject");
   var response = await http.post(url, body: {"name": name});
 }
 
 Future<String> searchForProfilePicture(String email) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/searchPicture");
-  var response = await http.post(url, 
-  headers: {"Content-Type": "application/json"},
-  body: jsonEncode({"email": email}));
+  final url = Uri.parse("http://10.0.2.2:3000/searchPicture");
+  var response = await http.post(
+    url,
+    headers: {"Content-Type": "application/json"},
+    body: jsonEncode({"email": email}),
+  );
   final body = response.body;
   print(response.statusCode);
   final decoded = jsonDecode(body);
@@ -127,7 +130,7 @@ Future<String> searchForProfilePicture(String email) async {
 
 void addUserToProject(dynamic name, List<String> memberList) async {
   print(memberList);
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/addMember");
+  final url = Uri.parse("http://10.0.2.2:3000/addMember");
   var response = await http.post(
     url,
     headers: {"Content-Type": "application/json; charset=UTF-8"},
@@ -144,7 +147,7 @@ void addUserToProject(dynamic name, List<String> memberList) async {
 }
 
 Future<void> removeUserFromProject(String email, String project_name) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/removeUser");
+  final url = Uri.parse("http://10.0.2.2:3000/removeUser");
   var response = await http.post(
     url,
     body: {"email": email, "project_name": project_name},
@@ -152,7 +155,7 @@ Future<void> removeUserFromProject(String email, String project_name) async {
 }
 
 Future<List<Map<String, dynamic>>> searchUsers() async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/searchUsers");
+  final url = Uri.parse("http://10.0.2.2:3000/searchUsers");
   var response = await http.get(url);
   final response_body = jsonDecode(response.body);
   List<Map<String, dynamic>> final_body = [];
@@ -162,7 +165,7 @@ Future<List<Map<String, dynamic>>> searchUsers() async {
       final_body.add({
         "email": user["email"],
         "profile_picture": user["profile_picture"],
-        "friends": user["friends"]
+        "friends": user["friends"],
       }),
     },
   );
@@ -170,7 +173,7 @@ Future<List<Map<String, dynamic>>> searchUsers() async {
 }
 
 Future<String> searchBio(String email) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/searchUser");
+  final url = Uri.parse("http://10.0.2.2:3000/searchUser");
   var response = await http.post(url, body: {"email": email});
   final encoded = jsonDecode(response.body);
   final bio = encoded["bio"];
@@ -178,12 +181,12 @@ Future<String> searchBio(String email) async {
 }
 
 Future<void> updateBio(String email, String bio) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/updateBio");
+  final url = Uri.parse("http://10.0.2.2:3000/updateBio");
   final response = await http.post(url, body: {"email": email, "bio": bio});
 }
 
 Future<void> addFriend(String email_req, String email_res) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/addFriend");
+  final url = Uri.parse("http://10.0.2.2:3000/addFriend");
   final response = await http.post(
     url,
     body: {"email_req": email_req, "email_res": email_res},
@@ -191,7 +194,7 @@ Future<void> addFriend(String email_req, String email_res) async {
 }
 
 Future<bool> checkFriend(String email_req, String email_res) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/checkFriend");
+  final url = Uri.parse("http://10.0.2.2:3000/checkFriend");
   final response = await http.post(
     url,
     body: {"email_req": email_req, "email_res": email_res},
@@ -204,7 +207,7 @@ Future<bool> checkFriend(String email_req, String email_res) async {
 }
 
 Future<List<String>> searchFriendsRequests(String email) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/searchRequests");
+  final url = Uri.parse("http://10.0.2.2:3000/searchRequests");
   final response = await http.post(url, body: {"email": email});
 
   final dynamic response_decode = jsonDecode(response.body);
@@ -227,7 +230,7 @@ Future<void> removeFriendRequest(
   String emailRequest,
   String emailResponse,
 ) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/removeFriendRequest");
+  final url = Uri.parse("http://10.0.2.2:3000/removeFriendRequest");
   final response = await http.post(
     url,
     body: {"email_request": emailRequest, "email_response": emailResponse},
@@ -238,7 +241,7 @@ Future<void> acceptFriendRequest(
   String emailRequest,
   String emailResponse,
 ) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/acceptFriendRequest");
+  final url = Uri.parse("http://10.0.2.2:3000/acceptFriendRequest");
   final response = await http.post(
     url,
     body: {"email_req": emailRequest, "email_res": emailResponse},
@@ -246,7 +249,7 @@ Future<void> acceptFriendRequest(
 }
 
 Future<List<String>> searchFriends(String email) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/searchFriends");
+  final url = Uri.parse("http://10.0.2.2:3000/searchFriends");
   var response = await http.post(url, body: {"email_user": email});
   final decoded = await jsonDecode(response.body);
   if (decoded["friends"] is List) {
@@ -260,7 +263,7 @@ Future<List<String>> searchFriends(String email) async {
 }
 
 Future<bool> removeFriend(String email_req, String email_res) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/removeFriend");
+  final url = Uri.parse("http://10.0.2.2:3000/removeFriend");
   final response = await http.post(
     url,
     body: {"email_req": email_req, "email_res": email_res},
@@ -278,7 +281,7 @@ Future<void> addEvent(
   String description,
   String date,
 ) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/addEvent");
+  final url = Uri.parse("http://10.0.2.2:3000/addEvent");
   final response = await http.post(
     url,
     body: {
@@ -291,7 +294,7 @@ Future<void> addEvent(
 }
 
 Future<List<Map<String, dynamic>>> getEvents() async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/getEvents");
+  final url = Uri.parse("http://10.0.2.2:3000/getEvents");
   final response = await http.get(url);
   List<Map<String, dynamic>> events = [];
   if (response.statusCode == 200) {
@@ -316,117 +319,154 @@ Future<List<Map<String, dynamic>>> getEvents() async {
 }
 
 Future<void> UpVote(String email, String title) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/UpVote");
+  final url = Uri.parse("http://10.0.2.2:3000/UpVote");
   final response = await http.post(url, body: {"email": email, "title": title});
 }
 
 Future<void> DownVote(String email, String title) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/DownVote");
+  final url = Uri.parse("http://10.0.2.2:3000/DownVote");
   final response = await http.post(url, body: {"email": email, "title": title});
 }
 
 Future<void> RemoveEvent(String title) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/removeEvent");
+  final url = Uri.parse("http://10.0.2.2:3000/removeEvent");
   final response = await http.post(url, body: {"title": title});
 }
 
 Future<List<Map<String, dynamic>>> loadToDoList(String email) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/loadToDoList");
+  final url = Uri.parse("http://10.0.2.2:3000/loadToDoList");
   final response = await http.post(url, body: {"email": email});
   final decoded = jsonDecode(response.body);
   return List<Map<String, dynamic>>.from(decoded);
 }
 
 Future<void> updateToDoList(String email, String title) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/updateToDoList");
+  final url = Uri.parse("http://10.0.2.2:3000/updateToDoList");
   final response = await http.post(url, body: {"email": email, "title": title});
 }
 
-Future<void> updateCheckState(String email, String title) async{
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/updateCheckState");
-  final response = await http.post(url, body: {
-    "email": email, "title": title 
-  });
+Future<void> updateCheckState(String email, String title) async {
+  final url = Uri.parse("http://10.0.2.2:3000/updateCheckState");
+  final response = await http.post(url, body: {"email": email, "title": title});
 }
 
 Future<void> removeToDoItem(String email, String title) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/removeToDoItem");
-  final response = await http.post(url, body: {
-    "email": email, "title": title
-  });
+  final url = Uri.parse("http://10.0.2.2:3000/removeToDoItem");
+  final response = await http.post(url, body: {"email": email, "title": title});
 }
 
-Future<void> createTag(String email, String title, String color) async{
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/createTag");
-  final response = await http.post(url, body: {
-    "email": email, "title": title, "color": color
-  });
+Future<void> createTag(String email, String title, String color) async {
+  final url = Uri.parse("http://10.0.2.2:3000/createTag");
+  final response = await http.post(
+    url,
+    body: {"email": email, "title": title, "color": color},
+  );
 }
 
-Future<void> addTag(String email, String title, String color) async{
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/addTag");
-  final response = await http.post(url, body: {
-    "email": email, "title": title, "color": color
-  });
+Future<void> addTag(String email, String title, String color) async {
+  final url = Uri.parse("http://10.0.2.2:3000/addTag");
+  final response = await http.post(
+    url,
+    body: {"email": email, "title": title, "color": color},
+  );
 }
 
 Future<List<Map<String, dynamic>>> loadTags(String email) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/loadTags");
-  final response = await http.post(url, body: {
-    "email": email
-  });
+  final url = Uri.parse("http://10.0.2.2:3000/loadTags");
+  final response = await http.post(url, body: {"email": email});
   final decoded = jsonDecode(response.body);
   return List<Map<String, dynamic>>.from(decoded);
 }
 
-Future<void> addTagToToDoEvent(String email, String title, String tagName, String color) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/addTagToToDoEvent");
-  final response = await http.post(url, body: {
-    "email": email, "title": title, "tagName": tagName, "color": color
-  });
+Future<void> addTagToToDoEvent(
+  String email,
+  String title,
+  String tagName,
+  String color,
+) async {
+  final url = Uri.parse("http://10.0.2.2:3000/addTagToToDoEvent");
+  final response = await http.post(
+    url,
+    body: {"email": email, "title": title, "tagName": tagName, "color": color},
+  );
 
-  if(response.body.isNotEmpty){
-      final decoded = jsonDecode(response.body);
+  if (response.body.isNotEmpty) {
+    final decoded = jsonDecode(response.body);
   }
 }
 
-Future<void> sendPrivateMessage(String senderEmail, String receiverEmail, String text) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/send-private-message");
+Future<void> sendPrivateMessage(
+  String senderEmail,
+  String receiverEmail,
+  String text,
+) async {
+  final url = Uri.parse("http://10.0.2.2:3000/send-private-message");
   try {
-    await http.post(url, headers: {"Content-Type": "application/json"},
-    body: jsonEncode({
-      "senderEmail": senderEmail,
-      "receiverEmail": receiverEmail,
-      "text": text,
-    }),
+    await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "senderEmail": senderEmail,
+        "receiverEmail": receiverEmail,
+        "text": text,
+      }),
     );
   } catch (e) {
     print("Error sending message: $e");
   }
 }
 
-Future<List<Map<String, dynamic>>> getPrivateMessageHistory(String user1Email, String user2Email) async {
-  final url = Uri.parse("https://pulsesf-backend.onrender.com/get-private-messages");
-  try{
+Future<List<Map<String, dynamic>>> getPrivateMessageHistory(
+  String user1Email,
+  String user2Email,
+) async {
+  final url = Uri.parse("http://10.0.2.2:3000/get-private-messages");
+  try {
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "user1Email": user1Email,
-        "user2Email": user2Email
-      })
+      body: jsonEncode({"user1Email": user1Email, "user2Email": user2Email}),
     );
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       List<dynamic> decoded = jsonDecode(response.body);
       return decoded.cast<Map<String, dynamic>>();
     } else {
       print("Failed to load messages: ${response.body}");
       return [];
     }
-
   } catch (e) {
     print("Error fetching messages: $e");
+    return [];
+  }
+}
+
+Future<List<Question>> getQuiz(String level) async {
+  String difficulty = level.toLowerCase();
+  
+  final url = Uri.parse(
+    "https://opentdb.com/api.php?amount=10&category=18&difficulty=$difficulty&type=multiple",
+  );
+
+  try {
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final decodedData = jsonDecode(response.body);
+
+      if (decodedData['response_code'] == 0) {
+
+        final List<dynamic> results = decodedData['results'];
+
+        return results.map((json) => Question.fromJson(json)).toList();
+      }
+    }
+
+    print("Falha ao buscar perguntas. Status: ${response.statusCode}");
+    return [];
+
+  } catch (e) {
+    print("Exceção ao buscar perguntas: $e");
     return [];
   }
 }
