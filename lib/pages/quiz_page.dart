@@ -10,170 +10,81 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.purple,
-        title: Text(
-          "Quiz",
-          style: TextStyle(fontFamily: "Fredoka", color: Colors.white),
-        ),
+
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Colors.purple,
+      title: const Text(
+        "Quiz",
+        style: TextStyle(fontFamily: "Fredoka", color: Colors.white),
       ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Column(
-                children: [
-                  Text(
-                    widget.email,
-                    style: TextStyle(fontFamily: "Fredoka", fontSize: 20),
-                  ),
-                  SizedBox(height: 10),
-                  Text("Easy: 0"),
-                  SizedBox(height: 5),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: LinearProgressIndicator(
-                      value: 0.5,
-                      minHeight: 16,
-                      backgroundColor: Colors.green[100],
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Text("Normal: 0"),
-                  SizedBox(height: 5),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: LinearProgressIndicator(
-                      value: 0.5,
-                      minHeight: 16,
-                      backgroundColor: Colors.blue[700],
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ],
-              ),
+    ),
+    body: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch, 
+        children: [
+          Text(
+            widget.email,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontFamily: "Fredoka", fontSize: 20),
+          ),
+          const SizedBox(height: 24),
+
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              textStyle: const TextStyle(fontSize: 22, fontFamily: "Fredoka"),
             ),
-            SizedBox(height: 15),
-            Text("Hard: 0"),
-            SizedBox(height: 5),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder:
-                        (_) =>
-                            QuizOptionPage(email: widget.email, level: "easy"),
-                  ),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: LinearProgressIndicator(
-                  value: 0.5,
-                  minHeight: 16,
-                  backgroundColor: Colors.red[700],
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                  borderRadius: BorderRadius.circular(8),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => QuizOptionPage(email: widget.email, level: "Easy"),
                 ),
-              ),
+              );
+            },
+            child: const Text("Easy", style: TextStyle(color: Colors.white)),
+          ),
+          const SizedBox(height: 20),
+
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              textStyle: const TextStyle(fontSize: 22, fontFamily: "Fredoka"),
             ),
-            SizedBox(height: 30),
-            GestureDetector(
-              onTap: () {
-                /*                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder:
-                        (_) => QuizOptionPage(
-                          email: widget.email,
-                          level: "normal",
-                        ),
-                  ),
-                ); */
-              },
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder:
-                          (_) => QuizOptionPage(
-                            email: widget.email,
-                            level: "Easy",
-                          ),
-                    ),
-                  );
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  padding: EdgeInsets.all(30),
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadiusDirectional.circular(10),
-                  ),
-                  child: Text("Easy", style: TextStyle(fontFamily: "Fredoka")),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => QuizOptionPage(email: widget.email, level: "medium"),
                 ),
-              ),
+              );
+            },
+            child: const Text("Normal", style: TextStyle(color: Colors.white)),
+          ),
+          const SizedBox(height: 20),
+
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              textStyle: const TextStyle(fontSize: 22, fontFamily: "Fredoka"),
             ),
-            SizedBox(height: 15),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder:
-                        (_) => QuizOptionPage(
-                          email: widget.email,
-                          level: "Normal",
-                        ),
-                  ),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                padding: EdgeInsets.all(30),
-                alignment: Alignment.center,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadiusDirectional.circular(10),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => QuizOptionPage(email: widget.email, level: "hard"),
                 ),
-                child: Text("Normal", style: TextStyle(fontFamily: "Fredoka")),
-              ),
-            ),
-            SizedBox(height: 15),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder:
-                        (_) =>
-                            QuizOptionPage(email: widget.email, level: "Hard"),
-                  ),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                padding: EdgeInsets.all(30),
-                alignment: Alignment.center,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadiusDirectional.circular(10),
-                ),
-                child: Text("Hard", style: TextStyle(fontFamily: "Fredoka")),
-              ),
-            ),
-          ],
-        ),
+              );
+            },
+            child: const Text("Hard", style: TextStyle(color: Colors.white)),
+          ),
+        ],
       ),
-    );
+    ),
+  );
   }
 }

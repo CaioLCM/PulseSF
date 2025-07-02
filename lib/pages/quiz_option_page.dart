@@ -14,27 +14,29 @@ class QuizOptionPage extends StatefulWidget {
 class _QuizOptionPageState extends State<QuizOptionPage> {
   late Future<List<Question>> questionsFuture;
   
-  List<Question> questions = [];
   int index = 0;
   int score = 0;
   bool answered = false; 
-  bool loading = true;
 
-  _handleQuizQuestions() async{
-    getQuiz(widget.level).then((Loaded){
-      setState(() { 
-        questions = Loaded;
-        loading = false;
-      });
-    });
-  }
   
-  void _answerQuestion(String selectedAnswer){
+  void _answerQuestion(String selectedAnswer, List<Question> questions){
     setState(() {
       answered = true;
       if (selectedAnswer == questions[index].correctAnswer){
         score ++; 
       }   
+    });
+
+    Future.delayed(const Duration(milliseconds: 1500), (){
+      if (!mounted) return;
+      setState(() {
+        if (index < questions.length - 1){
+          index ++;
+          answered = false;
+        } else {
+          _showResultDialog();
+        }
+      });
     });
   }
 
@@ -43,7 +45,7 @@ class _QuizOptionPageState extends State<QuizOptionPage> {
     barrierDismissible: false,
     builder: (context) => AlertDialog(
       title: Text("Game over"),
-      content: Text("Score: $score / ${questions.length}"),
+      content: Text("Score: $score / 10"),
       actions: [
         TextButton(onPressed: (){
           Navigator.of(context).pop();
@@ -70,42 +72,57 @@ class _QuizOptionPageState extends State<QuizOptionPage> {
         ),
         backgroundColor: Colors.purple,
       ),
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(8),
-          margin: EdgeInsets.symmetric(vertical: 50),
-          child: loading? Center(child: CircularProgressIndicator(),)
-          : Column(
-            children: [
-              Text(questions[index]["Question"]!, style: TextStyle(fontFamily: "Fredoka", fontSize: 25), textAlign: TextAlign.center,),
-              SizedBox(height: 15,),
-              TextButton( onPressed: () {
-                setState(() {
-                  index += 1;
-                });
-              }, child: Text("a) ${questions[index]["Correct answer"]!}", style: TextStyle(fontFamily: "Fredoka", fontSize: 20)),),
-              SizedBox(height: 10,),
-              TextButton(onPressed: () {
-                setState(() {
-                  index += 1;
-                });
-              }, child: Text("b) ${questions[index]["Incorrect answer 1"]!}", style: TextStyle(fontFamily: "Fredoka", fontSize: 20)),),
-              SizedBox(height: 10,),
-              TextButton(onPressed: () {
-                setState(() {
-                  index += 1;
-                });
-              }, child: Text("c) ${questions[index]["Incorrect answer 2"]!}", style: TextStyle(fontFamily: "Fredoka", fontSize: 20)),),
-              SizedBox(height: 10,),
-              TextButton(onPressed: () {
-                setState(() {
-                  index += 1;
-                });
-              }, child: Text("d) ${questions[index]["Incorrect answer 3"]!}", style: TextStyle(fontFamily: "Fredoka", fontSize: 20)),)
-            ],
-          ),
-        ),
-      ),
-    );
+      body: FutureBuilder(future: questionsFuture, builder: (context, snapshot){
+        if (snapshot.connectionState == ConnectionState.waiting){
+          return const Center(child: CircularProgressIndicator(),);
+        }
+
+        if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty){
+          return const Center(
+            child: Text("Not possible to load the questions"),
+          );
+        }
+
+        final questions = snapshot.data!;
+        final currentQuestion = questions[index];
+
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text("Question ${index + 1}/10", textAlign: TextAlign.center,),
+                SizedBox(height: 20,),
+                Text(currentQuestion.questionText, textAlign: TextAlign.center,),
+                SizedBox(height: 30,),
+                ...currentQuestion.allAnswers.map((answer){
+                  Color buttonColor = Colors.deepPurple;
+                  if (answered){
+                    buttonColor = (answer == currentQuestion.correctAnswer)
+                    ? Colors.green
+                    : Colors.red;
+                  }
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: buttonColor,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        textStyle: TextStyle(
+                          fontSize: 18, fontFamily: "Fredoka"
+                        )
+                      ),
+                      onPressed: answered? null : () => _answerQuestion(answer, questions),
+                     child: Text(answer, style: TextStyle(color: Colors.white),),
+                    ),
+                  );
+                })
+              ],
+            ),
+          );
+        })
+      );
+    }
   }
-}
+  

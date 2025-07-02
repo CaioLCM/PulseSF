@@ -462,11 +462,11 @@ Future<List<Question>> getQuiz(String level) async {
       }
     }
 
-    print("Falha ao buscar perguntas. Status: ${response.statusCode}");
+    print("Error to search questions. Status: ${response.statusCode}");
     return [];
 
   } catch (e) {
-    print("Exceção ao buscar perguntas: $e");
+    print("Error to search questions: $e");
     return [];
   }
 }
