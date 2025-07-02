@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pulsesf/Widgets/LoginPage/email.dart';
 import 'package:pulsesf/models/question_model.dart';
+import 'package:pulsesf/models/true_or_false_model.dart';
 import 'package:pulsesf/pages/createProjectMenu.dart';
 import 'package:pulsesf/pages/mainPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -459,6 +460,36 @@ Future<List<Question>> getQuiz(String level) async {
         final List<dynamic> results = decodedData['results'];
 
         return results.map((json) => Question.fromJson(json)).toList();
+      }
+    }
+
+    print("Error to search questions. Status: ${response.statusCode}");
+    return [];
+
+  } catch (e) {
+    print("Error to search questions: $e");
+    return [];
+  }
+}
+
+Future<List<TrueOrFalseModel>> getTrueOrFalseQuiz(String level) async {
+  String difficulty = level.toLowerCase();
+  
+  final url = Uri.parse(
+    "https://opentdb.com/api.php?amount=10&category=9&difficulty=$difficulty&type=boolean",
+  );
+
+  try {
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final decodedData = jsonDecode(response.body);
+
+      if (decodedData['response_code'] == 0) {
+
+        final List<dynamic> results = decodedData['results'];
+
+        return results.map((json) => TrueOrFalseModel.fromJson(json)).toList();
       }
     }
 

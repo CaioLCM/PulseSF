@@ -8,6 +8,7 @@ import 'package:pulsesf/pages/profilesPage.dart';
 import 'package:pulsesf/pages/projectsPage.dart';
 import 'package:pulsesf/pages/quiz_page.dart';
 import 'package:pulsesf/pages/toDoList_page.dart';
+import 'package:pulsesf/pages/true_or_false_page.dart';
 
 class Optionslist extends StatelessWidget {
   final String email;
@@ -326,6 +327,40 @@ class Optionslist extends StatelessWidget {
                   SizedBox(width: 10),
                   Text(
                     "Quiz",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontFamily: "Fredoka",
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => TrueOrFalsePage(email: email)));
+        },
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.yellow,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.check_circle_outline),
+                  SizedBox(width: 10),
+                  Text(
+                    "True or False",
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
