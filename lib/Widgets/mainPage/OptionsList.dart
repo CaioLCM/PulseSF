@@ -3,6 +3,7 @@ import 'package:pulsesf/main.dart';
 import 'package:pulsesf/pages/aboutSF_page.dart';
 import 'package:pulsesf/pages/chat_page.dart';
 import 'package:pulsesf/pages/eventsSF_page.dart';
+import 'package:pulsesf/pages/leaderboard_page.dart';
 import 'package:pulsesf/pages/profilePage.dart';
 import 'package:pulsesf/pages/profilesPage.dart';
 import 'package:pulsesf/pages/projectsPage.dart';
@@ -213,6 +214,45 @@ class Optionslist extends StatelessWidget {
               ),
               Text(
                 "Talk with your neighbors",
+                style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
+              ),
+            ],
+          ),
+        ),
+      ),
+      GestureDetector(
+        onTap:
+            () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => LeaderboardPage())),
+        child: Container(
+          padding: EdgeInsets.all(20),
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.orange[400],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  Icon(Icons.chat),
+                  SizedBox(width: 10),
+                  Text(
+                    "Leaderboard",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontFamily: "Fredoka",
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                "Compete with your neighbors",
                 style: TextStyle(color: Colors.black, fontFamily: "Fredoka"),
               ),
             ],
