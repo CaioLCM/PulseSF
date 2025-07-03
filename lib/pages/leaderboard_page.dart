@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pulsesf/http/communication.dart';
 
 class LeaderboardPage extends StatefulWidget {
   const LeaderboardPage({super.key});
@@ -8,6 +9,20 @@ class LeaderboardPage extends StatefulWidget {
 }
 
 class _LeaderboardPageState extends State<LeaderboardPage> {
+  late Future<List<Map<String, dynamic>>> _leaderboardFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _leaderboardFuture = fetchLeaderboard();
+  }
+
+  void _refreshLeaderboard() {
+    setState(() {
+      _leaderboardFuture = fetchLeaderboard();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,35 +32,81 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           "Leaderboard",
           style: TextStyle(fontFamily: "Fredoka", color: Colors.white),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh, color: Colors.white),
+            onPressed: _refreshLeaderboard,
+          ),
+        ],
       ),
-      body: Container(
-        height: 5000,
-        child: ListView.builder(
-          itemCount: 50,
-          itemBuilder:(context, index) {
-           return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.purple,
-                  child: Text(
-                    (index + 1).toString(),
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _leaderboardFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Leaderboard still empty!',
+                    style: TextStyle(fontFamily: "Fredoka", fontSize: 18),
                   ),
-                ),
-                title: Text(
-                  "User ${index + 1}",
-                  style: const TextStyle(fontFamily: "Fredoka", fontSize: 18),
-                ),
-                subtitle: const Text(
-                  "Score: 100",
-                  style: TextStyle(fontFamily: "Fredoka", fontSize: 16),
-                ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _refreshLeaderboard,
+                    child: const Text("Try again"),
+                  )
+                ],
               ),
             );
-          }, 
-          ),
+          }
+
+          final leaderboard = snapshot.data!;
+
+          return ListView.builder(
+            itemCount: leaderboard.length,
+            itemBuilder: (context, index) {
+              final user = leaderboard[index];
+              final rank = index + 1;
+
+              return Card(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor:
+                        rank <= 3 ? Colors.amber.shade600 : Colors.purple.shade100,
+                    child: Text(
+                      '$rank',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: rank <= 3 ? Colors.white : Colors.purple,
+                      ),
+                    ),
+                  ),
+                  title: Text(
+                    user['username'] ?? 'User',
+                    style: const TextStyle(
+                        fontFamily: "Fredoka", fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Text(
+                    '${user['points'] ?? 0} pts',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.green,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
-} 
+}

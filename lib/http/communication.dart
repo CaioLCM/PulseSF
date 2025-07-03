@@ -501,3 +501,33 @@ Future<List<TrueOrFalseModel>> getTrueOrFalseQuiz(String level) async {
     return [];
   }
 }
+
+Future<List<Map<String, dynamic>>> fetchLeaderboard() async {
+  final url = Uri.parse("http://10.0.2.2:3000/leaderboard");
+  try {
+    final request = await http.get(url);
+    if (request.statusCode == 200) {
+      final List<dynamic> decoded = jsonDecode(request.body);
+      return decoded.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList();
+    }
+  } catch (error){
+    print("Error to load users $error");
+    return [];
+  }
+  return [];
+} 
+
+Future<void> addPointsToUser(String email, int points) async {
+  final url = Uri.parse("http://10.0.2.2:3000/addPoints");
+  try {
+    await http.post(
+      url, 
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+      "email": email,
+      "points": points
+    }));
+  } catch (error){
+    print("Error to update user points");
+  } 
+}

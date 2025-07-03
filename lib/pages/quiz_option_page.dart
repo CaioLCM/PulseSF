@@ -18,12 +18,28 @@ class _QuizOptionPageState extends State<QuizOptionPage> {
   int score = 0;
   bool answered = false; 
 
-  
-  void _answerQuestion(String selectedAnswer, List<Question> questions){
+  _handleUpdateUserPoints() async{
+    int totalPoints = 0;
+    if (widget.level == "easy"){
+      totalPoints = 1;
+    }
+
+    else if (widget.level == "medium"){
+      totalPoints = 3;
+    }
+
+    else {
+      totalPoints = 5;
+    }
+
+    await addPointsToUser(widget.email, totalPoints);
+  }
+
+  void _answerQuestion (String selectedAnswer, List<Question> questions){
     setState(() {
       answered = true;
       if (selectedAnswer == questions[index].correctAnswer){
-        score ++; 
+        score ++;
       }   
     });
 
@@ -34,13 +50,28 @@ class _QuizOptionPageState extends State<QuizOptionPage> {
           index ++;
           answered = false;
         } else {
-          _showResultDialog();
+          _showResultDialog(questions.length);
         }
       });
     });
   }
 
-  void _showResultDialog(){
+  void _showResultDialog(int totalQuestions){
+    int poinsPerCorrectAnswer = 0;
+    if (widget.level == "easy"){
+      poinsPerCorrectAnswer = 1;
+    } else if (widget.level == "medium"){
+      poinsPerCorrectAnswer = 3;
+    } else {
+      poinsPerCorrectAnswer = 5;
+    }
+
+    final int finalPoints = score * poinsPerCorrectAnswer;
+
+    if (finalPoints > 0){
+      addPointsToUser(widget.email, finalPoints);
+    }
+
     showDialog(context: context, 
     barrierDismissible: false,
     builder: (context) => AlertDialog(
@@ -125,4 +156,3 @@ class _QuizOptionPageState extends State<QuizOptionPage> {
       );
     }
   }
-  
