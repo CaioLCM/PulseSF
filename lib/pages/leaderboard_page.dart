@@ -89,7 +89,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                     ),
                   ),
                   title: Text(
-                    user['username'] ?? 'User',
+                    user['email'] ?? 'User',
                     style: const TextStyle(
                         fontFamily: "Fredoka", fontWeight: FontWeight.bold),
                   ),
