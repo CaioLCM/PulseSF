@@ -42,6 +42,21 @@ class _TrueOrFalsePageState extends State<TrueOrFalseOption> {
   }
 
   void _showResultDialog(){
+  int pointsPerCorrectAnswer = 0;
+  String difficulty = widget.level;
+
+  if (difficulty == "easy") {
+    pointsPerCorrectAnswer = 1;
+  } else {
+    pointsPerCorrectAnswer = 3;
+  }
+
+  final int finalPoints = score * pointsPerCorrectAnswer;
+
+  if (finalPoints > 0){
+    addPointsToUser(widget.email, finalPoints);
+  }
+
     showDialog(context: context, 
     barrierDismissible: false,
     builder: (context) => AlertDialog(
